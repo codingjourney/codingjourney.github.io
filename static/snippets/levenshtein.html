@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Levenshtein Distance Calculator</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <style></style>
+    <script lang="JavaScript">
+      function calculate() {
+        var ui  = document.forms["ui"]
+        var out = document.getElementById("result")
+        out.innerHTML = distance(ui.from.value, ui.to.value)
+      }
+    </script>
+    <script lang="JavaScript" src="levenshtein.js"></script>
+  </head>
+  <body>
+    <form name="ui">
+      The distance between <input type="text" name="from" onkeyup="calculate()"/>
+      and <input type="text" name="to" onkeyup="calculate()"/> is <span id="result">?</span>.
+    </form>
+  </body>
+</html>

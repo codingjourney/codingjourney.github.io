@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>                        <a href="../category/misc2.html">&laquo;</a>
+                Page 3 / 5
+            <a href="../category/misc4.html">&raquo;</a>
+    </h3>
+      <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
+      <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
+      <a href="#alice-in-printerland">Alice in Printerland</a>
+      <a href="#what-i-learned-about-pelican">What I learned about Pelican</a>
+      <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
+      <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
+      <a href="#the-heroku-mess">The Heroku mess</a>
+      <a href="#catching-a-boot-time-kernel-oops-call-trace">Catching a boot-time kernel oops call trace</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles in the misc category</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-2"></a>
+      <a href="../the-battle-of-the-c5280-part-2.html" rel="bookmark" title="Permalink to The battle of the C5280, part 2">The battle of the C5280, part 2</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T06:30:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I ended <a href="../the-battle-of-the-c5280-part-1.html">part 1</a> with a description of my struggles to display trace statements inserted into libusb. One spot where I needed to add a trace was</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">busnode</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENXIO</span><span class="p">)</span>
+        <span class="n">usbi_err</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;could not open %s&quot;</span><span class="p">,</span> <span class="n">busnode</span><span class="p">);</span>
+    <span class="k">continue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Notice that the code here keeps a rather important detail (errno) to itself. I changed the code to</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">busnode</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENXIO</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">usbi_err</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;could not open %s&quot;</span><span class="p">,</span> <span class="n">busnode</span><span class="p">);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;errno: %d&quot;</span><span class="p">,</span> <span class="n">errno</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">continue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>and once the output started flowing I found out that errno was 13 (EACCESS). A classic file permissions problem, it's just that it wasn't very well reported. It should have been apparent back when I saw the backend work without problems when run directly.</p>
+<p>Rather than figuring out which user's permissions are in effect when CUPS calls the backend, I simply turned on global read-write permissions for <em>/dev/ugen*</em> to see if it would help. It didn't.</p>
+<p>After another bit of "fun" detective work, I found the reason buried in the libusb port. For those unfamiliar with OpenBSD ports, a port is basically a recipe for turning an external piece of software into an OpenBSD package. It contains instructions for fetching and unpacking the source, patching it for OpenBSD, building it, packaging the result in a neat <em>.tgz</em> file and even installing an unistalling it.</p>
+<p>I noticed that the patch for <em>openbsd_usb.c</em> was rather big - almost 18K. On closer look, it was a substantial rewrite of the whole file which was kind of unexpected since the original code was already supposed to be OpenBSD-specific. One thing the rewrite changed was that it was no longer iterating over <em>/dev/ugen<em><em> but rather over </em>/dev/usb</em></em>. I failed to notice it when inserting trace statements - the pattern had been extracted into constants at the start of the file.</p>
+<p>Armed with new wisdom, I turned on global read-write permissions for <em>/dev/usb*</em>. <strong>Progress! CUPS finally found my printer.</strong> I clicked on "Print test page". As you may have guessed, nothing happened. <em>Continued in <a href="../the-battle-of-the-c5280-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-1"></a>
+      <a href="../the-battle-of-the-c5280-part-1.html" rel="bookmark" title="Permalink to The battle of the C5280, part 1">The battle of the C5280, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-28T05:05:00"> Thu 28 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The other day I posted a <a href="../alice-in-printerland.html">frustrated rant</a> about my troubles getting the printer to work under OpenBSD. This has evolved into a massive struggle which is still ongoing. On the one hand, it's ridiculous how much time I'm devoting to this. On the other, I've dusted off my C chops, built basic proficiency with gdb and discovered a bunch of curious facts about OpenBSD and USB which I'll probably never use again and forget in a matter of weeks. So it's perhaps worth writing some of them down.</p>
+<p>First, a bit of background. My home server runs on OpenBSD. One of its duties is providing access to a HP Photosmart C5280 printer via CUPS and it works like a charm. The version of OpenBSD I'm running is getting old, however, so I've purchased the 5.2 CD set and I'm setting it up on another machine.</p>
+<p>Everything went well until I tried to add the printer via CUPS' web interface. No local connection was detected. I turned on extra logging (by saying <em>LogLevel debug</em> in <em>/etc/cups/cupsd.conf</em>), clicked around in the web UI and found this in <em>/var/log/cups/error_log</em>:</p>
+<div class="codehilite"><pre><span class="n">libusb_get_device_list</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>It looked like libusb was having trouble finding the printer. I looked up libusb <a href="http://www.libusb.org">on the web</a>, looked at the source code and confirmed my suspicion. I also found out there was an OpenBSD-specific file (<a href="http://www.libusb.org/browser/libusb/libusb/os/openbsd_usb.c">openbsd_usb.c</a>) which looked for <em>/dev/ugen*</em> devices. Those were present on my system in abundance, so a missing device wasn't a problem.</p>
+<p>The error log also mentioned <em>/usr/local/libexec/cups/backend/usb</em> and browsing CUPS help gave me a hint of what <a href="http://www.cups.org/documentation.php/man-backend.html">backends</a> were about. So I ran the USB backend directly on the command line. To my surprise, it had no problem finding the device. Something was wrong in the way CUPS was calling the backend.</p>
+<p><a id="test"></a>I decided to <a href="http://www.openbsd.org/faq/faq15.html#Ports">set up OpenBSD ports</a> and compile libusb with some trace statements. I wrote a minimal program to test things:</p>
+<div class="codehilite"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;libusb.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">libusb_device</span> <span class="o">**</span><span class="n">list</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="n">libusb_init</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">libusb_get_device_list</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;Devices: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="n">libusb_free_device_list</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">libusb_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>I hadn't done C hacking in a while so I spent a fair amount of time just crafting the proper <em>cc</em> command line but eventually I could read a nice "Devices: 7" in the output. I then started sprinkling trace statements over libusb. I naively thought using <em>fprintf(stderr, ...)</em> would be easier than figuring out how to activate the existing logging functions (<em>usbi_warn</em>, <em>usbi_dbg</em> etc.). No matter what I did, the traces wouldn't show up. Eventually I did activate libusb's logging (commenting out <em>.ifdef DEBUG</em> in the port's <em>Makefile</em>). Didn't help.</p>
+<p>After much wailing and gnashing of teeth, it turned out it was a linking problem. I'd trusted <em>cc</em> would link the library statically by default (I have no idea how to override the default anyway). The bastard used dynamic linking instead which meant that upon running the program I was talking to <em>/usr/local/lib/libusb-1.0.so.1.0</em> from the installed libusb package. Running with</p>
+<div class="codehilite"><pre><span class="n">PORT_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">obj</span><span class="o">/</span><span class="n">ports</span><span class="o">/</span><span class="n">libusb1</span><span class="o">-</span><span class="mf">1.0.9</span><span class="o">/</span><span class="n">libusb</span><span class="o">-</span><span class="mf">1.0.9</span>
+<span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PORT_PATH</span><span class="o">/</span><span class="n">libusb</span><span class="o">/</span><span class="p">.</span><span class="n">libs</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+
+
+<p>brought a revelation. <em>Continued in <a href="../the-battle-of-the-c5280-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="alice-in-printerland"></a>
+      <a href="../alice-in-printerland.html" rel="bookmark" title="Permalink to Alice in Printerland">Alice in Printerland</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-24T11:55:00"> Sun 24 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I've just spent about 12 hours trying to set up CUPS on my OpenBSD home server, with no success. The USB backend didn't want to recognize the local printer. After setting up OpenBSD ports, inserting trace statements into libusb sources and forcing ld to talk to the newly compiled library instead of the one from the standard package, I found out that the backend stumbled on "Permission denied". I made the /dev entries global-readable and -writable to see if it would help. The printer was recognized and I could install it properly.</p>
+<p>Then I tried printing a test page and LIBUSB_ERROR_ACCESS became LIBUSB_ERROR_OTHER.</p>
+<p>There are 13 places in libusb where the _OTHER could come from and I have lost the will to see where the rabbit hole leads. Time for a fresh start.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="what-i-learned-about-pelican"></a>
+      <a href="../what-i-learned-about-pelican.html" rel="bookmark" title="Permalink to What I learned about Pelican">What I learned about Pelican</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-28T22:05:00"> Thu 28 February 2013 </abbr> under
+        <a href="../tag/meta.html">meta</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <ul>
+<li>initialize a site: <strong>pelican-quickstart</strong> (launches an interactive questionnaire)</li>
+<li>write content: just put .md files in content/</li>
+<li>generate site: <strong>make html</strong></li>
+<li>autorefresh mode:  <strong>make devserver</strong> (also hosts the site at <a href="http://localhost:8000/">localhost:8000</a>)</li>
+<li>further information: <a href="http://docs.getpelican.com/">docs.getpelican.com</a></li>
+</ul> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="idiosyncrasies-in-pythons-timezone-handling"></a>
+      <a href="../idiosyncrasies-in-pythons-timezone-handling.html" rel="bookmark" title="Permalink to Idiosyncrasies in Python's timezone handling">Idiosyncrasies in Python's timezone handling</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-23T04:13:00"> Sat 23 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/python.html">Python</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I work to fix timezone logic in <a href="https://github.com/codingjourney/upsheet">upsheet</a>, I've become somewhat frustrated with date and time handling in Python. Coming from a Java background, I know this stuff is awfully difficult to get right. Python has a large community driven by sophisticated users, however, so I expected things to be pretty smooth. I was wrong:</p>
+<ul>
+<li><strong><em>datetime</em> vs. <em>time</em></strong>
+Two modules with overlapping functionality and no clear separation of scope.</li>
+<li><strong><em>datetime.datetime</em></strong>
+A class with the same name as its module. This is probably common in the Python library but it makes for weird expressions such as <em>datetime.datetime.strptime(...)</em>. Kind of nudges you to drop the module prefix with <em>from datetime import *</em>.</li>
+<li><strong>timezone handling in <em>datetime</em> is a red-headed stepchild</strong>
+The <em>datetime</em> module tactfully avoids the gritty details of coming up with the local system's current timezone. You can supply a timezone but you have to provide your own <em>tzinfo</em> subclass to do it.</li>
+<li><strong>timezone handling in <em>time</em> is a red-headed stepchild</strong>
+You get <em>timezone</em> for the non-DST system timezone, <em>altzone</em> for the DST system timezone, <em>daylight</em> to see if <em>altzone</em> is even applicable and <em>localtime().tm_isdst</em> to decide (provided <em>altzone</em> is applicable) whether <em>timezone</em> or <em>altzone</em> is the local system's current timezone. Whew! I mean, it's wonderfully precise and flexible but kind of all over the place.</li>
+<li><strong>timezone offsets are represented inconsistently</strong>
+While <em>datetime.tzinfo.utcoffset()</em> must return its result in minutes, both <em>time.timezone</em> and <em>time.altzone</em> provide the offset in seconds. Trivial yet irritating.</li>
+<li><strong><em>datetime.time</em> vs. <em>time</em></strong>
+A class in one module with the same name as a related module. When you use <em>datetime</em> without the module prefix, this forces you to either also use <em>time</em> without the prefix - further polluting the naming scope - or alias it using <em>import time as sillytime</em>.</li>
+<li><strong>inconsistent timezone offsets</strong>
+While <em>time.timezone</em> and <em>time.altzone</em> specify timezone offsets in seconds west of UTC, <em>tzinfo.utcoffset()</em> must return minutes east of UTC.</li>
+<li><strong>mischievous documentation</strong>
+One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or -1; see below"</em>. Of course, there's no further mention of <em>tm_isdst</em> anywhere in the document. A sentence buried in the next paragraph does say <em>"A -1 argument as the daylight savings flag, passed to mktime() will usually result in the correct daylight savings state to be filled in."</em>. Which means the -1 is utterly irrelevant except for one specific use-case.</li>
+</ul>
+<p>Having figured all of this out, I can now construct a <em>datetime.datetime</em> instance equipped with the correct <em>tzinfo</em> for the current local timezone. This goes to show how hard it is to design a really good API.</p>
+<p>I do hope it all works the same way under Windows...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="stuck-in-a-timezone"></a>
+      <a href="../stuck-in-a-timezone.html" rel="bookmark" title="Permalink to Stuck in a timezone">Stuck in a timezone</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-22T07:16:00"> Fri 22 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My <a href="https://github.com/codingjourney/upsheet">timesheet uploader</a> micro-project started off as a spontaneous scratch-your-own-itch effort with very little polish. No error handling, liberal copy-paste, vague structure - you know the story. The code obviously involved some parsing and formatting of dates and times. It wasn't very complicated so I avoided the <a href="http://docs.python.org/2.7/library/datetime.html">big</a> <a href="http://docs.python.org/2.7/library/time.html">guns</a>, sticking to string manipulation and simple arithmetic (figuring out that <em>0830-1030</em> means 120 minutes etc.).</p>
+<p>Timesheet entries are fed to JIRA as JSON documents via its REST API. JSON doesn't define a standard timestamp format but examples in the <a href="http://docs.atlassian.com/jira/REST/latest/#id225379">documentation</a> use ISO8601 with a timezone suffix - something like <em>2012-08-14T08:30:00.000+0200</em>. I dutifully slapped on the suffix as a constant to all my outgoing timestamp data.</p>
+<p>One of the things I wanted from the script was to detect timesheet entries that were already in JIRA to prevent duplication in the worklogs. This involved downloading the worklog for the relevant issue and comparing it with the entry that was to be uploaded. When parsing timestamps in the worklog I happily ignored the timezone suffix. I figured I would always be in the same timezone as my JIRA server.</p>
+<p>After some time I noticed this collision detection was often failing. I had no time to analyze it so I simply took care to upload my timesheet all at once and re-upload only the failed entries if there were errors. It was a pain but still much better than stuffing JIRA manually.</p>
+<p>When I got more free time in January I discovered the true nature of the bug. Both me and my JIRA server had effectively switched timezones when the Daylight Savings Time ended in October. The script, however, still had <em>+0200</em> in its outgoing timestamps. This meant that I uploaded an entry with <em>08:30:00.000+0200</em> but then it came back as <em>09:30:00.000+0100</em>. Ignoring the timezone, the script detected no overlap (as long as duration was under 61 minutes) and proceeded to re-upload the entry, again with <em>08:30:00.000+0200</em> in the timestamp.</p>
+<p>It turns out that no, I can't ignore timezones in my calculations after all. Besides, the code is already <a href="https://github.com/codingjourney/upsheet">on GitHub</a> and right now collision detection works only for the lucky users who are two hours East from UTC together with their JIRA servers. Good thing I haven't told anyone yet :-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-heroku-mess"></a>
+      <a href="../the-heroku-mess.html" rel="bookmark" title="Permalink to The Heroku mess">The Heroku mess</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-16T07:35:00"> Sat 16 February 2013 </abbr> under
+        <a href="../tag/cloud-computing.html">cloud computing</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>On February 12, 2013, a startup called RapGenius accused the <a href="http://www.heroku.com">Heroku cloud host</a> of knowingly stifling the performance of the RapGenius Rails app, causing the need for extra instances and subsequent higher service charges.</p>
+<p>RapGenius' <a href="http://rapgenius.com/James-somers-herokus-ugly-secret-lyrics">blog post</a> is impressive in that it describes the issues clearly yet provides sufficient details. It is really worth a read which is why I'm not going to reproduce nor summarize it here.</p>
+<p>I believe none of the parties involved (Heroku, RapGenius and the monitoring outfit New Relic) come out looking good:</p>
+<ul>
+<li><em><strong>Heroku</strong> failed to announce a substantial platform change to customers.</em> The company provides Platform as a Service (several platforms, actually). A platform is a system of components working together to provide essential services for applications. Heroku switched their Rails platform from an optimal combination of components (single-request dynos, intelligent routing) to a substantially sub-optimal one (single-request dynos, random routing). They failed to notify customers of the switch in advance. They either failed to measure the performance impact of the switch or purposefully withheld knowledge of the impact from their customers. They failed to reflect the switch in their documentation.</li>
+<li><em><strong>New Relic</strong> simply failed to account for all latencies in their monitoring.</em> It appears they measured many internal values within the platform but failed to cross-check them against a black-box view from the outside. It seems quite unprofessional, especially given the pricing of their service.</li>
+<li><em><strong>RapGenius</strong> put too much trust in an external entity.</em> Instead of an independent monitoring service they used one sold as an add-on to their platform by the platform provider. They took more than two years to detect a major performance degradation in their platform (in fairness, the problem only becomes apparent when the number of dynos reaches a certain threshold).</li>
+</ul>
+<p>What's truly puzzling is that none of Heroku's other Rails customers seems to have encountered this issue before RapGenius. One possibility is that RapGenius is the first Heroku Rails app to achieve sufficient scale for the problem to occur. Another is that some customers did indeed catch the problem right at the start, adapted to the new configuration and simply never thought to give a heads-up to the rest of the community.</p>
+<p>The morale of the story for me is that it's foolish to use a monitoring service with business ties to the entity being monitored (or, indeed, to outsource monitoring in the first place - it's a critical QA function, after all). An independent monitoring service must still be given enough access to the monitored system to provide necessary detail. This is not trivial as monitoring can interfere with the monitored system. Some form of meta-monitoring is perhaps needed. Ah, the ever-fascinating world of IT :-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="catching-a-boot-time-kernel-oops-call-trace"></a>
+      <a href="../catching-a-boot-time-kernel-oops-call-trace.html" rel="bookmark" title="Permalink to Catching a boot-time kernel oops call trace">Catching a boot-time kernel oops call trace</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-09-13T00:27:00"> Tue 13 September 2011 </abbr> under
+        <a href="../tag/htpc.html">HTPC</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>Another issue my HTPC exhibited recently was a tendency to crash early in the boot process. It became apparent it was suffering from an <a href="https://lkml.org/lkml/2011/7/11/434">initialization issue</a> in the <a href="http://wilsonet.com/?page_id=99">iMon</a> driver. I couldn't confirm it, though, since the call trace was too long to fit on the screen and it didn't turn up in any of the files under /var/log.</p>
+<p>I studied various options for capturing the call trace, including <a href="http://www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html">netconsole</a> and <a href="http://mjg59.livejournal.com/137710.html">pstore</a> but since I had access to an RS-232 cable with switched RX/TX pins (a.k.a. "null-modem cable"?) I ended up choosing the good old serial console. This involved connecting the HTPC to my notebook with the serial cable, starting <a href="http://cutecom.sourceforge.net/">cutecom</a> on the notebook and doing the following on the HTPC:</p>
+<div class="codehilite"><pre><span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">grub</span>
+<span class="cp"># GRUB_CMDLINE_LINUX_DEFAULT=&quot;console=ttyS0,19200n8 console=tty0&quot;</span>
+<span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">grub</span>
+<span class="n">sudo</span> <span class="n">reboot</span>
+</pre></div>
+
+
+<p>Of course, "19200n8" must match the parameters set in cutecom on the other side of the link. With this setup, it only took a few reboots to reproduce the crash, capture the call trace and confirm the iMon driver as the culprit. Fortunately, a patch for the problem <a href="https://lkml.org/lkml/2011/7/18/221">already existed</a> so it was only a matter of either waiting until it reached my aptosid kernel or patching the kernel on my own. In the meantime, I'm booting into the previous kernel.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+                        <a href="../category/misc2.html">&laquo;</a>
+                Page 3 / 5
+            <a href="../category/misc4.html">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

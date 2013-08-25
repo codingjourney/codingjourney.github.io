@@ -1,0 +1,107 @@
+body {
+    margin: 1em 0 1em 0;
+    background-color: #ffffff;
+    font: 10pt verdana, arial, helvetica, sans-serif;
+}
+
+a:link, a:visited, a:hover {
+    color: #40a040;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a.disabled {
+    color: #a0a0a0;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 26pt;
+    font-family: times, serif;
+    font-style: italic;
+    margin: 0 0 0.1em 0;
+}
+
+h1 a:link, h1 a:visited, h1 a:hover {
+    color: #000000;
+    font-weight: normal;
+}
+
+h1 img {
+    height: 1em;
+    width: 1em;
+    position: relative;
+    top: 0.25em;
+    padding-left: 0.05em;
+    padding-right: 0.1em;
+}
+
+h2 {
+    margin-bottom: 0.5em;
+}
+
+h3 {
+    font-size: 14pt;
+    margin: 0px;
+}
+
+h4 {
+    margin: 1em 0 0 0;
+}
+
+ul {
+    padding-left: 15px;
+    margin: 0px;
+}
+
+li {
+    padding-top: 0.5em;
+}
+
+p {
+    text-align: justify;
+    margin: 0.5em 0 0 0;
+}
+
+.all {
+    width: 840px;
+}
+
+.main-column {
+    width: 550px;
+    margin-left: 30px;
+}
+
+.extra-info {
+    float: right;
+    width: 230px;
+}
+
+.extra-info aside {
+    margin-bottom: 1em;
+}
+
+.extra-info aside.links h3 {
+    margin-bottom: 0.2em;
+}
+
+.extra-info aside.links > a {
+    display: block;
+    padding: 0.2em 0 0.2em 0;
+}
+
+.entry-content {
+    margin-bottom: 0.8em;
+}
+
+.hentry {
+    margin-bottom: 2em;
+}
+
+.post-info {
+    font-style: italic;
+}
+
+#contentinfo {
+    margin-top: 1em;
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="akai-ewi-usb-and-linux-part-1.html" rel="bookmark"
+         title="Permalink to Akai EWI USB and Linux, part 1">Akai EWI USB and Linux, part 1</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2010-11-14T06:07:00"> Sun 14 November 2010 </abbr> under
+        <a href="./tag/music.html">music</a>,        <a href="./tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>As I've <a href="./akai-ewi-usb-and-me.html">mentioned before</a>, I recently came into posession of an Akai Electronic Wind Instrument, USB edition. To be of any use, this wonderful artifact must be connected to a computer running proper software. That on EWI's companion CD supports only MS Windows and Mac OS X so with my GNU/Linux notebook I was on my own.</p>
+<p>I had obviously checked on-line for other people's experiences with the EWI and Linux before purchasing it but all I knew was that yes, it does work. I use a rolling-release Debian-based distro called <a href="http://www.aptosid.com/">aptosid</a> (formerly known as sidux) which means I tend to be fairly up-to-date as far as the kernel and drivers are concerned. I wasn't expecting any major problems but I was ready for anything.</p>
+<p>I started with the basics: I saved the listing of <em>/dev</em> and <em>/dev/snd</em> into a text file and plugged the EWI in. A bunch of messages in <em>dmesg</em> confirmed that the device was detected and recognized. Comparing the listing of <em>/dev/snd</em> with the previous version yielded <em>/dev/snd/midiC1D0</em> as a new device and <em>sudo cat /dev/snd/midiC1D0</em> produced a flurry of line noise as I tried playing the instrument. The low-level set-up, then, was exactly as it should be: pure plug-n'-play.</p>
+<p>With my confidence boosted, I turned straight to <a href="http://qsynth.sourceforge.net/qsynth-index.html">QSynth</a> which is a GUI front-end for <a href="http://sourceforge.net/apps/trac/fluidsynth/">fluidsynth</a>, a powerful <a href="http://en.wikipedia.org/wiki/Soundfont">SoundFont</a>-based command-line software synthesizer. QSynth has a nice setup dialog with separate tabs for the MIDI side (input) and the audio side (output). Unfortunately, the configuration options accurately reflect the mess that is Linux audio support, with four MIDI drivers and five audio drivers to choose from and fiddle with. To make a long story short, I failed to find a combination of settings that would work.</p>
+<p>I needed clarity and precision, hence I turned to working with fluidsynth directly. After reading the manual, the alsa_raw driver looked like the most promising option for MIDI input as I had used ALSA to get a MIDI port on another computer going a few years ago. When I used alsa_raw without specifying a MIDI device path, however, fluidsynth would say "Error opening ALSA raw MIDI port". When I did specify <em>/dev/snd/midiC1D0</em> as the MIDI device I got "Unknown RawMidi /dev/snd/midiC1D0". I somehow remembered that during my previous MIDI experiments the device was <em>midiC0D0</em> rather than <em>midiC1D0</em> so I tried <em>ln -s /dev/snd/midiC1D0 /dev/snd/midiC0D0</em> and ran fluidsynth without giving it a device path. Bingo! I had sound!</p>
+<p>There were two serious problems with this setup. First, the <em>midiC0D0</em> symlink disappeared at every reboot, forcing me to re-create it over and over. More seriously, the audio lagged some 100 to 300 ms behind MIDI input, making the EWI so sluggish as to be unplayable. What was I to do? I will reveal the dramatic resolution of both issues in another post; stay tuned...</p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

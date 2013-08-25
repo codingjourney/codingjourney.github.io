@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles with tag CUPS</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </h3>
+      <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
+      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
+      <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
+      <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
+      <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
+      <a href="#alice-in-printerland">Alice in Printerland</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles tagged with "CUPS"</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-aftermath"></a>
+      <a href="../the-battle-of-the-c5280-aftermath.html" rel="bookmark" title="Permalink to The battle of the C5280: Aftermath">The battle of the C5280: Aftermath</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-30T20:00:00"> Sat 30 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>After a protracted investigation spanning several days (see <a href="../alice-in-printerland.html">part 1</a>, <a href="../the-battle-of-the-c5280-part-1.html">part 2</a>, <a href="../the-battle-of-the-c5280-part-2.html">part 3</a> and <a href="../the-battle-of-the-c5280-part-3.html">part 4</a>), my new home server is finally providing access to my HP Photosmart C5280 printer-scanner combo. The basic goal has been achieved but I cannot be very happy with the end result. To get the printer to work, I had to disable the <em>ulpt</em> and <em>umass</em> USB drivers in the server's OpenBSD 5.2 kernel - they were both being assigned to the device along with the <em>ugen</em> driver the system actually wanted to talk to.</p>
+<p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
+<p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
+<p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-4"></a>
+      <a href="../the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have previously recounted how I <a href="../the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="../the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="../the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
+<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
+<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * If a device is attached to ugen(4) it has</span>
+<span class="cm"> * only one &#39;devname&#39;.</span>
+<span class="cm"> */</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
+        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+
+
+<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
+<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
+<p><em>For each USB device there may be additional drivers attached to it.</em></p>
+<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
+<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-3"></a>
+      <a href="../the-battle-of-the-c5280-part-3.html" rel="bookmark" title="Permalink to The battle of the C5280, part 3">The battle of the C5280, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T07:30:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>In <a href="../the-battle-of-the-c5280-part-1.html">part 1</a> and <a href="../the-battle-of-the-c5280-part-2.html">part 2</a> I describe how I got CUPS to recognize my printer. Alas, the battle was far from over: it still refused to print. Back in <em>/var/log/cups/error_log</em> I found</p>
+<div class="codehilite"><pre><span class="n">libusb</span> <span class="n">write</span> <span class="n">operation</span> <span class="n">returned</span> <span class="n">fffffff4</span><span class="p">.</span>
+</pre></div>
+
+
+<p>Of course, fffffff4 translates to -12 which translates to <em>LIBUSB_ERROR_NOT_SUPPORTED</em>. More trace statements were in order.</p>
+<p>From the surrounding log messages I figured out that the error was returned from <em>obsd_submit_transfer</em> in <em>openbsd_usb.c</em>. I found all places in that function where the error could have been returned and equipped them with traces. The culprit turned out to be one level deeper, in <em>_sync_gen_transfer</em>:</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">(</span><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">LIBUSB_ERROR_NOT_SUPPORTED</span><span class="p">);</span>
+</pre></div>
+
+
+<p>By now my round-trip was quite masochistic:</p>
+<ol>
+<li>Edit openbsd_usb.c as patched by the port.</li>
+<li>Make a new patch.</li>
+<li>Replace the port's patch with the new one.</li>
+<li>Rebuild port.</li>
+<li>Stop CUPS.</li>
+<li>Uninstall libusb and CUPS (CUPS depends on libusb).</li>
+<li>Install libusb from the port.</li>
+<li>Install CUPS.</li>
+<li>Start CUPS.</li>
+<li>Try something.</li>
+<li>See what turns up in the log.</li>
+</ol>
+<p>I did have a script for steps 2 through 9 but now I needed to find out how <em>NULL</em> got into <em>dpriv-&gt;devname</em>. I realized it was time to learn <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=gdb">gdb</a> - the GNU interactive debugger.</p>
+<p>If you click on that link you will find a typical OpenBSD man page: clear, succint, to the point (I've said this before: documentation is the most impressive thing about OpenBSD, by far). Figuring out how to compile libusb with debugging symbols was another stumbling block, however. The line <em>.ifdef DEBUG</em> in the port's <em>Makefile</em> had given me a mistaken impression that the value of <em>DEBUG</em> didn't matter. I put <em>DEBUG=1</em> into <em>/etc/mk.conf</em> and libusb promptly stopped building, with <em>configure</em> saying something to the effect that CC was unable to generate an executable. Rummaging throug <em>configure.log</em>, the incriminating lines looked approximately like this:</p>
+<div class="codehilite"><pre><span class="n">cc</span> <span class="o">-</span><span class="n">O2</span> <span class="o">-</span><span class="n">pipe</span> <span class="mi">1</span> <span class="n">conftest</span><span class="p">.</span><span class="n">c</span>
+<span class="nl">cc:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+</pre></div>
+
+
+<p>Silly me thought the first "1" was a parameter for the "-pipe" option while the other "1" was a line number. Once I put one and one together (ahem), <em>man cc</em> told me <em>DEBUG</em> should be <em>-g</em>, obviously, after which <em>make clean build</em> produced a file 100K bigger than before, pregnant with debugging wisdom. I was happy.</p>
+<p>Having conquered the last obstacle, I was stepping through my toy program in no time. I even found the multi-window ncurses-based TUI (text user interface) although that wasn't mentioned in the man page. One irritating thing about TUI was that it didn't have the debbuged program's standard streams under control. Each time a trace statement was printed it blew up the layout. I finally turned it off by running gdb with <em>-tty=/dev/null</em> which wasn't ideal either but it was an improvement. To be frank, I would expect TUI to have a dedicated console window to handle the program's I/O. Alas, that doesn't seem to be the case.</p>
+<p>The source seemed to be somewhat out of sync with the code being executed ("next" kept jumping back and forth, gdb itself would segfault once I launched the program a few times). I ascribed this to optimizations performed by CC so I turned them off by saying <em>CFLAGS=-O0 -g</em> in the port's <em>Makefile</em> and rebuilding (the <em>-g</em> was necessary because apparently <em>CFLAGS</em> in the <em>Makefile</em> overrides <em>CFLAGS</em> assembled by other means). To my surprise, it did help - stepping became perfectly smooth from then on.</p>
+<p>Of course, gdb only took me deeper into the mystery. <em>Continued in <a href="../the-battle-of-the-c5280-part-4.html">part 4</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-2"></a>
+      <a href="../the-battle-of-the-c5280-part-2.html" rel="bookmark" title="Permalink to The battle of the C5280, part 2">The battle of the C5280, part 2</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T06:30:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I ended <a href="../the-battle-of-the-c5280-part-1.html">part 1</a> with a description of my struggles to display trace statements inserted into libusb. One spot where I needed to add a trace was</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">busnode</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENXIO</span><span class="p">)</span>
+        <span class="n">usbi_err</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;could not open %s&quot;</span><span class="p">,</span> <span class="n">busnode</span><span class="p">);</span>
+    <span class="k">continue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Notice that the code here keeps a rather important detail (errno) to itself. I changed the code to</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">busnode</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENXIO</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">usbi_err</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;could not open %s&quot;</span><span class="p">,</span> <span class="n">busnode</span><span class="p">);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;errno: %d&quot;</span><span class="p">,</span> <span class="n">errno</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">continue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>and once the output started flowing I found out that errno was 13 (EACCESS). A classic file permissions problem, it's just that it wasn't very well reported. It should have been apparent back when I saw the backend work without problems when run directly.</p>
+<p>Rather than figuring out which user's permissions are in effect when CUPS calls the backend, I simply turned on global read-write permissions for <em>/dev/ugen*</em> to see if it would help. It didn't.</p>
+<p>After another bit of "fun" detective work, I found the reason buried in the libusb port. For those unfamiliar with OpenBSD ports, a port is basically a recipe for turning an external piece of software into an OpenBSD package. It contains instructions for fetching and unpacking the source, patching it for OpenBSD, building it, packaging the result in a neat <em>.tgz</em> file and even installing an unistalling it.</p>
+<p>I noticed that the patch for <em>openbsd_usb.c</em> was rather big - almost 18K. On closer look, it was a substantial rewrite of the whole file which was kind of unexpected since the original code was already supposed to be OpenBSD-specific. One thing the rewrite changed was that it was no longer iterating over <em>/dev/ugen<em><em> but rather over </em>/dev/usb</em></em>. I failed to notice it when inserting trace statements - the pattern had been extracted into constants at the start of the file.</p>
+<p>Armed with new wisdom, I turned on global read-write permissions for <em>/dev/usb*</em>. <strong>Progress! CUPS finally found my printer.</strong> I clicked on "Print test page". As you may have guessed, nothing happened. <em>Continued in <a href="../the-battle-of-the-c5280-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-1"></a>
+      <a href="../the-battle-of-the-c5280-part-1.html" rel="bookmark" title="Permalink to The battle of the C5280, part 1">The battle of the C5280, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-28T05:05:00"> Thu 28 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The other day I posted a <a href="../alice-in-printerland.html">frustrated rant</a> about my troubles getting the printer to work under OpenBSD. This has evolved into a massive struggle which is still ongoing. On the one hand, it's ridiculous how much time I'm devoting to this. On the other, I've dusted off my C chops, built basic proficiency with gdb and discovered a bunch of curious facts about OpenBSD and USB which I'll probably never use again and forget in a matter of weeks. So it's perhaps worth writing some of them down.</p>
+<p>First, a bit of background. My home server runs on OpenBSD. One of its duties is providing access to a HP Photosmart C5280 printer via CUPS and it works like a charm. The version of OpenBSD I'm running is getting old, however, so I've purchased the 5.2 CD set and I'm setting it up on another machine.</p>
+<p>Everything went well until I tried to add the printer via CUPS' web interface. No local connection was detected. I turned on extra logging (by saying <em>LogLevel debug</em> in <em>/etc/cups/cupsd.conf</em>), clicked around in the web UI and found this in <em>/var/log/cups/error_log</em>:</p>
+<div class="codehilite"><pre><span class="n">libusb_get_device_list</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>It looked like libusb was having trouble finding the printer. I looked up libusb <a href="http://www.libusb.org">on the web</a>, looked at the source code and confirmed my suspicion. I also found out there was an OpenBSD-specific file (<a href="http://www.libusb.org/browser/libusb/libusb/os/openbsd_usb.c">openbsd_usb.c</a>) which looked for <em>/dev/ugen*</em> devices. Those were present on my system in abundance, so a missing device wasn't a problem.</p>
+<p>The error log also mentioned <em>/usr/local/libexec/cups/backend/usb</em> and browsing CUPS help gave me a hint of what <a href="http://www.cups.org/documentation.php/man-backend.html">backends</a> were about. So I ran the USB backend directly on the command line. To my surprise, it had no problem finding the device. Something was wrong in the way CUPS was calling the backend.</p>
+<p><a id="test"></a>I decided to <a href="http://www.openbsd.org/faq/faq15.html#Ports">set up OpenBSD ports</a> and compile libusb with some trace statements. I wrote a minimal program to test things:</p>
+<div class="codehilite"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;libusb.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">libusb_device</span> <span class="o">**</span><span class="n">list</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="n">libusb_init</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">libusb_get_device_list</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;Devices: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="n">libusb_free_device_list</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">libusb_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>I hadn't done C hacking in a while so I spent a fair amount of time just crafting the proper <em>cc</em> command line but eventually I could read a nice "Devices: 7" in the output. I then started sprinkling trace statements over libusb. I naively thought using <em>fprintf(stderr, ...)</em> would be easier than figuring out how to activate the existing logging functions (<em>usbi_warn</em>, <em>usbi_dbg</em> etc.). No matter what I did, the traces wouldn't show up. Eventually I did activate libusb's logging (commenting out <em>.ifdef DEBUG</em> in the port's <em>Makefile</em>). Didn't help.</p>
+<p>After much wailing and gnashing of teeth, it turned out it was a linking problem. I'd trusted <em>cc</em> would link the library statically by default (I have no idea how to override the default anyway). The bastard used dynamic linking instead which meant that upon running the program I was talking to <em>/usr/local/lib/libusb-1.0.so.1.0</em> from the installed libusb package. Running with</p>
+<div class="codehilite"><pre><span class="n">PORT_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">obj</span><span class="o">/</span><span class="n">ports</span><span class="o">/</span><span class="n">libusb1</span><span class="o">-</span><span class="mf">1.0.9</span><span class="o">/</span><span class="n">libusb</span><span class="o">-</span><span class="mf">1.0.9</span>
+<span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PORT_PATH</span><span class="o">/</span><span class="n">libusb</span><span class="o">/</span><span class="p">.</span><span class="n">libs</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+
+
+<p>brought a revelation. <em>Continued in <a href="../the-battle-of-the-c5280-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="alice-in-printerland"></a>
+      <a href="../alice-in-printerland.html" rel="bookmark" title="Permalink to Alice in Printerland">Alice in Printerland</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-24T11:55:00"> Sun 24 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I've just spent about 12 hours trying to set up CUPS on my OpenBSD home server, with no success. The USB backend didn't want to recognize the local printer. After setting up OpenBSD ports, inserting trace statements into libusb sources and forcing ld to talk to the newly compiled library instead of the one from the standard package, I found out that the backend stumbled on "Permission denied". I made the /dev entries global-readable and -writable to see if it would help. The printer was recognized and I could install it properly.</p>
+<p>Then I tried printing a test page and LIBUSB_ERROR_ACCESS became LIBUSB_ERROR_OTHER.</p>
+<p>There are 13 places in libusb where the _OTHER could come from and I have lost the will to see where the rabbit hole leads. Time for a fresh start.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

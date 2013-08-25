@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles by Jan Hustak</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>                        <a href="../author/jan-hustak4.html">&laquo;</a>
+                Page 5 / 5
+            <a href="#" class="disabled">&raquo;</a>
+    </h3>
+      <a href="#the-levenshtein-rules">The Levenshtein rules</a>
+      <a href="#the-minimal-patch-fallacy">The minimal patch fallacy</a>
+      <a href="#the-psychology-of-casual-street-cleaning">The psychology of casual street cleaning</a>
+      <a href="#the-pykonsole-distraction">The pyKonsole distraction</a>
+      <a href="#update-on-logitech-dinovo-edge-and-imon-pad">Update on Logitech diNovo Edge and iMON PAD</a>
+      <a href="#what-i-learned-about-pelican">What I learned about Pelican</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles by Jan Hustak</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-levenshtein-rules"></a>
+      <a href="../the-levenshtein-rules.html" rel="bookmark" title="Permalink to The Levenshtein rules">The Levenshtein rules</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-07-28T06:30:00"> Sun 28 July 2013 </abbr> under
+        <a href="../tag/algorithms.html">algorithms</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I continued my exploration of the <a href="../the-levenshtein-puzzle.html">Levenshtein distance</a> by writing an implementation in the <a href="http://docs.jboss.org/drools/release/6.0.0.Beta5/drools-expert-docs/html/ch04.html#d0e4036">Drools Rule Language</a> a.k.a. DRL. It turned out to be very interesting because the properties of DRL forced me to formulate the problem in a completely different way.</p>
+<p>This isn't the right place to delve into rule engines but I'll try to explain the basics. A DRL program is executed in a <em>working memory</em> containing <em>facts</em> and <em>rules</em>. A rule is a simple statement of the form</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">the</span> <span class="n">working</span> <span class="n">memory</span> <span class="n">is</span> <span class="n">in</span> <span class="n">such</span> <span class="n">and</span> <span class="n">such</span> <span class="n">state</span>
+<span class="n">then</span>
+    <span class="n">perform</span> <span class="n">these</span> <span class="n">actions</span>
+    <span class="p">(</span><span class="n">potentially</span> <span class="n">affecting</span> <span class="n">the</span> <span class="n">working</span> <span class="n">memory</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The <em>when</em> part contains a fact pattern. When a fact is inserted into the working memory all rules whose <em>when</em> parts match the new fact get their <em>then</em> parts executed. This may cause other facts to appear in the working memory, triggering a cascade of rule firing. Well-written rules adhere to two important principles:</p>
+<ol>
+<li>The <em>then</em> part should contain no conditional logic (as Drools creator Mark Proctor says, it should be <em>"if this then that"</em>, not <em>"if this then maybe that"</em>). All decision-making should be expressed in the <em>when</em> sections.</li>
+<li>The rules should have the same semantics regardless of their execution order (e.g. when a new fact matches two rules it shouldn't matter which fires first).</li>
+</ol>
+<p>As you can see, a rule author gives up a lot of control over the program flow. The idea is to specify <em>what</em> should happen and let the rule engine figure out <em>how</em> to do it. The way it looks in practice is that you decompose your input into very small parts that are straightforward to reason about. From that you can formulate rules that let the engine construct the desired result.</p>
+<p>My original Levenshtein distance algorithm used the concepts of identical and orthogonal sub-words. Those are not really suitable for a rule engine because their discovery is in itself quite complex. I replaced them with the idea of character locations. A character location is a simple object that says "there is an 'a' at offset 2 in the word 'banana'". Converting a word into character locations is trivial and I can then throw them into the working memory as new facts (the examples use pseudo-code rather than actual DRL syntax):</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">word</span> <span class="o">:</span> <span class="n">String</span>
+<span class="n">then</span>
+    <span class="k">for</span> <span class="n">offset</span> <span class="n">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">word</span><span class="p">.</span><span class="n">length</span>
+    <span class="n">insert</span> <span class="n">CharacterLocation</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The rule will be triggered for each of the words as they are inserted into the working memory. Armed with a bunch of CharacterLocations, I can identify character matches:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">location1</span><span class="p">,</span> <span class="n">location2</span> <span class="o">:</span> <span class="n">CharacterLocation</span>
+    <span class="n">location1</span><span class="p">.</span><span class="n">character</span> <span class="o">==</span> <span class="n">location2</span><span class="p">.</span><span class="n">character</span>
+    <span class="n">location1</span><span class="p">.</span><span class="n">word</span> <span class="o">!=</span> <span class="n">location2</span><span class="p">.</span><span class="n">word</span>
+<span class="n">then</span>
+    <span class="n">insert</span> <span class="n">Match</span><span class="p">(</span><span class="n">location1</span><span class="p">,</span> <span class="n">location2</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This rule, in turn, will be triggered for each suitable pair of CharacterLocations, generating all possible Matches:</p>
+<p><img alt="invalid match set" src="../static/images/levenshtein2_all.svg" /></p>
+<p>For the Levenshtein distance I need a combination of Matches that covers as much of the two words as possible. Not every combination makes sense:</p>
+<p><img alt="invalid match set" src="../static/images/levenshtein2_invalid.svg" /></p>
+<p>so I'm actually looking for <em>sequences</em> of <em>strictly ordered</em> Matches, such as this one:</p>
+<p><img alt="valid match set" src="../static/images/levenshtein2_valid.svg" /></p>
+<p>Generating valid sequences takes a bit of induction. I first create "seeds" - sequences containing just two Matches:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">:</span> <span class="n">Match</span>
+    <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span>
+    <span class="n">not</span> <span class="n">exists</span> <span class="n">Sequence</span> <span class="n">s</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="n">then</span>
+    <span class="n">insert</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+
+<p>I proceed to grow each Sequence from the middle, using the <code>visited</code> set to avoid creating the same one twice:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">candidate</span> <span class="o">:</span> <span class="n">Match</span>
+    <span class="n">s</span> <span class="o">:</span> <span class="n">Sequence</span>
+    <span class="n">x</span> <span class="o">&lt;</span> <span class="n">candidate</span> <span class="o">&lt;</span> <span class="n">y</span>
+    <span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">visited</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+    <span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">s</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">then</span>
+    <span class="n">insert</span> <span class="n">s</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="n">visited</span> <span class="o">+=</span> <span class="n">candidate</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">candidate</span> <span class="n">between</span> <span class="n">x</span> <span class="n">and</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The distance corresponding to a Sequence is determined by the gaps it leaves open:</p>
+<p><img alt="sequence with gaps" src="../static/images/levenshtein2_gaps.svg" /></p>
+<p>so once all valid Sequences have been generated, I simply pick the best one:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">there</span> <span class="n">are</span> <span class="n">no</span> <span class="n">more</span> <span class="n">other</span> <span class="n">rules</span> <span class="n">to</span> <span class="n">run</span>
+    <span class="n">s</span> <span class="o">:</span> <span class="n">set</span> <span class="n">of</span> <span class="n">all</span> <span class="n">Sequence</span> <span class="n">instances</span>
+<span class="n">then</span>
+    <span class="n">print</span> <span class="s">&quot;Found distance %s&quot;</span> <span class="o">%</span> <span class="n">min</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">_</span><span class="p">.</span><span class="n">distance</span><span class="p">))</span>
+</pre></div>
+
+
+<p>And that's it. From a complexity point of view, the algorithm is quite a pig. It explores the entire solution space and doesn't even use the best-known result for pruning. It isn't even easily parallelizable, with all the each-on-each semantics going on. It does, however, stick to the rule-based declarative approach so performance is the rule engine's problem ;-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-minimal-patch-fallacy"></a>
+      <a href="../the-minimal-patch-fallacy.html" rel="bookmark" title="Permalink to The minimal patch fallacy">The minimal patch fallacy</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-25T21:10:00"> Thu 25 April 2013 </abbr> under
+        <a href="../tag/craftsmanship.html">craftsmanship</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>One of the goals of refactoring is to improve the readability of code. I have noticed, however, that I sometimes forsake a refactoring in order to preserve the readability of the resulting changeset. It tends to happen when I'm making a sensitive change in a complicated spot - the point is to make future "detective work" easier. I have evolved this approach after delving into Mercurial history way too many times while trying to understand opaque code.</p>
+<p>At first blush, it seems there is a genuine trade-off at play. A refactoring - by definition - introduces changes that don't impact the observable behavior of a program. Mixing such modifications into a bug-fixing or feature-implementing changeset necessarily obscures its purpose. Clarity of the code is at odds with the clarity of its history.</p>
+<p>Closer inspection reveals that the trade-off is pure nonsense. <em>Code</em> gets executed - not history. The present code must hence be readable on its own, in its present context. The very need to consult version control only arises when there are code smells all over the place. The urge to keep history clean is thus nothing more than a symptom of fear - fear of disrupting the fragile mess the code has become. <em>The same fear refactoring works to obliterate.</em></p>
+<p>Having said that, isolating refactorings in their own changesets is certainly a good idea - it makes the history clearer with no negative impact on the code. It may not be always possible, though (the need for a clean-up often arises in the middle of other work).</p>
+<p>I fell prey to the minimal patch fallacy while working on an allegedly agile project. Despite the efforts of all involved there came a point when deadlines defeated test coverage, technical debt payments were postponed and all that remained were stand-ups. I started leaning on code history not long thereafter. Goes to show that cargo-cult agility ruins not just the code but also programming habits...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-psychology-of-casual-street-cleaning"></a>
+      <a href="../the-psychology-of-casual-street-cleaning.html" rel="bookmark" title="Permalink to The psychology of casual street cleaning">The psychology of casual street cleaning</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-05-11T00:21:00"> Sat 11 May 2013 </abbr> under
+        <a href="../tag/motivation.html">motivation</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><em><strong>Summary</strong> Picking up other people's trash is an empowering gesture that turns you from a whiner into a fixer.</em></p>
+<p>I've developed a peculiar habit. Sometimes when I'm approaching our apartment block I scan the ground for small pieces of trash. If I spot one not too far from my trajectory I pick it up and put it where it belongs - in a nearby dumpster. This behavior is much less common than you might think. It's also surprisingly rewarding.</p>
+<p>Street litter has always been a common problem here in Bratislava and it used to upset me. That's the prevailing attitude in this city. People don't like dirty streets and will tell you so when asked. Few, however, do anything about it. There are several psychological barriers:</p>
+<ul>
+<li>It is widely acknowledged that someone else should do the cleaning. Some - one might call them "conservatives" - would tell you it's up to those who did the littering. Others - "socialists" perhaps - would maintain it's the city administration's responsibility. Both notions are rather naive. The underlying attitude is that it's simply not fair that we, upstanding citizens who never litter the streets, should clean up after those who do.</li>
+<li>When most people think of street cleaning they imagine removing <em>all</em> the litter from a substantial area. That's obviously a lot of work which needs many people if it's to be finished reasonably soon. Coordination is required and before you know it there's a project to manage.</li>
+<li>Another mental block stems from the sheer futility of the effort. When a street does get cleaned up by municipal workers or by "spring cleaning" volunteers it doesn't take long for new litter to bloom. And it doesn't take a lot of litter to make a street look messy.</li>
+<li>There is the simple unpleasantness of trash itself. Picking up someone else's cigarette butt and carrying it to a trash can means overcoming a hint of revulsion. It's ironic: the very feeling that motivates street cleaning also makes it difficult.</li>
+</ul>
+<p>Coping with these inhibitions is all about awareness. Street litter presents no immediate threat nor opportunity so it's blocked out by the subconscious most of the time, along with many other details of the urban exterior. The blocking takes work, however. Garbage is visually loud - it mostly consists of discarded packaging designed to stand out on store shelves. Navigating dirty streets thus incurs a subliminal mental cost we're mostly unaware of. Once we recognize the full magnitude of the cost we become more willing to deal with the problem.</p>
+<p>Another thing to realize is that removing even a single piece of trash reduces the mental cost in a tangible way. The street may be quite as dirty as before but the piece we picked up must have caught our attention which means it was somehow "more important" than the rest of the environment, amplifying the cost reduction. The immediacy of the reduction gives it even more impact (the reptilian brain is a sucker for immediate rewards).</p>
+<p>From a more long-term perspective, the effort to remove one piece of trash is a one-time investment which pays off every time we visit the affected place. This is a delayed reward further compromised by new garbage appearing all the time, so it's not very significant. What's more important is that if we experience the immediate reward often enough a habit starts to form, lowering the mental cost of the act itself and making the reward even more attractive. A virtuous cycle forms.</p>
+<p>All of this speculation may sound rather abstract but the psychological benefit I've experienced is real and substantial. When I notice a piece of litter these days it doesn't bother me anymore. I either pick it up and dispose of it properly or concede to myself that it's too far off my path. There's a sober honesty and clarity about it which does feel liberating. At the same time, I get regular experiences of doing noticeable good with modest effort.</p>
+<p>In conclusion, I can recommend casual street cleaning as a worthwhile activity (given proper sanitary precautions, of course). Next time you find yourself angry at the unknown hooligans, why not try undoing their carelessness? You will help yourself more than anyone else.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-pykonsole-distraction"></a>
+      <a href="../the-pykonsole-distraction.html" rel="bookmark" title="Permalink to The pyKonsole distraction">The pyKonsole distraction</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-08T22:24:00"> Mon 08 November 2010 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/kde.html">KDE</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I use KDE 4. One of my workspaces is configured with a "dashboard" activity, displaying all the usual monitoring widgets (CPU, RAM, network, temperatures). When my notebook starts acting slow, I hop over to the dashboard to check out my CPU load. If it's high I whip out Konsole and launch <strong>htop</strong> to find the culprit. It has occurred to me that it would really be nice if I could see the CPU hog right away.</p>
+<p>I realized there must be a process-monitor plasmoid out there but a Konsole widget seemed so much more flexible. Plasmacon seemed to fit the bill and I had it on the desktop in next to no time. It turned out, however, that it has no facility to launch a command at start-up. I figured it should be easy to extend the widget as it's written in Python. Checking the documentation for Konsole's KPart turned up two promising methods: <strong>sendInput()</strong> and <strong>startProgram()</strong>. Neither of them worked.</p>
+<p>I inserted some trace code into Plasmacon's init method and it turned out that the object Plasmacon creates is just a plain <strong>KParts::ReadOnlyPart</strong>. Browsing PyKDE documentation brought the answer: PyKDE doesn't include a binding for kdebase-apps. The upshot is that you can create a <strong>Konsole::Part</strong> instance from Python but you can't access its full API.</p>
+<p>Things didn't look so trivial anymore but I decided to have a go at creating the necessary bindings. PyKDE uses a generator called SIP (<strong>apt-get install python-sip</strong> in Debian) to create Python modules from C++ headers and deceptively simple spec files. I tried to write a SIP spec for Konsole starting from <strong>Konsole::Part</strong>'s header file and various <strong>.sip</strong> files I dug up. I have to say SIP provides rather modest feedback. I ended up stuck with a terse "syntax error" message providing no detail at all.</p>
+<p>I noticed a little comment in one of the <strong>.sip</strong> files, saying "Generated by twine". Googling for twine proved to be quite a challenge; this is really obscure code used primarily by PyKDE creators and few others. There is no website nor documentation. Another comment in a <strong>.sip</strong> file provided the decisive clue: a mention of "twine2". It brought me to <a href="http://gitorious.org/twine2">http://gitorious.org/twine2</a> where the tool currently seems to live. And yes, it's a generator of input for a generator. Go figure...</p>
+<p>Writing a twine2 script seemed quite daunting but I came up with an entirely different approach: what if I could talk to the Konsole via DBus? I quickly discovered <strong>qdbusviewer</strong> and clicked around to see what I could do. Unfortunately, while the <strong>org.kde.plasma-desktop</strong> service does expose a <strong>/Konsole</strong> object, it doesn't provide its Sessions. Some could be found under <strong>org.kde.konsole</strong> but they included strictly sessions in proper Konsole windows; the one in the Plasma widget didn't show up in the list. I had to go back to twine2.</p>
+<p>Except I didn't. The ability to delve into the guts of open source software is one of its most useful aspects but there is a limit to how far down the rabbit hole one can reasonably afford to go. I've reached that limit and had to accept that, for the foreseeable future, I will simply not have a process monitor on my dashboard. Worse things have happened.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="update-on-logitech-dinovo-edge-and-imon-pad"></a>
+      <a href="../update-on-logitech-dinovo-edge-and-imon-pad.html" rel="bookmark" title="Permalink to Update on Logitech diNovo Edge and iMON PAD">Update on Logitech diNovo Edge and iMON PAD</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-08-03T19:50:00"> Wed 03 August 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My HTPC lived a few months without an update to its <a href="http://www.aptosid.com/">aptosid</a> installation. When I subsequently did perform an update, I ran into some of the same problems I used to have with my Logitech wireless keyboard and iMON remote control. With the help of my <a href="../logitech-dinovo-edge-vs-aptosid.html">previous</a> <a href="../soundgraph-imon-pad-vs-linux-2636.html">blog posts</a>, I was able to set things straight rather quickly.</p>
+<p>The solution to my original keyboard problem had been to replace <em>/usr/sbin/hid2hci</em> with a dummy version. In the meantime, <em>/usr/sbin/hid2hci</em> was superseded by <em>/lib/udev/hid2hci</em>. I simply replaced the new file with a dummy version as well.</p>
+<p>As for the remote control, the current problem resembled a broken "nomouse" mode of the imon kernel module that I had encountered before. The module seemed to be OK this time, however, so I kept looking and eventually the LIRC manual offered a <a href="http://www.lirc.org/html/devinput.html">great description</a> of a LIRC-HAL interaction that seemed to match my symptoms. I tried following the advice from the manual but it just didn't work. It turned out the <em>DEVICE</em> setting in <em>/etc/lirc/hardware.conf</em> had become obsolete. The correct new setting is</p>
+<div class="codehilite"><pre><span class="n">DEVICE</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">input</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="n">usb</span><span class="o">-</span><span class="mi">15</span><span class="n">c2_ffdc</span><span class="o">-</span><span class="n">event</span><span class="o">-</span><span class="n">if00</span>
+</pre></div>
+
+
+<p>and the remote works like a charm again (for a while, anyway...)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="what-i-learned-about-pelican"></a>
+      <a href="../what-i-learned-about-pelican.html" rel="bookmark" title="Permalink to What I learned about Pelican">What I learned about Pelican</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-28T22:05:00"> Thu 28 February 2013 </abbr> under
+        <a href="../tag/meta.html">meta</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <ul>
+<li>initialize a site: <strong>pelican-quickstart</strong> (launches an interactive questionnaire)</li>
+<li>write content: just put .md files in content/</li>
+<li>generate site: <strong>make html</strong></li>
+<li>autorefresh mode:  <strong>make devserver</strong> (also hosts the site at <a href="http://localhost:8000/">localhost:8000</a>)</li>
+<li>further information: <a href="http://docs.getpelican.com/">docs.getpelican.com</a></li>
+</ul> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+                        <a href="../author/jan-hustak4.html">&laquo;</a>
+                Page 5 / 5
+            <a href="#" class="disabled">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

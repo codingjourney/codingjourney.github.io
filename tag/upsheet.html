@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles with tag upsheet</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </h3>
+      <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
+      <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles tagged with "upsheet"</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="idiosyncrasies-in-pythons-timezone-handling"></a>
+      <a href="../idiosyncrasies-in-pythons-timezone-handling.html" rel="bookmark" title="Permalink to Idiosyncrasies in Python's timezone handling">Idiosyncrasies in Python's timezone handling</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-23T04:13:00"> Sat 23 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/python.html">Python</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I work to fix timezone logic in <a href="https://github.com/codingjourney/upsheet">upsheet</a>, I've become somewhat frustrated with date and time handling in Python. Coming from a Java background, I know this stuff is awfully difficult to get right. Python has a large community driven by sophisticated users, however, so I expected things to be pretty smooth. I was wrong:</p>
+<ul>
+<li><strong><em>datetime</em> vs. <em>time</em></strong>
+Two modules with overlapping functionality and no clear separation of scope.</li>
+<li><strong><em>datetime.datetime</em></strong>
+A class with the same name as its module. This is probably common in the Python library but it makes for weird expressions such as <em>datetime.datetime.strptime(...)</em>. Kind of nudges you to drop the module prefix with <em>from datetime import *</em>.</li>
+<li><strong>timezone handling in <em>datetime</em> is a red-headed stepchild</strong>
+The <em>datetime</em> module tactfully avoids the gritty details of coming up with the local system's current timezone. You can supply a timezone but you have to provide your own <em>tzinfo</em> subclass to do it.</li>
+<li><strong>timezone handling in <em>time</em> is a red-headed stepchild</strong>
+You get <em>timezone</em> for the non-DST system timezone, <em>altzone</em> for the DST system timezone, <em>daylight</em> to see if <em>altzone</em> is even applicable and <em>localtime().tm_isdst</em> to decide (provided <em>altzone</em> is applicable) whether <em>timezone</em> or <em>altzone</em> is the local system's current timezone. Whew! I mean, it's wonderfully precise and flexible but kind of all over the place.</li>
+<li><strong>timezone offsets are represented inconsistently</strong>
+While <em>datetime.tzinfo.utcoffset()</em> must return its result in minutes, both <em>time.timezone</em> and <em>time.altzone</em> provide the offset in seconds. Trivial yet irritating.</li>
+<li><strong><em>datetime.time</em> vs. <em>time</em></strong>
+A class in one module with the same name as a related module. When you use <em>datetime</em> without the module prefix, this forces you to either also use <em>time</em> without the prefix - further polluting the naming scope - or alias it using <em>import time as sillytime</em>.</li>
+<li><strong>inconsistent timezone offsets</strong>
+While <em>time.timezone</em> and <em>time.altzone</em> specify timezone offsets in seconds west of UTC, <em>tzinfo.utcoffset()</em> must return minutes east of UTC.</li>
+<li><strong>mischievous documentation</strong>
+One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or -1; see below"</em>. Of course, there's no further mention of <em>tm_isdst</em> anywhere in the document. A sentence buried in the next paragraph does say <em>"A -1 argument as the daylight savings flag, passed to mktime() will usually result in the correct daylight savings state to be filled in."</em>. Which means the -1 is utterly irrelevant except for one specific use-case.</li>
+</ul>
+<p>Having figured all of this out, I can now construct a <em>datetime.datetime</em> instance equipped with the correct <em>tzinfo</em> for the current local timezone. This goes to show how hard it is to design a really good API.</p>
+<p>I do hope it all works the same way under Windows...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="stuck-in-a-timezone"></a>
+      <a href="../stuck-in-a-timezone.html" rel="bookmark" title="Permalink to Stuck in a timezone">Stuck in a timezone</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-22T07:16:00"> Fri 22 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My <a href="https://github.com/codingjourney/upsheet">timesheet uploader</a> micro-project started off as a spontaneous scratch-your-own-itch effort with very little polish. No error handling, liberal copy-paste, vague structure - you know the story. The code obviously involved some parsing and formatting of dates and times. It wasn't very complicated so I avoided the <a href="http://docs.python.org/2.7/library/datetime.html">big</a> <a href="http://docs.python.org/2.7/library/time.html">guns</a>, sticking to string manipulation and simple arithmetic (figuring out that <em>0830-1030</em> means 120 minutes etc.).</p>
+<p>Timesheet entries are fed to JIRA as JSON documents via its REST API. JSON doesn't define a standard timestamp format but examples in the <a href="http://docs.atlassian.com/jira/REST/latest/#id225379">documentation</a> use ISO8601 with a timezone suffix - something like <em>2012-08-14T08:30:00.000+0200</em>. I dutifully slapped on the suffix as a constant to all my outgoing timestamp data.</p>
+<p>One of the things I wanted from the script was to detect timesheet entries that were already in JIRA to prevent duplication in the worklogs. This involved downloading the worklog for the relevant issue and comparing it with the entry that was to be uploaded. When parsing timestamps in the worklog I happily ignored the timezone suffix. I figured I would always be in the same timezone as my JIRA server.</p>
+<p>After some time I noticed this collision detection was often failing. I had no time to analyze it so I simply took care to upload my timesheet all at once and re-upload only the failed entries if there were errors. It was a pain but still much better than stuffing JIRA manually.</p>
+<p>When I got more free time in January I discovered the true nature of the bug. Both me and my JIRA server had effectively switched timezones when the Daylight Savings Time ended in October. The script, however, still had <em>+0200</em> in its outgoing timestamps. This meant that I uploaded an entry with <em>08:30:00.000+0200</em> but then it came back as <em>09:30:00.000+0100</em>. Ignoring the timezone, the script detected no overlap (as long as duration was under 61 minutes) and proceeded to re-upload the entry, again with <em>08:30:00.000+0200</em> in the timestamp.</p>
+<p>It turns out that no, I can't ignore timezones in my calculations after all. Besides, the code is already <a href="https://github.com/codingjourney/upsheet">on GitHub</a> and right now collision detection works only for the lucky users who are two hours East from UTC together with their JIRA servers. Good thing I haven't told anyone yet :-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

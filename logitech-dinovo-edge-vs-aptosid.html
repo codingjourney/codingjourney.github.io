@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="logitech-dinovo-edge-vs-aptosid.html" rel="bookmark"
+         title="Permalink to Logitech diNovo Edge vs. aptosid">Logitech diNovo Edge vs. aptosid</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2011-01-06T13:09:00"> Thu 06 January 2011 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>If you have no idea what a Logitech diNovo Edge could be, think about it for a while. You should quickly reach the obvious conclusion: it's a <a href="http://www.logitech.com/en-us/keyboards/keyboard/devices/192">super-thin wireless keyboard</a> featuring a built-in mouse pad. I happen to use one with my home-theater PC. It's a classy product, feels solid (even a bit luxurious) and works very well - that is, it used to work until I replaced the HTPC's ancient Kubuntu system with <a href="http://www.aptosid.com">aptosid</a>. Ever since then, I could use the keyboard in the bootloader but not once the system was up.</p>
+<p>aptosid, formerly known as sidux, is a running-release distribution of GNU/Linux descending from Debian Sid, the so-called "unstable" flavor of Debian. Being running-release means that instead of periodic releases of the entire environment, I get a constant trickle of new package versions as they are admitted into repositories. The upside is always being up-to-date. The downside is a not quite thoroughly tested environment where things occasionally stop working.</p>
+<p>The team managing aptosid does a pretty impressive job keeping the system stable. I'd been running it on my main notebook for a while and breakage had been pleasantly rare. I couldn't really fault the system for refusing to handle a relatively obscure piece of hardware. Given that I mostly run the HTPC with a remote and I manage the machine over the network, I had little need for the keyboard. Playing DVDs was the only scenario that was truly annoying. With a bit of time over the holidays, I decided to tackle it.</p>
+<p>I connected the keyboard to my notebook - having another, 100% reliable keyboard on the same computer made the investigation much smoother. I quickly foud out that the keyboard would work the first time its receiver dongle was plugged in, but after dis- and re-connecting it would behave identically as on the HTPC. A telling difference was the presence of an extra USB device: upon first connect, <em>lsusb</em> would list three new devices while after re-connecting it displayed four.</p>
+<p>Googling the incriminated USB IDs produced <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589388">the answer</a>: udev is configured in Sid to run <em>hid2hci</em> when the Edge is connected, making it a fully capable Bluetooth device rather than just a dumb USB keyboard. Except what I want is just a dumb USB keyboard.</p>
+<p>I tried adjusting udev rules on the HTPC to prevent <em>hid2hci</em> from running but no matter what I tried, it still somehow managed to launch itself during the boot sequence. I ended up replacing <em>/usr/sbin/hid2hci</em> with a shell script looking like this:</p>
+<div class="codehilite"><pre><span class="n">echo</span> <span class="s">&quot;pretending to run hid2hci&quot;</span>
+</pre></div>
+
+
+<p>Ever since then, I've been navigating DVD menus with much more flair. The keyboard suddenly seems brand new now that it works! Dead keyboard wasn't my HTPC's only problem, however. The story is set to continue...</p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

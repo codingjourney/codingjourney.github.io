@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles with tag algorithms</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </h3>
+      <a href="#the-levenshtein-rules">The Levenshtein rules</a>
+      <a href="#the-levenshtein-puzzle">The Levenshtein puzzle</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles tagged with "algorithms"</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-levenshtein-rules"></a>
+      <a href="../the-levenshtein-rules.html" rel="bookmark" title="Permalink to The Levenshtein rules">The Levenshtein rules</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-07-28T06:30:00"> Sun 28 July 2013 </abbr> under
+        <a href="../tag/algorithms.html">algorithms</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I continued my exploration of the <a href="../the-levenshtein-puzzle.html">Levenshtein distance</a> by writing an implementation in the <a href="http://docs.jboss.org/drools/release/6.0.0.Beta5/drools-expert-docs/html/ch04.html#d0e4036">Drools Rule Language</a> a.k.a. DRL. It turned out to be very interesting because the properties of DRL forced me to formulate the problem in a completely different way.</p>
+<p>This isn't the right place to delve into rule engines but I'll try to explain the basics. A DRL program is executed in a <em>working memory</em> containing <em>facts</em> and <em>rules</em>. A rule is a simple statement of the form</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">the</span> <span class="n">working</span> <span class="n">memory</span> <span class="n">is</span> <span class="n">in</span> <span class="n">such</span> <span class="n">and</span> <span class="n">such</span> <span class="n">state</span>
+<span class="n">then</span>
+    <span class="n">perform</span> <span class="n">these</span> <span class="n">actions</span>
+    <span class="p">(</span><span class="n">potentially</span> <span class="n">affecting</span> <span class="n">the</span> <span class="n">working</span> <span class="n">memory</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The <em>when</em> part contains a fact pattern. When a fact is inserted into the working memory all rules whose <em>when</em> parts match the new fact get their <em>then</em> parts executed. This may cause other facts to appear in the working memory, triggering a cascade of rule firing. Well-written rules adhere to two important principles:</p>
+<ol>
+<li>The <em>then</em> part should contain no conditional logic (as Drools creator Mark Proctor says, it should be <em>"if this then that"</em>, not <em>"if this then maybe that"</em>). All decision-making should be expressed in the <em>when</em> sections.</li>
+<li>The rules should have the same semantics regardless of their execution order (e.g. when a new fact matches two rules it shouldn't matter which fires first).</li>
+</ol>
+<p>As you can see, a rule author gives up a lot of control over the program flow. The idea is to specify <em>what</em> should happen and let the rule engine figure out <em>how</em> to do it. The way it looks in practice is that you decompose your input into very small parts that are straightforward to reason about. From that you can formulate rules that let the engine construct the desired result.</p>
+<p>My original Levenshtein distance algorithm used the concepts of identical and orthogonal sub-words. Those are not really suitable for a rule engine because their discovery is in itself quite complex. I replaced them with the idea of character locations. A character location is a simple object that says "there is an 'a' at offset 2 in the word 'banana'". Converting a word into character locations is trivial and I can then throw them into the working memory as new facts (the examples use pseudo-code rather than actual DRL syntax):</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">word</span> <span class="o">:</span> <span class="n">String</span>
+<span class="n">then</span>
+    <span class="k">for</span> <span class="n">offset</span> <span class="n">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">word</span><span class="p">.</span><span class="n">length</span>
+    <span class="n">insert</span> <span class="n">CharacterLocation</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The rule will be triggered for each of the words as they are inserted into the working memory. Armed with a bunch of CharacterLocations, I can identify character matches:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">location1</span><span class="p">,</span> <span class="n">location2</span> <span class="o">:</span> <span class="n">CharacterLocation</span>
+    <span class="n">location1</span><span class="p">.</span><span class="n">character</span> <span class="o">==</span> <span class="n">location2</span><span class="p">.</span><span class="n">character</span>
+    <span class="n">location1</span><span class="p">.</span><span class="n">word</span> <span class="o">!=</span> <span class="n">location2</span><span class="p">.</span><span class="n">word</span>
+<span class="n">then</span>
+    <span class="n">insert</span> <span class="n">Match</span><span class="p">(</span><span class="n">location1</span><span class="p">,</span> <span class="n">location2</span><span class="p">)</span>
+</pre></div>
+
+
+<p>This rule, in turn, will be triggered for each suitable pair of CharacterLocations, generating all possible Matches:</p>
+<p><img alt="invalid match set" src="../static/images/levenshtein2_all.svg" /></p>
+<p>For the Levenshtein distance I need a combination of Matches that covers as much of the two words as possible. Not every combination makes sense:</p>
+<p><img alt="invalid match set" src="../static/images/levenshtein2_invalid.svg" /></p>
+<p>so I'm actually looking for <em>sequences</em> of <em>strictly ordered</em> Matches, such as this one:</p>
+<p><img alt="valid match set" src="../static/images/levenshtein2_valid.svg" /></p>
+<p>Generating valid sequences takes a bit of induction. I first create "seeds" - sequences containing just two Matches:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">:</span> <span class="n">Match</span>
+    <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span>
+    <span class="n">not</span> <span class="n">exists</span> <span class="n">Sequence</span> <span class="n">s</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="n">then</span>
+    <span class="n">insert</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+
+<p>I proceed to grow each Sequence from the middle, using the <code>visited</code> set to avoid creating the same one twice:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">candidate</span> <span class="o">:</span> <span class="n">Match</span>
+    <span class="n">s</span> <span class="o">:</span> <span class="n">Sequence</span>
+    <span class="n">x</span> <span class="o">&lt;</span> <span class="n">candidate</span> <span class="o">&lt;</span> <span class="n">y</span>
+    <span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">visited</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+    <span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">s</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">then</span>
+    <span class="n">insert</span> <span class="n">s</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="n">visited</span> <span class="o">+=</span> <span class="n">candidate</span><span class="p">)</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">candidate</span> <span class="n">between</span> <span class="n">x</span> <span class="n">and</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+
+
+<p>The distance corresponding to a Sequence is determined by the gaps it leaves open:</p>
+<p><img alt="sequence with gaps" src="../static/images/levenshtein2_gaps.svg" /></p>
+<p>so once all valid Sequences have been generated, I simply pick the best one:</p>
+<div class="codehilite"><pre><span class="n">when</span>
+    <span class="n">there</span> <span class="n">are</span> <span class="n">no</span> <span class="n">more</span> <span class="n">other</span> <span class="n">rules</span> <span class="n">to</span> <span class="n">run</span>
+    <span class="n">s</span> <span class="o">:</span> <span class="n">set</span> <span class="n">of</span> <span class="n">all</span> <span class="n">Sequence</span> <span class="n">instances</span>
+<span class="n">then</span>
+    <span class="n">print</span> <span class="s">&quot;Found distance %s&quot;</span> <span class="o">%</span> <span class="n">min</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">_</span><span class="p">.</span><span class="n">distance</span><span class="p">))</span>
+</pre></div>
+
+
+<p>And that's it. From a complexity point of view, the algorithm is quite a pig. It explores the entire solution space and doesn't even use the best-known result for pruning. It isn't even easily parallelizable, with all the each-on-each semantics going on. It does, however, stick to the rule-based declarative approach so performance is the rule engine's problem ;-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-levenshtein-puzzle"></a>
+      <a href="../the-levenshtein-puzzle.html" rel="bookmark" title="Permalink to The Levenshtein puzzle">The Levenshtein puzzle</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-06-09T04:30:00"> Sun 09 June 2013 </abbr> under
+        <a href="../tag/algorithms.html">algorithms</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I've read a few blog posts recently that mentioned the concept of Levenshtein distance. It's a measure of the difference between two strings <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">defined as</a> <em>"the minimum number of single-character edits (insertion, deletion, substitution) required to change one word into the other"</em>. The definition is very straightforward but when I thought about calculating it I saw no immediately obvious way. Rather than looking it up, I decided to discover an algorithm on my own, with nothing but the definition to start from.</p>
+<p>After a period of requisite head-scratching and ad-hoc attempts I identified two trivial corner cases: identical words (<em>d=0</em>) and words with no letters in common (<em>d=max(first.length, second.length)</em>, let's call them <em>orthogonal</em>). Then came the crucial realization: any pair of words can be chopped up into a sequence of identical and orthogonal sub-words:</p>
+<p style="font-family: monospace">
+d<span style="color: #e08020">ar</span>t<span style="color: red">e</span>d<br/>
+st<span style="color: #e08020">ar</span><span style="color: red">e</span>
+</p>
+
+<p>The total distance is then the sum of the distances of the orthogonal parts. Note that an orthogonal pair may consist of one empty and one non-empty string as well, such as "t" vs. "" in the example above.</p>
+<p>Trouble is, there may be more than one way to slice the words:</p>
+<p style="font-family: monospace">
+b<span style="color: #e08020">a</span>r<span style="color: red">b</span>a<span style="color: #6060e0">ra</span><br/>
+<span style="color: #e08020">a</span><span style="color: red">b</span><span style="color: #6060e0">ra</span>cadabra
+</p>
+
+<p style="font-family: monospace">
+<span style="color: #e08020">b</span><span style="color: red">a</span><span style="color: #6060e0">r</span>bara<br/>
+a<span style="color: #e08020">b</span>r<span style="color: red">a</span>cadab<span style="color: #6060e0">r</span>a
+</p>
+
+<p style="font-family: monospace">
+b<span style="color: #e08020">a</span><span style="color: red">r</span><span style="color: #6060e0">b</span>a<span style="color: #a06060">ra</span><br/>
+<span style="color: #e08020">a</span>b<span style="color: red">r</span>acada<span style="color: #6060e0">b</span><span style="color: #a06060">ra</span>
+</p>
+
+<p>and so on. The distances corresponding to these splits are 10, 11 and 8, respectively. The actual minimal distance is 6; discovering the correct split (or splits) is left as an exercise for the reader. The way my algorithm goes about it is a straightforward exhaustive trawling of the solution space. In pseudo-Python:</p>
+<div class="codehilite"><pre><span class="n">def</span> <span class="n">distance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span><span class="o">:</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="n">length</span><span class="p">,</span> <span class="n">right</span><span class="p">.</span><span class="n">length</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">each</span> <span class="n">index</span> <span class="n">x</span> <span class="n">in</span> <span class="n">left</span><span class="o">:</span>
+     <span class="n">letter</span> <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+     <span class="k">for</span> <span class="n">each</span> <span class="n">location</span> <span class="n">y</span> <span class="n">of</span> <span class="n">letter</span> <span class="n">in</span> <span class="n">right</span><span class="o">:</span>
+       <span class="n">subLeft</span>  <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="n">x</span><span class="o">:</span><span class="p">]</span>
+       <span class="n">subRight</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="n">y</span><span class="o">:</span><span class="p">]</span>
+       <span class="n">beforeMatch</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+       <span class="n">match</span> <span class="o">=</span> <span class="n">length</span> <span class="n">of</span> <span class="n">the</span> <span class="n">identical</span> <span class="n">prefix</span> <span class="n">of</span> <span class="n">subLeft</span> <span class="n">and</span> <span class="n">subRight</span>
+       <span class="n">afterMatch</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">subLeft</span><span class="p">[</span><span class="n">match</span><span class="o">:</span><span class="p">],</span> <span class="n">subRight</span><span class="p">[</span><span class="n">match</span><span class="o">:</span><span class="p">])</span>
+       <span class="n">newDistance</span> <span class="o">=</span> <span class="n">beforeMatch</span> <span class="o">+</span> <span class="n">afterMatch</span>
+       <span class="n">result</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">newDistance</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+
+<p>As you can see, it's a recursive function not amenable to tail-call optimization so it's prone to overflowing the stack, among other things. There's a ton of potential for performance improvement. One thing I actually have in my implementation is that when beforeMatch &gt;= result I don't go into recursion as it can't possibly produce a lower newDistance. This mini-optimization is omitted from the pseudo-code for clarity.</p>
+<p>Other than that, proper ordering seems to be the key. The algorithm is asymmetric in that it "starts from" the left word and tries to "reach" the right one. Should it always start from the shorter word or from the longer one? Or from the word with fewer unique letters or more unique letters? Should the letters with most locations in the starting word be tried first? Or the ones closest to its beginning?</p>
+<p>A proper complexity analysis (or a robust set of test pairs with known Levenshtein distances) would answer those questions, increasing the likelihood of encountering good matches early, cutting off bigger branches of the search tree. Alas, I have no time for such work, no matter how much fun it would be and how much I'd learn from it. I've solved the puzzle itself and the optimization paths are all well trodden by more capable explorers, I'm sure. Also, given that my solution completely ignores the distribution of letters in the "target" word, there's bound to be a fundamentally better, more symmetric approach. I'm looking forward to reading up on it :-)</p>
+<p>My original implementation is in JavaScript with a <a href="../static/snippets/levenshtein.html">web page</a> for easy testing of correctness. I later re-wrote it as command-line scripts in <a href="../static/snippets/levenshtein.js">node.js</a>, <a href="../static/snippets/levenshtein.py">Python</a> and <a href="../static/snippets/levenshtein.go">Go</a> in order to compare performance. Surprisingly, Go seems to be only about 33 % faster than both node.js and Python. Mind you, I don't know any of those languages intimately enough to be sure I didn't screw something up performance-wise so the comparison is very rough and not serious in any way. Tasting the different langages' flavors was great fun, though, and I'm itching for C and Drools implementations if I find the time. A functional variant in Scala or Clojure would also be nice but swapping between the imperative and functional mind-sets is <em>really</em> time-consuming.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

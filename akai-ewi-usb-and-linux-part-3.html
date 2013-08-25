@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="akai-ewi-usb-and-linux-part-3.html" rel="bookmark"
+         title="Permalink to Akai EWI USB and Linux, part 3">Akai EWI USB and Linux, part 3</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2010-11-23T05:26:00"> Tue 23 November 2010 </abbr> under
+        <a href="./tag/music.html">music</a>,        <a href="./tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>In <a href="./akai-ewi-usb-and-linux-part-1.html">part 1</a> and <a href="./akai-ewi-usb-and-linux-part-2.html">part 2</a> of my Akai odyssey, I've described getting the EWI to produce sound and configuring fluidsynth (plus QSynth) for optimum performance without latency. I was happy with my setup but after a while I started craving a little convenience.</p>
+<p>Setting up a playing session is a silly affair involving the instrument itself, my notebook, a pair of headphones, 2 cables and 4 connectors. The same goes for winding things down after playing. It used to be even more obnoxious since I had to manually start and exit the QSynth software. I knew that Linux can react to USB hot-plug events and this reaction can be configured; so I decided to make QSynth start and stop automagically.</p>
+<p>The system-du-jour for reacting to hotplug events in Linux is currently <em>udev</em>. Debian's wiki happens to have a <a href="http://wiki.debian.org/udev">very nice udev page</a> which explains that all one needs to do is to put a line in a file under <em>/etc/udev/rules.d</em>. One can either use one of the existing files under that directory or create a new one, which is what I did just to keep things tidy.</p>
+<p>Entries in udev rule files rely on an IF-THEN syntax where the IF part indicates in what circumstances the rule should trigger and THEN stipulates what should be done. The syntax is quite restrictive in that each rule has to fit on a line - i.e. no fancy procedural tricks. The IF part offers a lot of ways to pick up an event, though. One can specify the BUS on which the event happens, the NAME of the device, the ACTION that the event represents, expected environment variable values etc. I found the options quite extensive, making it easy to specify any event.</p>
+<p>Having to run <em>sudo udevadm control --reload-rules</em> after each rule update was a bit annoying but what really held me up was figuring out which events the rule should react to. I found out that plugging the EWI into and out of the USB port caused entire cascades of events with different characteristics. I eventually settled on the following rules:</p>
+<div class="codehilite"><pre><span class="n">ATTR</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;09e8&quot;</span><span class="p">,</span> <span class="n">ATTR</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;006d&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;add&quot;</span><span class="p">,</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
+<span class="n">ENV</span><span class="p">{</span><span class="n">DEVNAME</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;/dev/snd/midiC1D0&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;remove&quot;</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
+</pre></div>
+
+
+<p>The first rule fires when I plug the device in, the second one upon unplugging. Both rules launch the same shell script when invoked. The shell script itself looks like this:</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;add&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
+ <span class="n">set</span> <span class="o">-</span><span class="n">x</span> 
+ <span class="n">xhost</span> <span class="n">local</span><span class="o">:</span><span class="n">username</span>
+ <span class="n">export</span> <span class="n">DISPLAY</span><span class="o">=:</span><span class="mf">0.0</span>
+ <span class="n">su</span> <span class="n">username</span> <span class="o">-</span><span class="n">c</span> <span class="n">qsynth</span> <span class="o">&amp;</span>
+<span class="n">elif</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;remove&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
+ <span class="n">killall</span> <span class="n">qsynth</span>
+<span class="n">fi</span>
+</pre></div>
+
+
+<p>The "add" section contains incantations needed to properly launch a GUI program from a shell script. I picked them up in some forum and have unfortunately lost the link. Kudos to the original poster, anyway.</p>
+<p>With this bit of scripting, my EWI is the very definition of Plug-and-Play, as well as Stop-Playing-and-Unplug ;-) . All is not perfect, though; one problem remains and it's completely unrelated to udev. Since I use legacy OSS emulation <a href="./akai-ewi-usb-and-linux-part-2.html">due to latency issues</a>, I cannot run any other sound-producing application while QSynth is active (OSS doesn't support software mixing). I don't mind that just yet but as I get my fingerings in order and advance my playing I will need to resolve it. The saga continues...</p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

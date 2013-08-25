@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles with tag KDE</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </h3>
+      <a href="#the-pykonsole-distraction">The pyKonsole distraction</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles tagged with "KDE"</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-pykonsole-distraction"></a>
+      <a href="../the-pykonsole-distraction.html" rel="bookmark" title="Permalink to The pyKonsole distraction">The pyKonsole distraction</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-08T22:24:00"> Mon 08 November 2010 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/kde.html">KDE</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I use KDE 4. One of my workspaces is configured with a "dashboard" activity, displaying all the usual monitoring widgets (CPU, RAM, network, temperatures). When my notebook starts acting slow, I hop over to the dashboard to check out my CPU load. If it's high I whip out Konsole and launch <strong>htop</strong> to find the culprit. It has occurred to me that it would really be nice if I could see the CPU hog right away.</p>
+<p>I realized there must be a process-monitor plasmoid out there but a Konsole widget seemed so much more flexible. Plasmacon seemed to fit the bill and I had it on the desktop in next to no time. It turned out, however, that it has no facility to launch a command at start-up. I figured it should be easy to extend the widget as it's written in Python. Checking the documentation for Konsole's KPart turned up two promising methods: <strong>sendInput()</strong> and <strong>startProgram()</strong>. Neither of them worked.</p>
+<p>I inserted some trace code into Plasmacon's init method and it turned out that the object Plasmacon creates is just a plain <strong>KParts::ReadOnlyPart</strong>. Browsing PyKDE documentation brought the answer: PyKDE doesn't include a binding for kdebase-apps. The upshot is that you can create a <strong>Konsole::Part</strong> instance from Python but you can't access its full API.</p>
+<p>Things didn't look so trivial anymore but I decided to have a go at creating the necessary bindings. PyKDE uses a generator called SIP (<strong>apt-get install python-sip</strong> in Debian) to create Python modules from C++ headers and deceptively simple spec files. I tried to write a SIP spec for Konsole starting from <strong>Konsole::Part</strong>'s header file and various <strong>.sip</strong> files I dug up. I have to say SIP provides rather modest feedback. I ended up stuck with a terse "syntax error" message providing no detail at all.</p>
+<p>I noticed a little comment in one of the <strong>.sip</strong> files, saying "Generated by twine". Googling for twine proved to be quite a challenge; this is really obscure code used primarily by PyKDE creators and few others. There is no website nor documentation. Another comment in a <strong>.sip</strong> file provided the decisive clue: a mention of "twine2". It brought me to <a href="http://gitorious.org/twine2">http://gitorious.org/twine2</a> where the tool currently seems to live. And yes, it's a generator of input for a generator. Go figure...</p>
+<p>Writing a twine2 script seemed quite daunting but I came up with an entirely different approach: what if I could talk to the Konsole via DBus? I quickly discovered <strong>qdbusviewer</strong> and clicked around to see what I could do. Unfortunately, while the <strong>org.kde.plasma-desktop</strong> service does expose a <strong>/Konsole</strong> object, it doesn't provide its Sessions. Some could be found under <strong>org.kde.konsole</strong> but they included strictly sessions in proper Konsole windows; the one in the Plasma widget didn't show up in the list. I had to go back to twine2.</p>
+<p>Except I didn't. The ability to delve into the guts of open source software is one of its most useful aspects but there is a limit to how far down the rabbit hole one can reasonably afford to go. I've reached that limit and had to accept that, for the foreseeable future, I will simply not have a process monitor on my dashboard. Worse things have happened.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

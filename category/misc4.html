@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>                        <a href="../category/misc3.html">&laquo;</a>
+                Page 4 / 5
+            <a href="../category/misc5.html">&raquo;</a>
+    </h3>
+      <a href="#update-on-logitech-dinovo-edge-and-imon-pad">Update on Logitech diNovo Edge and iMON PAD</a>
+      <a href="#look-mom-no-ports">Look mom, no ports!</a>
+      <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+      <a href="#logitech-dinovo-edge-vs-aptosid">Logitech diNovo Edge vs. aptosid</a>
+      <a href="#akai-ewi-usb-and-linux-part-3">Akai EWI USB and Linux, part 3</a>
+      <a href="#disabling-acpi-in-openbsd-48">Disabling ACPI in OpenBSD 4.8</a>
+      <a href="#installing-openbsd-48-on-an-hp-mini-5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
+      <a href="#akai-ewi-usb-and-linux-part-2">Akai EWI USB and Linux, part 2</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles in the misc category</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="update-on-logitech-dinovo-edge-and-imon-pad"></a>
+      <a href="../update-on-logitech-dinovo-edge-and-imon-pad.html" rel="bookmark" title="Permalink to Update on Logitech diNovo Edge and iMON PAD">Update on Logitech diNovo Edge and iMON PAD</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-08-03T19:50:00"> Wed 03 August 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My HTPC lived a few months without an update to its <a href="http://www.aptosid.com/">aptosid</a> installation. When I subsequently did perform an update, I ran into some of the same problems I used to have with my Logitech wireless keyboard and iMON remote control. With the help of my <a href="../logitech-dinovo-edge-vs-aptosid.html">previous</a> <a href="../soundgraph-imon-pad-vs-linux-2636.html">blog posts</a>, I was able to set things straight rather quickly.</p>
+<p>The solution to my original keyboard problem had been to replace <em>/usr/sbin/hid2hci</em> with a dummy version. In the meantime, <em>/usr/sbin/hid2hci</em> was superseded by <em>/lib/udev/hid2hci</em>. I simply replaced the new file with a dummy version as well.</p>
+<p>As for the remote control, the current problem resembled a broken "nomouse" mode of the imon kernel module that I had encountered before. The module seemed to be OK this time, however, so I kept looking and eventually the LIRC manual offered a <a href="http://www.lirc.org/html/devinput.html">great description</a> of a LIRC-HAL interaction that seemed to match my symptoms. I tried following the advice from the manual but it just didn't work. It turned out the <em>DEVICE</em> setting in <em>/etc/lirc/hardware.conf</em> had become obsolete. The correct new setting is</p>
+<div class="codehilite"><pre><span class="n">DEVICE</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">input</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="n">usb</span><span class="o">-</span><span class="mi">15</span><span class="n">c2_ffdc</span><span class="o">-</span><span class="n">event</span><span class="o">-</span><span class="n">if00</span>
+</pre></div>
+
+
+<p>and the remote works like a charm again (for a while, anyway...)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="look-mom-no-ports"></a>
+      <a href="../look-mom-no-ports.html" rel="bookmark" title="Permalink to Look mom, no ports!">Look mom, no ports!</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-02-13T17:04:00"> Sun 13 February 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/qt.html">Qt</a>,        <a href="../tag/jetty.html">Jetty</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I'm currently updating a commercial HTML-based desktop application that I wrote a few years ago. Customers keep having permissions trouble on Windows with the back-end opening a TCP port for serving front-end's HTTP requests. I decided to try to refresh both the back-end (to Jetty 7.3.0) and the front-end (to WebKit running in Java via Qt Jambi) and run them in one process with no TCP ports involved. Both components have reputations for being easy to embed, so I thought it shouldn't be too hard. Yeah right...</p>
+<p>Actually, things went very smoothly at first. Here's what I discovered:</p>
+<ul>
+<li>Jetty accepts requests via Connectors; one of them is LocalConnector.</li>
+<li>Obviously, setting up Jetty with LocalConnector is beyond the scope of this post :-)</li>
+<li>LocalConnector.getResponses() accepts a String argument containing an HTTP request just as you would type it into a telnet window (like "GET /whatever HTTP/1.0" followed by two newlines) and returns an HTTP response, also as a String ("HTTP/200 OK blah blah..."). It's a primitive interface but it does work.</li>
+<li>The method mentioned above doesn't work very well if you want to GET binary data such as images (yeah, you could use "Content-Encoding: base64" but come on...). There is, fortunately, a variant of LocalConnector.getResponses() that accepts a ByteArrayBuffer along with a boolean "keepOpen" argument which I simply set to false. The method otherwise works just like the String variant.</li>
+</ul>
+<p>As for a WebKit front-end, once you have Qt Jambi set up properly (with -Djava.library.path etc.) it's really easy to create a QWebView, point it at a URL and splash it all over your display. To prevent HTTP traffic, however, I needed to intercept requests coming from WebKit and route them to my LocalConnector:</p>
+<ul>
+<li>The thing to do is QWebView.page().setNetworkAccessManager(magic), where "magic" is a subclass of QNetworkAccessManager that overrides createRequest() to do the necessary, well, magic.</li>
+<li>Despite superficial appearances, createRequest() actually accepts QNetworkRequest as a parameter and returns a QNetworkReply. Go figure. Additional parameters for createRequest() include an Operation enum to distinguish GETs from POSTs, and a QIODevice (think InputStream) containing the data of a POST request.</li>
+<li>Since QNetworkReply is also a stream-like QIODevice, returning custom content from createRequest() involves writing a QNetworkReply subclass that knows where to look for when clients call its read*() methods. This is not quite easy to do.</li>
+</ul>
+<p>Anyway. After a few hours I had a web application running in a WebKit window with not a TCP packet in sight.The trouble came when I tried to process a POST request (yes, the application does involve filling out forms). What followed was a bout of frustration, head-scratching and just plain unhappiness that I don't wish upon anyone:</p>
+<ul>
+<li>First, you have to realize that Qt Jambi (including its WebKit component) is actually a C++ beast in sheep-like Java clothing. No matter how sweet the API is, the implementation is a bitch to debug even if, technically, you have access to the source code.</li>
+<li>What happened is that my createRequest() was called with a PostOperation as it should be but the accompanying QIODevice was empty. More specifically, calling canReadLine() on it returned false.</li>
+<li>Setting a breakpoint and examining the QIODevice's internals didn't show anything interesting (it was basically a proxy object for a C++ implementation).</li>
+<li>I resorted to the oldest tool in a programmer's toolbox: trace statements. Here's what they gave me:<ul>
+<li>formData.isOpen(): true</li>
+<li>formData.isReadable(): true</li>
+<li>formData.isSequential(): true</li>
+<li>formData.atEnd(): true</li>
+<li>formData.bytesAvailable(): 0</li>
+<li>formData.size(): 0</li>
+<li>formData.pos(): 0</li>
+</ul>
+</li>
+</ul>
+<p>I tried routing regular HTTP post requests through the parent class and it worked even though the request objects looked exactly the same and returned exactly the same trace results! I was getting ready to give my own QNetworkRequest to the parent implementation that would trace all calls made to it but I tried getByte() and... there was data! WTF?! Point: QNetworkRequest was in a weird uninitialized state where it thought it was empty when it really wasn't. It snapped out of it when prodded for data.</p>
+<p>Another problem surfaced when I tried to get a Dojo Tree widget going. During initialization, Dojo loads its modules via AJAX and it was failing with the dreaded "NETWORK_ERR: XmlHttpRequest Exception 101". Cost me a lot of blind paths - I tried setting the .js files in different paths relative to the referring .jsp, reading compressed Dojo sources, diagnosing with window.alert() etc. In the end, I understood that WebKit was having some problem with the QNetworkReply I was producing. I made my Content-Length calculation more robust - no change. Finally, I looked at QNetworkReply objects produced by the regular QNetworkAccessManager and made sure all the attributes it fills out were also filled out in my replies. That helped. I know, I should have done it at the start but why did it matter with AJAX requests and not with regular ones? Oh well...</p>
+<p>The AJAX issue turned out to be the last major obstacle. My application now runs without opening any TCP ports and both WebKit and Jetty proved reasonably embeddable. I might use this set-up in other contexts as well.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="soundgraph-imon-pad-vs-linux-2636"></a>
+      <a href="../soundgraph-imon-pad-vs-linux-2636.html" rel="bookmark" title="Permalink to Soundgraph iMON PAD vs. Linux 2.6.36">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-09T12:09:00"> Sun 09 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I use a Soundgraph iMON PAD remote control to command my home-theater PC. The remote stopped working when I upgraded my kernel from 2.6.33 to 2.6.36, due to major infrastructure changes that started in 2.6.35. At first I simply reverted to the older kernel but this week I had a few spare hours to figure out what was going on. In short, the iMON driver has been cleaned up by Jarod Wilson and <a href="http://wilsonet.com/?p=85">included in the main kernel code base (finally!)</a>. Its logic was also standardized to route its output to the Linux input layer rather than to the <a href="http://www.lirc.org">LIRC</a> daemon. This obviously requires some re-configuration of the daemon, as <a href="http://old.nabble.com/Re:-Status-of-lirc-imon-usb-remotes-p28684857.html">Jarod explained</a> on the LIRC mailing list.</p>
+<p>On my HTPC I had to put the following settings into <em>/etc/lirc/hardware.conf</em>:</p>
+<div class="codehilite"><pre><span class="n">DRIVER</span><span class="o">=</span><span class="s">&quot;devinput&quot;</span>
+<span class="n">DEVICE</span><span class="o">=</span><span class="s">&quot;/dev/input/by-id/usb-15c2_ffdc-event-mouse&quot;</span>
+</pre></div>
+
+
+<p>I also had to adjust key codes in <em>/etc/lirc/lircd.conf</em> (note that I only need only six keys for my remote-control software, <a href="http://offhand.sourceforge.net/">Offhand</a>; others should simply use <a href="http://wilsonet.com/jarod/imon_stuff/imon-devinput-lirc/lircd.conf">Jarod's file</a>):</p>
+<div class="codehilite"><pre><span class="n">begin</span> <span class="n">codes</span>
+    <span class="n">KEY_BACKSPACE</span>            <span class="mh">0x000E</span>
+    <span class="n">KEY_COMPOSE</span>              <span class="mh">0x007F</span>
+    <span class="n">KEY_CONTEXT_MENU</span>         <span class="mh">0x01B6</span>
+    <span class="n">KEY_ENTER</span>                <span class="mh">0x001C</span>
+    <span class="n">KEY_KEYBOARD</span>             <span class="mh">0x0176</span>
+    <span class="n">KEY_SPACE</span>                <span class="mh">0x0039</span>
+<span class="n">end</span> <span class="n">codes</span>
+</pre></div>
+
+
+<p>Finally, I had to adjust the .lircrc file used by Offhand:</p>
+<div class="codehilite"><pre><span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_CONTEXT_MENU</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">back</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_COMPOSE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">forward</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_KEYBOARD</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">up</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_ENTER</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">down</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_SPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">ok</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_BACKSPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="n">end</span>
+</pre></div>
+
+
+<p>Separately, I also had to configure the iMON driver to forget about its mouse emulation mode. I did it by creating the file <em>/etc/modprobe.d/imon.conf</em> containing</p>
+<div class="codehilite"><pre><span class="n">options</span> <span class="n">imon</span> <span class="n">nomouse</span><span class="o">=</span><span class="mi">1</span>
+</pre></div> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="logitech-dinovo-edge-vs-aptosid"></a>
+      <a href="../logitech-dinovo-edge-vs-aptosid.html" rel="bookmark" title="Permalink to Logitech diNovo Edge vs. aptosid">Logitech diNovo Edge vs. aptosid</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-06T13:09:00"> Thu 06 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>If you have no idea what a Logitech diNovo Edge could be, think about it for a while. You should quickly reach the obvious conclusion: it's a <a href="http://www.logitech.com/en-us/keyboards/keyboard/devices/192">super-thin wireless keyboard</a> featuring a built-in mouse pad. I happen to use one with my home-theater PC. It's a classy product, feels solid (even a bit luxurious) and works very well - that is, it used to work until I replaced the HTPC's ancient Kubuntu system with <a href="http://www.aptosid.com">aptosid</a>. Ever since then, I could use the keyboard in the bootloader but not once the system was up.</p>
+<p>aptosid, formerly known as sidux, is a running-release distribution of GNU/Linux descending from Debian Sid, the so-called "unstable" flavor of Debian. Being running-release means that instead of periodic releases of the entire environment, I get a constant trickle of new package versions as they are admitted into repositories. The upside is always being up-to-date. The downside is a not quite thoroughly tested environment where things occasionally stop working.</p>
+<p>The team managing aptosid does a pretty impressive job keeping the system stable. I'd been running it on my main notebook for a while and breakage had been pleasantly rare. I couldn't really fault the system for refusing to handle a relatively obscure piece of hardware. Given that I mostly run the HTPC with a remote and I manage the machine over the network, I had little need for the keyboard. Playing DVDs was the only scenario that was truly annoying. With a bit of time over the holidays, I decided to tackle it.</p>
+<p>I connected the keyboard to my notebook - having another, 100% reliable keyboard on the same computer made the investigation much smoother. I quickly foud out that the keyboard would work the first time its receiver dongle was plugged in, but after dis- and re-connecting it would behave identically as on the HTPC. A telling difference was the presence of an extra USB device: upon first connect, <em>lsusb</em> would list three new devices while after re-connecting it displayed four.</p>
+<p>Googling the incriminated USB IDs produced <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589388">the answer</a>: udev is configured in Sid to run <em>hid2hci</em> when the Edge is connected, making it a fully capable Bluetooth device rather than just a dumb USB keyboard. Except what I want is just a dumb USB keyboard.</p>
+<p>I tried adjusting udev rules on the HTPC to prevent <em>hid2hci</em> from running but no matter what I tried, it still somehow managed to launch itself during the boot sequence. I ended up replacing <em>/usr/sbin/hid2hci</em> with a shell script looking like this:</p>
+<div class="codehilite"><pre><span class="n">echo</span> <span class="s">&quot;pretending to run hid2hci&quot;</span>
+</pre></div>
+
+
+<p>Ever since then, I've been navigating DVD menus with much more flair. The keyboard suddenly seems brand new now that it works! Dead keyboard wasn't my HTPC's only problem, however. The story is set to continue...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="akai-ewi-usb-and-linux-part-3"></a>
+      <a href="../akai-ewi-usb-and-linux-part-3.html" rel="bookmark" title="Permalink to Akai EWI USB and Linux, part 3">Akai EWI USB and Linux, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-23T05:26:00"> Tue 23 November 2010 </abbr> under
+        <a href="../tag/music.html">music</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>In <a href="../akai-ewi-usb-and-linux-part-1.html">part 1</a> and <a href="../akai-ewi-usb-and-linux-part-2.html">part 2</a> of my Akai odyssey, I've described getting the EWI to produce sound and configuring fluidsynth (plus QSynth) for optimum performance without latency. I was happy with my setup but after a while I started craving a little convenience.</p>
+<p>Setting up a playing session is a silly affair involving the instrument itself, my notebook, a pair of headphones, 2 cables and 4 connectors. The same goes for winding things down after playing. It used to be even more obnoxious since I had to manually start and exit the QSynth software. I knew that Linux can react to USB hot-plug events and this reaction can be configured; so I decided to make QSynth start and stop automagically.</p>
+<p>The system-du-jour for reacting to hotplug events in Linux is currently <em>udev</em>. Debian's wiki happens to have a <a href="http://wiki.debian.org/udev">very nice udev page</a> which explains that all one needs to do is to put a line in a file under <em>/etc/udev/rules.d</em>. One can either use one of the existing files under that directory or create a new one, which is what I did just to keep things tidy.</p>
+<p>Entries in udev rule files rely on an IF-THEN syntax where the IF part indicates in what circumstances the rule should trigger and THEN stipulates what should be done. The syntax is quite restrictive in that each rule has to fit on a line - i.e. no fancy procedural tricks. The IF part offers a lot of ways to pick up an event, though. One can specify the BUS on which the event happens, the NAME of the device, the ACTION that the event represents, expected environment variable values etc. I found the options quite extensive, making it easy to specify any event.</p>
+<p>Having to run <em>sudo udevadm control --reload-rules</em> after each rule update was a bit annoying but what really held me up was figuring out which events the rule should react to. I found out that plugging the EWI into and out of the USB port caused entire cascades of events with different characteristics. I eventually settled on the following rules:</p>
+<div class="codehilite"><pre><span class="n">ATTR</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;09e8&quot;</span><span class="p">,</span> <span class="n">ATTR</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;006d&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;add&quot;</span><span class="p">,</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
+<span class="n">ENV</span><span class="p">{</span><span class="n">DEVNAME</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;/dev/snd/midiC1D0&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;remove&quot;</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
+</pre></div>
+
+
+<p>The first rule fires when I plug the device in, the second one upon unplugging. Both rules launch the same shell script when invoked. The shell script itself looks like this:</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;add&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
+ <span class="n">set</span> <span class="o">-</span><span class="n">x</span> 
+ <span class="n">xhost</span> <span class="n">local</span><span class="o">:</span><span class="n">username</span>
+ <span class="n">export</span> <span class="n">DISPLAY</span><span class="o">=:</span><span class="mf">0.0</span>
+ <span class="n">su</span> <span class="n">username</span> <span class="o">-</span><span class="n">c</span> <span class="n">qsynth</span> <span class="o">&amp;</span>
+<span class="n">elif</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;remove&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
+ <span class="n">killall</span> <span class="n">qsynth</span>
+<span class="n">fi</span>
+</pre></div>
+
+
+<p>The "add" section contains incantations needed to properly launch a GUI program from a shell script. I picked them up in some forum and have unfortunately lost the link. Kudos to the original poster, anyway.</p>
+<p>With this bit of scripting, my EWI is the very definition of Plug-and-Play, as well as Stop-Playing-and-Unplug ;-) . All is not perfect, though; one problem remains and it's completely unrelated to udev. Since I use legacy OSS emulation <a href="../akai-ewi-usb-and-linux-part-2.html">due to latency issues</a>, I cannot run any other sound-producing application while QSynth is active (OSS doesn't support software mixing). I don't mind that just yet but as I get my fingerings in order and advance my playing I will need to resolve it. The saga continues...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="disabling-acpi-in-openbsd-48"></a>
+      <a href="../disabling-acpi-in-openbsd-48.html" rel="bookmark" title="Permalink to Disabling ACPI in OpenBSD 4.8">Disabling ACPI in OpenBSD 4.8</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-21T08:56:00"> Sun 21 November 2010 </abbr> under
+        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I've <a href="../installing-openbsd-48-on-an-hp-mini-5101.html">mentioned</a>, OpenBSD 4.8 can't boot on a HP Mini 5101 netbook due to an apparent ACPI issue. The way to work around the issue is as follows:</p>
+<ul>
+<li>When booting, enter <strong>boot -c</strong> at the <em>boot&gt;</em> prompt. A <em>UKC&gt;</em> prompt will appear shortly.</li>
+<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; the kernel should proceed to 
+boot successfully to the login prompt.</li>
+<li>After logging in, enter <strong>su</strong> (sudo won't work since you haven't edited <em>/etc/sudoers</em> yet).</li>
+<li>Enter <strong>config -e -o bsd.noacpi /bsd</strong>; you will see the <em>UKC&gt;</em> prompt again.</li>
+<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; you should be back in the shell, with a new file called <em>bsd.noacpi</em> in the current directory.</li>
+<li>Enter <strong>mv /bsd /bsd.acpi &amp;&amp; mv bsd.noacpi /bsd</strong> to replace the current kernel with the new one.</li>
+<li>Enter <strong>chmod 0644 /bsd</strong> to set proper permissions for the new kernel.</li>
+<li>Enter <strong>reboot</strong> to test things out; the computer should now boot into the login prompt without any assistance.</li>
+</ul>
+<p>What's going on here? UKC is the <em>User Kernel Config</em>, OpenBSD's tool for tweaking a kernel without re-compiling it. As we've seen, it can be used to great effect even during the boot process. What's perhaps even more impressive, UKC can also tweak the currently running kernel without having to reboot. All relevant info can be found by entering <strong>man UKC</strong> and <strong>man config</strong> in the OpenBSD shell.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="installing-openbsd-48-on-an-hp-mini-5101"></a>
+      <a href="../installing-openbsd-48-on-an-hp-mini-5101.html" rel="bookmark" title="Permalink to Installing OpenBSD 4.8 on an HP Mini 5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-19T22:14:00"> Fri 19 November 2010 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I used to be baffled by the netbook form factor. I could see no use for a toy notebook nor for an overgrown PDA. One day, as I was reviewing the specs of yet another netbook model somewhere, it hit me: this is a light-duty server with a built-in console. No more searching for a PS/2 keyboard down in the basement! What a concept!</p>
+<p>I had been thinking of building a home server for some time so I went out and bought an Acer Aspire One. I put OpenBSD 4.5 on it and it has perfomed beautifully. It's served HTTP, SMTP, POP3 and the Squeezebox streaming protocol, as well as shared a printer and provided a backup destination for other boxes on the network.</p>
+<p>My only worry was that it might break down - after all, netbooks are not designed to be turned on 24/7. I decided to buy another one and periodically sync its disk from the "master" machine so that I could just swap them in case of need. Alas, the same model was no longer available, much to my disappointment. I ended up getting a pair of HP Mini 5101s instead.</p>
+<p>The main problem with installing an OS on a netbook is the lack of a CD-ROM drive. With the Acer I'd performed a network install using pxeboot but it was not something I would endure again if I could help it. I decided to try installing from a USB stick instead. First I had to create the installation medium, of course. I quickly found <a href="http://old.nabble.com/Install-OpenBSD-from-USB---td15057477.html">a great thread</a> at misc@openbsd.org that basically said one can either copy the install48.iso straight onto the raw USB stick device (under Linux this would be <em>dd if=install48.iso of=/dev/sdb</em> or something) or one can boot the OpenBSD CD-ROM and install onto the USB stick just like onto a hard drive.</p>
+<p>People on the thread couldn't agree on which method was better. I tried the simpler <em>dd</em> method first but the USB stick would not boot on the Mini. Funnily enough, it did boot on my ThinkPad (BIOS being the X factor). With a bit of trepidation, I booted the ThinkPad from the OpenBSD CD and installed onto the USB stick, hoping I would not ruin my notebook's hard disk instead. All went well and this time the USB stick did boot on the Mini.</p>
+<p>Installation onto the Mini from the USB stick was uneventful. For the first time after years I had the luxury of installing on the entire hard drive, letting the installer do the partitioning for me. I could reach all BSD packages over the network without problems as I had an Ethernet cable plugged into the machine and DHCP worked just fine.</p>
+<p>Rebooting after the install ended in a kernel panic, however. Neither <em>bsd.mp</em> nor <em>bsd.sp</em> at the boot prompt seemed to help. Off to Google I was yet again, with "openbsd hp mini 5101". It turned out someone had <a href="http://kerneltrap.org/mailarchive/openbsd-misc/2010/9/3/6691/thread">seen the problem before</a> and they solved it by <a href="http://www.mail-archive.com/tech@openbsd.org/msg00278.html">turning off ACPI</a> at the boot prompt. It helped me as well and I was finally able to log into my new OpenBSD system. I've yet to figure out how to disable ACPI permanently. I also have to see how running without ACPI affects power consumption and temperatures. Other than that, the Mini seems to handle OpenBSD just fine.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="akai-ewi-usb-and-linux-part-2"></a>
+      <a href="../akai-ewi-usb-and-linux-part-2.html" rel="bookmark" title="Permalink to Akai EWI USB and Linux, part 2">Akai EWI USB and Linux, part 2</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-19T06:15:00"> Fri 19 November 2010 </abbr> under
+        <a href="../tag/music.html">music</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><a href="../akai-ewi-usb-and-linux-part-1.html">Part 1</a> of my Akai saga ended with the EWI producing sound, a disappearing symlink and a shocking latency. This was unacceptable.</p>
+<p>To get a flavor of how things should work, I did something I hadn't done in months: boot into Windows. I dutifully installed the software from EWI's companion CD and tried a few tones. The software itself was nice, polished and simple enough, except that the latency was pretty much the same as under Linux! Google said one should install a different audio stack, "winaudio" or something, but I had no such inclination.</p>
+<p>I pulled out the big guns instead. I installed <a href="http://www.64studio.com/">64studio</a> on a spare partition. It's a specialized multimedia-production Linux with pre-configured <a href="http://jackaudio.org/node/11">JACK</a> low-latency audio server etc. and I was certain that it would help. Except it wouldn't talk to my graphics card. Next up was <a href="http://ubuntustudio.org/">Ubuntu Studio</a> - same purpose, different vendor. It installed beautifully, had tons of pre-installed audio software including JACK and QSynth and... exhibited the same latency problem as my regular aptosid and Windows. It was back to the drawing board.</p>
+<p>I knew it wasn't a hardware problem - when I ran fluidsynth in verbose mode it would print MIDI events very swiftly, only the sound was lagging. CPU load was negligible so it wasn't any slowness on my computer's part, either. I tried the only thing I could think of - further tweaking fluidsynth's options, this time on the output (audio) side. Lo and behold, when I chose the legacy OSS output driver the system started reacting like a <a href="http://l.yimg.com/eb/ymv/us/img/hv/photo/movie_pix/dreamworks_skg/over_the_hedge/steve_carell/overthehedge_poster.jpg">caffeine-doped squirrel</a>. Sound was coming out almost before I touched the pads. I had reached the Akai EWI nirvana.</p>
+<p>The utterly perplexing aspect of this outcome is that I don't even have true OSS on my system; virtually no-one has these days. OSS on my notebook is just a special legacy emulation mode of ALSA, yet it performs better than ALSA proper. Go figure...</p>
+<p>I had basically two options to resolve the disappearing symlink from <em>/dev/snd/midiC1D0</em> to <em>/dev/snd/midiC0D0</em>. I could either automate its creation in a start-up script or I could remove the need for it, i.e. make fluidsynth talk to <em>midiC1D0</em> as it should. The latter was obviously a cleaner solution so I started pursuing it. Tweaking the command line had been useless before, hence I downloaded the source code (<em>apt-get source fluidsynth</em>) and started looking around the error messages I was getting ("Unknown RawMidi" etc.).</p>
+<p>It turned out that when fluidsynth documentation says I should specify a MIDI device, it doesn't really mean "a path to a device file" but rather "an ALSA device ID", at least when <em>alsa_raw</em> is specified as the MIDI driver. ALSA device IDs have a special syntax that looks like "hw0,0", with the first number identifying a sound card and the second one determining a feature of that sound card one wants to work with. I tried to formulate a device ID for <em>midiC1D0</em> but couldn't figure it out.</p>
+<p>Looking through the code, I noticed that when no MIDI device is explicitly specified fluidsynth deduces an ID from various ALSA settings, mainly the default sound card. It occurred to me that I could set the EWI as the default sound card. I remembered that ALSA reads user-specific configuration from <em>~/.asoundrc</em> and a short trip to Google yielded this incantation: <em>defaults.rawmidi.card 1</em>. Having that line in my <em>.asoundrc</em> finally let fluidsynth talk to the EWI without a symlink hack. This wasn't as exciting as doing away with the latency but I felt satisfied that things were finally set up the way they should be.</p>
+<p>In summary, all I had needed from the start was that single line in <em>.asoundrc</em> and a simple <em>fluidsynth -m alsa_raw -a oss TimGM6mb.sf2</em> (I use the soundfonts provided on EWI's companion CD). It took a while to get there but I finally had a straightforward way to play the EWI through my notebook.</p>
+<p>Once I knew what to set in fluidsynth I configured QSynth with the same settings to get a nice graphical UI for switching sounds and tweaking the effects (fluidsynth has built-in reverb and chorus). This was really comfortable and I became spoiled after a while. It started bugging me that I had to launch QSynth by hand each time I wanted to play. I knew that the computer should be able to do it automatically when the EWI gets plugged in. It should even be able to exit QSynth when the EWI gets unplugged. I decided to tackle that one as well to make my playing truly comfortable. It's a story for another post, however...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+                        <a href="../category/misc3.html">&laquo;</a>
+                Page 4 / 5
+            <a href="../category/misc5.html">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

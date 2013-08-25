@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="installing-openbsd-48-on-an-hp-mini-5101.html" rel="bookmark"
+         title="Permalink to Installing OpenBSD 4.8 on an HP Mini 5101">Installing OpenBSD 4.8 on an HP Mini 5101</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2010-11-19T22:14:00"> Fri 19 November 2010 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>I used to be baffled by the netbook form factor. I could see no use for a toy notebook nor for an overgrown PDA. One day, as I was reviewing the specs of yet another netbook model somewhere, it hit me: this is a light-duty server with a built-in console. No more searching for a PS/2 keyboard down in the basement! What a concept!</p>
+<p>I had been thinking of building a home server for some time so I went out and bought an Acer Aspire One. I put OpenBSD 4.5 on it and it has perfomed beautifully. It's served HTTP, SMTP, POP3 and the Squeezebox streaming protocol, as well as shared a printer and provided a backup destination for other boxes on the network.</p>
+<p>My only worry was that it might break down - after all, netbooks are not designed to be turned on 24/7. I decided to buy another one and periodically sync its disk from the "master" machine so that I could just swap them in case of need. Alas, the same model was no longer available, much to my disappointment. I ended up getting a pair of HP Mini 5101s instead.</p>
+<p>The main problem with installing an OS on a netbook is the lack of a CD-ROM drive. With the Acer I'd performed a network install using pxeboot but it was not something I would endure again if I could help it. I decided to try installing from a USB stick instead. First I had to create the installation medium, of course. I quickly found <a href="http://old.nabble.com/Install-OpenBSD-from-USB---td15057477.html">a great thread</a> at misc@openbsd.org that basically said one can either copy the install48.iso straight onto the raw USB stick device (under Linux this would be <em>dd if=install48.iso of=/dev/sdb</em> or something) or one can boot the OpenBSD CD-ROM and install onto the USB stick just like onto a hard drive.</p>
+<p>People on the thread couldn't agree on which method was better. I tried the simpler <em>dd</em> method first but the USB stick would not boot on the Mini. Funnily enough, it did boot on my ThinkPad (BIOS being the X factor). With a bit of trepidation, I booted the ThinkPad from the OpenBSD CD and installed onto the USB stick, hoping I would not ruin my notebook's hard disk instead. All went well and this time the USB stick did boot on the Mini.</p>
+<p>Installation onto the Mini from the USB stick was uneventful. For the first time after years I had the luxury of installing on the entire hard drive, letting the installer do the partitioning for me. I could reach all BSD packages over the network without problems as I had an Ethernet cable plugged into the machine and DHCP worked just fine.</p>
+<p>Rebooting after the install ended in a kernel panic, however. Neither <em>bsd.mp</em> nor <em>bsd.sp</em> at the boot prompt seemed to help. Off to Google I was yet again, with "openbsd hp mini 5101". It turned out someone had <a href="http://kerneltrap.org/mailarchive/openbsd-misc/2010/9/3/6691/thread">seen the problem before</a> and they solved it by <a href="http://www.mail-archive.com/tech@openbsd.org/msg00278.html">turning off ACPI</a> at the boot prompt. It helped me as well and I was finally able to log into my new OpenBSD system. I've yet to figure out how to disable ACPI permanently. I also have to see how running without ACPI affects power consumption and temperatures. Other than that, the Mini seems to handle OpenBSD just fine.</p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

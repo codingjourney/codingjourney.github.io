@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="pimp-my-calendar-part-2.html" rel="bookmark"
+         title="Permalink to PIMp my calendar, part 2">PIMp my calendar, part 2</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-04-08T04:00:00"> Mon 08 April 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/android.html">Android</a>,        <a href="./tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>My effort to set up a <a href="./pimp-my-calendar-part-1.html">self-hosted calendaring</a> solution is taking on epic proportions, turning into another <a href="./the-battle-of-the-c5280-aftermath.html">CUPS saga</a>:</p>
+<ul>
+<li>I quickly discarded the <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">local iCal option</a> because I can't trust a piece of closed-source freeware from someone calling themselves "Khaos".</li>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> dropped out of the race because Kolab itself has complex dependencies and no OpenBSD package.</li>
+<li><a href="http://www.zafara.com">Zafara</a> just felt too heavy-weight and, well, corporate for my needs.</li>
+</ul>
+<p>I decided to concentrate on CalDAV servers with existing OpenBSD packages: <a href="http://www.davical.org/">DAVical</a>, <a href="http://owncloud.org/">ownCloud</a>, <a href="http://www.radicale.org/">Radicale</a> and <a href="http://code.google.com/p/sabredav/">SabreDAV</a>. All except Radicale were PHP-based which made my decision easy as I'm <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">allergic to PHP</a>. I have to admit, though, ownCloud looks mighty fine and seems to have a lot of momentum.</p>
+<p>Radicale has a no-nonsense, focused feel. It is written in Python which is very nice indeed. Installing it was a breeze. I then tried to set up a calendar in Kontact and failed miserably. CalDAV support in Akonadi is apparently confined to a legacy KResource implementation and <em>blah blah blah</em>. I had no stamina to go there. What was important was my phone.</p>
+<p>Installing Gérald Garcia's open-source <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">AndroidCaldavSyncAdapater</a> via Google Play would have been a snap. The thing is, just as I don't want Google knowing about my appointments I don't want it knowing what I run on my phone. Don't get me wrong - I'm quite fond of Google. I'm simply more fond of my privacy.</p>
+<p>Installing the adapter from GitHub turned out to be quite smooth. Once I cloned the repository I found out the project relied on the <a href="http://developer.android.com/tools/sdk/eclipse-adt.html">ADT Eclipse plugin</a> for building and signing the installation package - no trouble there. I had a bit of fun getting ADT to <a href="http://developer.android.com/tools/device.html">see my phone</a> because I made a typo in the <em>udev</em> rule file. I figured it out eventually and got the package onto the phone.</p>
+<p>Adding a Radicale account on Android involved going to <em>Settings &gt; Accounts &amp; sync &gt; Add account &gt; CalDAV Sync Adapter</em> and filling out my user name, password and the URL. Excited, I opened the calendar application. No nagging about MS Exchange - great. Alas, when I tried to create an event I was told "You have no calendars." <em>Continued in <a href="./pimp-my-calendar-part-3.html">part 3</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

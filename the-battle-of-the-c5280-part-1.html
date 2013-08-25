@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="the-battle-of-the-c5280-part-1.html" rel="bookmark"
+         title="Permalink to The battle of the C5280, part 1">The battle of the C5280, part 1</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-03-28T05:05:00"> Thu 28 March 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>,        <a href="./tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>The other day I posted a <a href="./alice-in-printerland.html">frustrated rant</a> about my troubles getting the printer to work under OpenBSD. This has evolved into a massive struggle which is still ongoing. On the one hand, it's ridiculous how much time I'm devoting to this. On the other, I've dusted off my C chops, built basic proficiency with gdb and discovered a bunch of curious facts about OpenBSD and USB which I'll probably never use again and forget in a matter of weeks. So it's perhaps worth writing some of them down.</p>
+<p>First, a bit of background. My home server runs on OpenBSD. One of its duties is providing access to a HP Photosmart C5280 printer via CUPS and it works like a charm. The version of OpenBSD I'm running is getting old, however, so I've purchased the 5.2 CD set and I'm setting it up on another machine.</p>
+<p>Everything went well until I tried to add the printer via CUPS' web interface. No local connection was detected. I turned on extra logging (by saying <em>LogLevel debug</em> in <em>/etc/cups/cupsd.conf</em>), clicked around in the web UI and found this in <em>/var/log/cups/error_log</em>:</p>
+<div class="codehilite"><pre><span class="n">libusb_get_device_list</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>It looked like libusb was having trouble finding the printer. I looked up libusb <a href="http://www.libusb.org">on the web</a>, looked at the source code and confirmed my suspicion. I also found out there was an OpenBSD-specific file (<a href="http://www.libusb.org/browser/libusb/libusb/os/openbsd_usb.c">openbsd_usb.c</a>) which looked for <em>/dev/ugen*</em> devices. Those were present on my system in abundance, so a missing device wasn't a problem.</p>
+<p>The error log also mentioned <em>/usr/local/libexec/cups/backend/usb</em> and browsing CUPS help gave me a hint of what <a href="http://www.cups.org/documentation.php/man-backend.html">backends</a> were about. So I ran the USB backend directly on the command line. To my surprise, it had no problem finding the device. Something was wrong in the way CUPS was calling the backend.</p>
+<p><a id="test"></a>I decided to <a href="http://www.openbsd.org/faq/faq15.html#Ports">set up OpenBSD ports</a> and compile libusb with some trace statements. I wrote a minimal program to test things:</p>
+<div class="codehilite"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;libusb.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">libusb_device</span> <span class="o">**</span><span class="n">list</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="n">libusb_init</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">libusb_get_device_list</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;Devices: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="n">libusb_free_device_list</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">libusb_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>I hadn't done C hacking in a while so I spent a fair amount of time just crafting the proper <em>cc</em> command line but eventually I could read a nice "Devices: 7" in the output. I then started sprinkling trace statements over libusb. I naively thought using <em>fprintf(stderr, ...)</em> would be easier than figuring out how to activate the existing logging functions (<em>usbi_warn</em>, <em>usbi_dbg</em> etc.). No matter what I did, the traces wouldn't show up. Eventually I did activate libusb's logging (commenting out <em>.ifdef DEBUG</em> in the port's <em>Makefile</em>). Didn't help.</p>
+<p>After much wailing and gnashing of teeth, it turned out it was a linking problem. I'd trusted <em>cc</em> would link the library statically by default (I have no idea how to override the default anyway). The bastard used dynamic linking instead which meant that upon running the program I was talking to <em>/usr/local/lib/libusb-1.0.so.1.0</em> from the installed libusb package. Running with</p>
+<div class="codehilite"><pre><span class="n">PORT_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">obj</span><span class="o">/</span><span class="n">ports</span><span class="o">/</span><span class="n">libusb1</span><span class="o">-</span><span class="mf">1.0.9</span><span class="o">/</span><span class="n">libusb</span><span class="o">-</span><span class="mf">1.0.9</span>
+<span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PORT_PATH</span><span class="o">/</span><span class="n">libusb</span><span class="o">/</span><span class="p">.</span><span class="n">libs</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+
+
+<p>brought a revelation. <em>Continued in <a href="./the-battle-of-the-c5280-part-2.html">part 2</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

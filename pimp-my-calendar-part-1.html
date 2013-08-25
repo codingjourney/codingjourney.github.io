@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="pimp-my-calendar-part-1.html" rel="bookmark"
+         title="Permalink to PIMp my calendar, part 1">PIMp my calendar, part 1</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-03-31T12:45:00"> Sun 31 March 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/android.html">Android</a>,        <a href="./tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>I have a confession to make: I'm a PIM dinosaur. My appointment list resides in an ultra-minimalist GTD app I wrote as an exercise in HTML5 local storage. Even though it runs on my Android phone, it has no alarm function (did I say it was HTML5?). It's just a list of appointments I have to actively look into.</p>
+<p>Of course, the phone has a native calendar app. Back when I had stock firmware it demanded my Google account details before it would talk to me. My appointments are none of Google's business (despite what Google may think) so I stayed away from the app. Now that I run CyanogenMod it asks about my MS Exchange account. Let's just say I don't <em>do</em> MS Exchange.</p>
+<p>An alarm would be nice, though. Syncing with Kontact on my notebook wouldn't hurt either. Since I'm in the process of building a new home server, I considered fixing my calendar woes as well.</p>
+<p>My research turned up several interesting facts:</p>
+<ul>
+<li>The Android calendar can be backed by anything which says it's a "calendar service".</li>
+<li>The default calendar service on my phone talks ActiveSync - the MS Exchange calendar synchronization protocol.</li>
+<li>Other groupware tools besides MS Exchange talk ActiveSync.<ul>
+<li>Zafara with its <a href="http://z-push.sourceforge.net/soswp/">Z-Push</a> connector looks the most mature.</li>
+</ul>
+</li>
+<li>Other calendar services for Android exist.<ul>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> appeals to me since Kolab is friends with Kontact.</li>
+<li>Another interesting choice is a <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV service</a> which should talk to any CalDAV server.<ul>
+<li>There are <a href="http://caldav.calconnect.org/implementations/servers.html">a <em>ton</em> of CalDAV servers</a> including a CalDAV module for Apache.</li>
+</ul>
+</li>
+<li>There's also a calendar service backed by <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">an iCal file</a> right on the phone.</li>
+</ul>
+</li>
+</ul>
+<p>It seems I first need to decide whether I would actually use the syncing capability of a server or whether it's best to choose the iCal option and forget about a server altogether. <em>Continued in <a href="./pimp-my-calendar-part-2.html">part 2</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

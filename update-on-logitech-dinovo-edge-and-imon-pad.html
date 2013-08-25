@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="update-on-logitech-dinovo-edge-and-imon-pad.html" rel="bookmark"
+         title="Permalink to Update on Logitech diNovo Edge and iMON PAD">Update on Logitech diNovo Edge and iMON PAD</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2011-08-03T19:50:00"> Wed 03 August 2011 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>My HTPC lived a few months without an update to its <a href="http://www.aptosid.com/">aptosid</a> installation. When I subsequently did perform an update, I ran into some of the same problems I used to have with my Logitech wireless keyboard and iMON remote control. With the help of my <a href="./logitech-dinovo-edge-vs-aptosid.html">previous</a> <a href="./soundgraph-imon-pad-vs-linux-2636.html">blog posts</a>, I was able to set things straight rather quickly.</p>
+<p>The solution to my original keyboard problem had been to replace <em>/usr/sbin/hid2hci</em> with a dummy version. In the meantime, <em>/usr/sbin/hid2hci</em> was superseded by <em>/lib/udev/hid2hci</em>. I simply replaced the new file with a dummy version as well.</p>
+<p>As for the remote control, the current problem resembled a broken "nomouse" mode of the imon kernel module that I had encountered before. The module seemed to be OK this time, however, so I kept looking and eventually the LIRC manual offered a <a href="http://www.lirc.org/html/devinput.html">great description</a> of a LIRC-HAL interaction that seemed to match my symptoms. I tried following the advice from the manual but it just didn't work. It turned out the <em>DEVICE</em> setting in <em>/etc/lirc/hardware.conf</em> had become obsolete. The correct new setting is</p>
+<div class="codehilite"><pre><span class="n">DEVICE</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">input</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="n">usb</span><span class="o">-</span><span class="mi">15</span><span class="n">c2_ffdc</span><span class="o">-</span><span class="n">event</span><span class="o">-</span><span class="n">if00</span>
+</pre></div>
+
+
+<p>and the remote works like a charm again (for a while, anyway...)</p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

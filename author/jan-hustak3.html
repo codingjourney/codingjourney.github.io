@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles by Jan Hustak</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>                        <a href="../author/jan-hustak2.html">&laquo;</a>
+                Page 3 / 5
+            <a href="../author/jan-hustak4.html">&raquo;</a>
+    </h3>
+      <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
+      <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
+      <a href="#pimp-my-calendar-part-3">PIMp my calendar, part 3</a>
+      <a href="#pimp-my-calendar-part-4">PIMp my calendar, part 4</a>
+      <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
+      <a href="#reputation-as-a-measure-of-success">Reputation as a measure of success</a>
+      <a href="#software-as-knowledge-repository">Software as knowledge repository</a>
+      <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles by Jan Hustak</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-1"></a>
+      <a href="../pimp-my-calendar-part-1.html" rel="bookmark" title="Permalink to PIMp my calendar, part 1">PIMp my calendar, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-31T12:45:00"> Sun 31 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have a confession to make: I'm a PIM dinosaur. My appointment list resides in an ultra-minimalist GTD app I wrote as an exercise in HTML5 local storage. Even though it runs on my Android phone, it has no alarm function (did I say it was HTML5?). It's just a list of appointments I have to actively look into.</p>
+<p>Of course, the phone has a native calendar app. Back when I had stock firmware it demanded my Google account details before it would talk to me. My appointments are none of Google's business (despite what Google may think) so I stayed away from the app. Now that I run CyanogenMod it asks about my MS Exchange account. Let's just say I don't <em>do</em> MS Exchange.</p>
+<p>An alarm would be nice, though. Syncing with Kontact on my notebook wouldn't hurt either. Since I'm in the process of building a new home server, I considered fixing my calendar woes as well.</p>
+<p>My research turned up several interesting facts:</p>
+<ul>
+<li>The Android calendar can be backed by anything which says it's a "calendar service".</li>
+<li>The default calendar service on my phone talks ActiveSync - the MS Exchange calendar synchronization protocol.</li>
+<li>Other groupware tools besides MS Exchange talk ActiveSync.<ul>
+<li>Zafara with its <a href="http://z-push.sourceforge.net/soswp/">Z-Push</a> connector looks the most mature.</li>
+</ul>
+</li>
+<li>Other calendar services for Android exist.<ul>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> appeals to me since Kolab is friends with Kontact.</li>
+<li>Another interesting choice is a <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV service</a> which should talk to any CalDAV server.<ul>
+<li>There are <a href="http://caldav.calconnect.org/implementations/servers.html">a <em>ton</em> of CalDAV servers</a> including a CalDAV module for Apache.</li>
+</ul>
+</li>
+<li>There's also a calendar service backed by <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">an iCal file</a> right on the phone.</li>
+</ul>
+</li>
+</ul>
+<p>It seems I first need to decide whether I would actually use the syncing capability of a server or whether it's best to choose the iCal option and forget about a server altogether. <em>Continued in <a href="../pimp-my-calendar-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-2"></a>
+      <a href="../pimp-my-calendar-part-2.html" rel="bookmark" title="Permalink to PIMp my calendar, part 2">PIMp my calendar, part 2</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-08T04:00:00"> Mon 08 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My effort to set up a <a href="../pimp-my-calendar-part-1.html">self-hosted calendaring</a> solution is taking on epic proportions, turning into another <a href="../the-battle-of-the-c5280-aftermath.html">CUPS saga</a>:</p>
+<ul>
+<li>I quickly discarded the <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">local iCal option</a> because I can't trust a piece of closed-source freeware from someone calling themselves "Khaos".</li>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> dropped out of the race because Kolab itself has complex dependencies and no OpenBSD package.</li>
+<li><a href="http://www.zafara.com">Zafara</a> just felt too heavy-weight and, well, corporate for my needs.</li>
+</ul>
+<p>I decided to concentrate on CalDAV servers with existing OpenBSD packages: <a href="http://www.davical.org/">DAVical</a>, <a href="http://owncloud.org/">ownCloud</a>, <a href="http://www.radicale.org/">Radicale</a> and <a href="http://code.google.com/p/sabredav/">SabreDAV</a>. All except Radicale were PHP-based which made my decision easy as I'm <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">allergic to PHP</a>. I have to admit, though, ownCloud looks mighty fine and seems to have a lot of momentum.</p>
+<p>Radicale has a no-nonsense, focused feel. It is written in Python which is very nice indeed. Installing it was a breeze. I then tried to set up a calendar in Kontact and failed miserably. CalDAV support in Akonadi is apparently confined to a legacy KResource implementation and <em>blah blah blah</em>. I had no stamina to go there. What was important was my phone.</p>
+<p>Installing Gérald Garcia's open-source <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">AndroidCaldavSyncAdapater</a> via Google Play would have been a snap. The thing is, just as I don't want Google knowing about my appointments I don't want it knowing what I run on my phone. Don't get me wrong - I'm quite fond of Google. I'm simply more fond of my privacy.</p>
+<p>Installing the adapter from GitHub turned out to be quite smooth. Once I cloned the repository I found out the project relied on the <a href="http://developer.android.com/tools/sdk/eclipse-adt.html">ADT Eclipse plugin</a> for building and signing the installation package - no trouble there. I had a bit of fun getting ADT to <a href="http://developer.android.com/tools/device.html">see my phone</a> because I made a typo in the <em>udev</em> rule file. I figured it out eventually and got the package onto the phone.</p>
+<p>Adding a Radicale account on Android involved going to <em>Settings &gt; Accounts &amp; sync &gt; Add account &gt; CalDAV Sync Adapter</em> and filling out my user name, password and the URL. Excited, I opened the calendar application. No nagging about MS Exchange - great. Alas, when I tried to create an event I was told "You have no calendars." <em>Continued in <a href="../pimp-my-calendar-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-3"></a>
+      <a href="../pimp-my-calendar-part-3.html" rel="bookmark" title="Permalink to PIMp my calendar, part 3">PIMp my calendar, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-17T05:45:00"> Wed 17 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My <a href="../pimp-my-calendar-part-1.html">efforts</a> to put a <a href="../pimp-my-calendar-part-2.html">server-backed</a> calendar on my Android phone entered a new phase. I had <a href="http://www.radicale.org/">Radicale</a> on the server and the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapater</a> on the phone but they seemed to talk past each other. My phone would set up a CalDAV account successfully but then tell me "You have no calendar" when I tried to create events.</p>
+<p>Radicale documentation says calendars are created automagically based on a URL convention, i.e. simply accessing a non-existent calendar should bring it into existence. I tried it with the Mozilla Lightning client and it worked as advertised. The Android adapter, however, still wouldn't see the new calendar nor its events.</p>
+<p><a href="http://www.wireshark.org">WireShark</a> revealed that a CalDAV client apparently enjoys a lot of freedom when formulating requests. A PROPFIND request from Lightning looked like this:</p>
+<div class="codehilite"><pre><span class="nt">&lt;D:propfind</span> <span class="na">xmlns:D=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;D:prop&gt;</span>
+    <span class="nt">&lt;D:resourcetype/&gt;</span>
+    <span class="nt">&lt;D:owner/&gt;</span>
+    <span class="nt">&lt;D:supported-report-set/&gt;</span>
+    <span class="nt">&lt;C:supported-calendar-component-set/&gt;</span>
+    <span class="nt">&lt;CS:getctag/&gt;</span>
+  <span class="nt">&lt;/D:prop&gt;</span>
+<span class="nt">&lt;/D:propfind&gt;</span>
+</pre></div>
+
+
+<p>whereas the Android adapter was sending</p>
+<div class="codehilite"><pre><span class="nt">&lt;d:propfind</span> <span class="na">xmlns:d=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:c=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:cs=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:ic=</span><span class="s">&quot;http://apple.com/ns/ical/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;d:prop&gt;</span>
+    <span class="nt">&lt;d:displayname</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;d:resourcetype</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;cs:getctag</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/d:prop&gt;</span>
+<span class="nt">&lt;/d:propfind&gt;</span>
+</pre></div>
+
+
+<p>and it seemed Radicale was not happy with the <em>displayname</em> bit:</p>
+<div class="codehilite"><pre><span class="nx">...</span>
+<span class="o">&lt;</span><span class="nx">propstat</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">prop</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">displayname</span> <span class="o">/&gt;</span>
+  <span class="o">&lt;/</span><span class="nx">prop</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">status</span><span class="o">&gt;</span><span class="nx">HTTP</span><span class="p">/</span><span class="nx">1.1</span> <span class="mi">404</span> <span class="ow">Not</span> <span class="nx">Found</span><span class="o">&lt;/</span><span class="nb">status</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">propstat</span><span class="o">&gt;</span>
+<span class="nx">...</span>
+</pre></div>
+
+
+<p>Server-side source code revealed that Radicale returns 404 for properties which it does not recognize (see the final <em>else</em> in the long <em>if-elif</em> chain in <em>_propfind_response()</em> in <em>xmlutils.py</em>). My installed version of Radicale was 0.7. I downloaded the most recent stable release (0.7.1) from the project site and tried that instead. Lo and behold, it finally said</p>
+<div class="codehilite"><pre><span class="nt">&lt;multistatus</span> <span class="na">xmlns=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;response&gt;</span>
+    <span class="nt">&lt;href&gt;</span>/jh/calendar/<span class="nt">&lt;/href&gt;</span>
+    <span class="nt">&lt;propstat&gt;</span>
+      <span class="nt">&lt;prop&gt;</span>
+        <span class="nt">&lt;displayname&gt;</span>calendar<span class="nt">&lt;/displayname&gt;</span>
+        <span class="nt">&lt;resourcetype&gt;</span>
+          <span class="nt">&lt;C:calendar</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;collection</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/resourcetype&gt;</span>
+        <span class="nt">&lt;CS:getctag&gt;</span>&quot;0&quot;<span class="nt">&lt;/CS:getctag&gt;</span>
+      <span class="nt">&lt;/prop&gt;</span>
+      <span class="nt">&lt;status&gt;</span>HTTP/1.1 200 OK<span class="nt">&lt;/status&gt;</span>
+    <span class="nt">&lt;/propstat&gt;</span>
+  <span class="nt">&lt;/response&gt;</span>
+<span class="nt">&lt;/multistatus&gt;</span>
+</pre></div>
+
+
+<p>The Calendar app on my phone, however, <em>still</em> insisted I had no calendar. <em>Continued in <a href="../pimp-my-calendar-part-4.html">part 4</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-4"></a>
+      <a href="../pimp-my-calendar-part-4.html" rel="bookmark" title="Permalink to PIMp my calendar, part 4">PIMp my calendar, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T06:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><a href="../pimp-my-calendar-part-1.html">Previous</a> <a href="../pimp-my-calendar-part-2.html">parts</a> of the <a href="../pimp-my-calendar-part-3.html">saga</a> brought me to a point where I had an upgraded instance of the <a href="http://radicale.org/">Radicale</a> CalDAV server talking to my Android phone's <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> and still getting nowhere. I decided to debug the Android-side code.</p>
+<p>Attaching the debugger was <a href="http://stackoverflow.com/questions/5379129/debugging-not-working-in-a-service-class-what-can-cause-this-issue">a bit of a trick</a> since the adapter has no Activity. Once I got past that, I discovered the response from Radicale was getting parsed just fine but it was only happening in an authentication context (i.e. while adding the new "CalDAV account"). I generally found that the adapter was basically a bunch of callbacks and I seemed unable to properly trigger them.</p>
+<p>I then noticed something funny in the log (i.e. the LogCat view in the DDMS perspective in Eclipse):</p>
+<blockquote>
+<p><em>VFY: unable to resolve static field 27 (CONTENT_URI) in Landroid/provider/CalendarContract$Events;</em></p>
+</blockquote>
+<p>According to the <a href="http://developer.android.com/guide/topics/providers/calendar-provider.html">documentation</a>, <em>Events.CONTENT_URI</em> is one of the basic constants used when working with calendars - how could it be missing? The question led to a quick series of discoveries:</p>
+<ul>
+<li>My phone runs Android 2.3.7 a.k.a. Gingerbread (well, not really a discovery for me but a key piece of the puzzle).</li>
+<li>Proper support for non-Google calendars was only added in version 4.0 a.k.a. Ice Cream Sandwich; what there was before was <a href="http://www.techrepublic.com/blog/app-builder/programming-with-the-android-40-calendar-api-the-good-the-bad-and-the-ugly/825">unofficial and unsupported</a>.</li>
+<li>The CalDAV Adapter project lists API level 14 (Ice Cream Sandwich) as the minimum required API level in its Android manifest.</li>
+<li>Back when I first tried to run the CalDAV adapter, Eclipse ADT had told me I had no compatible device; I tried modifying the manifest, changing the minimum API level to 10 (Gingerbread).</li>
+<li>Changing the minimum API level of an Android project <em>doesn't trigger a re-build in Eclipse ADT</em>; changing the <em>target API level</em> does trigger a re-build.</li>
+<li>Once prompted to re-build the project, ADT flags usage of higher-than-minimum-level APIs as an error, breaking the build.</li>
+<li>When Dalvik encounters unknown API usage while executing the code, it marks the block where the API was used as <em>dead code</em> and moves on.</li>
+</ul>
+<p>So I was trying to use an application that was incompatible with my handset and both the development environment and the runtime responded with silent failures. I think ADT in particular behaved quite impolitely. If using APIs beyond the minimum level is off-limits then changing the minimum level should trigger a re-build, right? As for the Android runtime, the <a href="http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#min">documentation</a> says</p>
+<blockquote>
+<p><em>...the application will crash during runtime when attempting to access the unavailable APIs.</em></p>
+</blockquote>
+<p>which seems to be false (or at least no indication of a crash reaches the user). In any case, the approach I'd been taking turned out to be a dead end. <em>Continued in <a href="../pimp-my-calendar-part-5.html">part 5</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-5"></a>
+      <a href="../pimp-my-calendar-part-5.html" rel="bookmark" title="Permalink to PIMp my calendar, part 5">PIMp my calendar, part 5</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T18:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The self-hosted calendaring solution I had been <a href="../pimp-my-calendar-part-4.html">trying to set up</a> turned out not to work due to an incompatibility between my Android phone and the CalDAV client I tried to run on it. My options at this point consisted of</p>
+<ol>
+<li>upgrading the firmware in my phone to Ice Cream Sandwich or higher</li>
+<li>buying a new phone</li>
+<li>porting the CalDAV Adapter to the unofficial and unsupported APIs</li>
+<li>choosing a different calendaring solution</li>
+</ol>
+<p>My handset is a <a href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/GeeksPhone_One">Geeksphone One</a> - a sturdy little machine well supported by Cyanogen Mod yet simply too weak to handle anything beyond 2.3.x. It's condemned to stay in the <a href="http://en.wikipedia.org/wiki/File:Android-dist-by-dessert.png">Gingerbread zombie army</a> until I retire it. Buying a new phone is plausible in the mid- to long-term but I do want a slide-out QWERTY keyboard. Looks like I'll have to overcome my allergy to <a href="http://www.gsmarena.com/sony_ericsson_xperia_pro-3779.php">Sony</a>.</p>
+<p>I looked into back-porting the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> to the unofficial APIs available in Gingerbread. It seemed like a ton of work with dubious benefits - especially when I found out the work had already been done. You see, the adapter I'd been working with (written by Gérald Garcia) was not the only one I'd found - there is also <a href="http://dmfs.org/caldav/">another adapter</a> written by Marten Gajda which I hadn't considered since it isn't distributed as open-source. It does work under Gingerbread, however, which made a proper impression on me given everything I knew at this stage.</p>
+<p>I ended up doing something I hadn't done in years - I purchased and installed a piece of closed-source software. One thing that convinced me was Marten's website which is simple and sticks to the point; the same can be said of the software. Unfortunately, even with a bona-fide polished product on the Android side it wasn't smooth sailing. I had a Radicale instance installed on my notebook for debugging and it talked to the adapter just fine - unlike the home server. Both were running Radicale 0.7 by this point so I compared their OS-specific patches (using <em>apt-get src</em> on my Debian notebook and the ports tree on the OpenBSD home server). One of the Debian patches added automatic creation of calendars which was lacking in the OpenBSD version (this functionality is mentioned in current Radicale documentation but that supposedly refers to 0.7.1; the experiment with <a href="http://www.mozilla.org/projects/calendar/lightning/">Mozilla Lightning</a> in <a href="../pimp-my-calendar-part-3.html">part 3</a> had worked because the Debian version was involved). Porting the patch and installing from ports was a matter of minutes. After that, <strong>everything worked like a charm</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="reputation-as-a-measure-of-success"></a>
+      <a href="../reputation-as-a-measure-of-success.html" rel="bookmark" title="Permalink to Reputation as a measure of success">Reputation as a measure of success</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-05-15T06:31:00"> Wed 15 May 2013 </abbr> under
+        <a href="../tag/craftsmanship.html">craftsmanship</a>,        <a href="../tag/motivation.html">motivation</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I prefer definitions of success that don't involve exclusivity. The problem with exclusivity is that it doesn't scale. When success is defined as being "the best in the world", for example, the number of successful people is limited by the number of categories in which one can be "the best in the world". Many companies thus present themselves as "the global leader" in whatever absurd bombastic-sounding niche they dream up for themselves. In addition, exclusivity is ethically questionable - in the words of <a href="http://www.youtube.com/watch?v=Xt_YhSxjshY">Scatman John</a>, <em>"how can someone win when winning means that someone loses?"</em>.</p>
+<p>I believe everyone deserves the confidence and satisfaction that comes with success. Definitions that don't require excluding anyone are preferable from this point of view. For a business, "being profitable" may be one such definition of success. "Growing consistently" may be another one, although growth does become exclusive once a market matures.</p>
+<p>The other extreme - feel-good notions of "success" that don't require any effort - is even more problematic. Slight positive bias in one's self image is said to help achieve goals but the goals have to be there in the first place. (Interesting aside: does presence of goals indicate absence of success? Is success a state or a process? Why do we want to succeed, anyway?)</p>
+<p>I became aware of these issues quite early in my youth and decided my definition of career success would be <em>"achieving respect in a community of competent professionals"</em>. This was before the Internet. I can now say I've been achieving this success through most of my career if the "community" is defined as one's workplace and its circle of competent professionals.</p>
+<p>That's no longer enough. For years, I have been standing on the sidelines of the great community that is the Internet. I would love to achieve a measure of respect there but it's quite scary. As the Red Woman says, <a href="http://www.youtube.com/watch?v=_YmVI84iYOQ">the Net is vast and full of strangers</a>, many of them jerks or worse. Even the sub-Internet of "competent software development professionals" is vast and full of strangers, many of them jerks or worse.</p>
+<p>This brings up an awkward fact: when a community becomes large enough, respect of peers becomes exclusive. Respecting someone requires being aware of their existence, achievements and other attributes. Awareness is a limited resource. In my team at work there are so few of us we can comfortably judge each other's competence and award respect to everyone who deserves it. On the internet, however, I compete for the respect of my peers just as they compete for mine.</p>
+<p>What to do about this? It's obvious that my youthful definition of success was flawed as it didn't correspond to my own ethics. I need to formulate another definition fully immune from exclusion. Perhaps something like "creating works of high quality useful to customers and delightful to users", as mundane as that sounds. (Of course, the previous definition did mention "works of high quality" between the lines: it spoke of "competent professionals" rather than "gullible fools".)</p>
+<p>Having said that, my craving for "respect" doesn't feel like a symptom of vanity. I'd say it reflects a pretty basic human need for acceptance within the group I identify with. When such acceptance is a scarcity I can either give up on being accepted, pursue the acceptance to the exclusion of others or choose a different, smaller community to participate in. I don't feel like giving up but both of the other options involve, well, talking to strangers. Oh my...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="software-as-knowledge-repository"></a>
+      <a href="../software-as-knowledge-repository.html" rel="bookmark" title="Permalink to Software as knowledge repository">Software as knowledge repository</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-05-27T16:30:00"> Mon 27 May 2013 </abbr> under
+        <a href="../tag/craftsmanship.html">craftsmanship</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><em><strong>Summary</strong> Software is the most relevant representation of knowledge about a business. It is crucial that this knowledge be accessible to decision-makers. When managers resent refactoring as "not adding business value", they overlook the value of software as a knowledge repository.</em></p>
+<p>Software is the most relevant representation of knowledge about a business. Although it only implements automated workflows, those form an ever-growing part of business activities. Source code is the only 100% accurate and up-to-date documentation of such workflows and often reveals a lot about manual processes as well.</p>
+<p>More importantly, software is <em>executable</em> knowledge. It doesn't simply describe automated processes - software <em>becomes</em> the process once running in a production environment.</p>
+<h4>The problem of access</h4>
+<p>It follows that a decision-maker trying to truly master the processes in a business needs fast, flexible and efficient access to software-bound knowledge. What's more, she needs <em>read-write</em> access in order to augment, extend and deepen the knowledge. It's a non-trivial requirement:</p>
+<ul>
+<li>In software, business-specific knowledge is intertwined with lots of other concerns (infrastructure, ergonomics, security, governance, ...).</li>
+<li>Source code addresses several audiences at once (end user, other programmers, compiler).</li>
+<li>Software tends to be heterogeneous even in modestly-sized businesses (different authors, different programming languages and platforms, ...).</li>
+<li>Software has to be precise enough for a computer to execute (i.e. extremely precise by human measure).</li>
+</ul>
+<p>The way software is usually managed presents additional difficulties. Business knowledge gets "baked in" at various stages of a complicated dance involving decision-makers, analysts, architects, programmers, testers - oh, and hopefully also end users. The transformation progresses via specification documents, UML diagrams, Scrum stories, bug reports or what have you. Given sufficient skill and will on all sides, there is reasonable certainty that the software does what decision-makers intend it to do. The process is neither flexible, fast nor efficient, however. Improving this situation surely means competitive advantage.</p>
+<h4>Distilling knowledge</h4>
+<p>Many approaches have been tried to bring stakeholders closer to software (and many more will be tried as software grows more important). They often start by isolating business-specific parts of a program (a.k.a. "business logic") from the rest. The idea is sensible enough yet fraught with pitfalls:</p>
+<ul>
+<li>The boundary between generic and business-specific code is often blurred.</li>
+<li>Business-specific algorithms can exist at many levels of abstraction.</li>
+<li>Local peculiarities creep into unforeseen places (masked as validation criteria etc.).</li>
+<li>Isolating parameters is much easier than isolating an algorithm.</li>
+</ul>
+<p>The last point is especially relevant. Many businesses end up with an agreed set of easy-to-tweak configuration settings, complemented by a change-request process that supposedly balances flexibility with maintainability. Such a set-up makes it all too easy to make the wrong trade-offs under schedule pressure. Another possible outcome is programming by configuration, i.e. spiking a program with so many parameters as to make both the code and the configuration extremely complex (this is the shadowy domain of SAP consultants).</p>
+<h4>Matters of presentation</h4>
+<p>When it comes to giving decision-makers useful access, extracting algorithms as well as parameters is clearly essential but won't suffice unless the CEO is fluent in the language in which the code is written. Making business logic palatable to non-technical folks is therefore a major area of activity featuring its own array of methods and tools, with <a href="http://en.wikipedia.org/wiki/Business_process_management">Business Process Management</a> (BPM) apparently in vogue these days, complemented by <a href="http://www.brcommunity.com/">Business Rule Mangement</a> (BRM).</p>
+<p>Such tools are definitely useful but they only go part of the way. Even with declarative approaches such as BRM, understanding software requires algorithmic thinking. It's a hurdle no programming language nor diagramming technique will overcome. Algorithmic thinking is a skill and can be learned, however. The recent debate regarding <a href="http://www.digitaltrends.com/computing/why-learning-to-code-is-not-just-a-horrible-trend/">whether everyone should learn to code</a> is, at its core, about letting people comprehend the world around them as software pervades it. The concern is especially relevant for business decision-makers.</p>
+<p>It will take a generation shift (maybe several) for algorithmic thinking to become common among non-programmers. Mediation between decision-makers and software is therefore poised to remain a feature of the business world for the foreseeable future. As mentioned, the process tends to be rather chaotic in practice and varies immensely between businesses. What's universal is the ever-stronger imperative to make it fast, flexible and efficient.</p>
+<h4>Perils of mediation</h4>
+<p>This is where agile methodologies enter the picture. <a href="http://agilemanifesto.org/">The Agile Manifesto</a> reads like a sigh of frustration with the communication barriers between programmers and other stakeholders. Yet it tackles precisely the interface between decision-makers and the software they pay for - which, as is hopefully clear by now, is a really tough nut to crack.</p>
+<p>Agile has endured some <a href="http://www.ambysoft.com/certification/scam.html">backlash</a> over the years but it represents great progress nevertheless. It clarifies that there are aspects to developing software that don't have technical solutions. That's always been obvious to managers but putting it in words programmers can understand was certainly commendable. Overall, agile practices do result in <a href="http://www.ibm.com/developerworks/rational/agile/agile-survey/">improvements</a> when applied properly.</p>
+<p>The most common cause of failure in agile projects seems to be misunderstanding and mistrust of the <a href="http://agilemanifesto.org/principles.html">agile principles</a> on the part of key stakeholders. The principles are thus not applied consistently and the project ends up a half-hearted faux-agile mess.</p>
+<p>Two agile values are particularly difficult yet vital from the perspective of software as knowledge repository:</p>
+<ul>
+<li><strong>Working software</strong> tends to be misunderstood by non-programmers - they don't appreciate how fragile working software is and how easy it is to introduce bugs. Hence the ignorance of test coverage and the general disregard for software quality in the presence of other priorities.</li>
+<li><strong>Responding to change</strong> tends to be misinterpreted by programmers and non-programmers alike as giving in to schedule pressure. Requirement analysis becomes sloppy, necessary maintenance is skipped.</li>
+</ul>
+<p>Both pitfalls lead to low-quality code that makes business-specific knowledge catastrophically opaque. The problem can arise surprisingly quickly and the consequences are serious. Requirements are not met, changes take lots of time and introduce bizarre bugs, developers quitting cause undue disruption - a typical project in disarray.</p>
+<h4>Refactoring to the rescue</h4>
+<p>The agile practice of <a href="http://refactoring.com/">refactoring</a> aims to achieve high software quality without slowing down the pace of development, even increasing it. Briefly, refactoring means changing software in small incremental steps and confirming the changes through automated test runs (the test runs ensure the behavior of the software stays the same as its structure improves).</p>
+<p>Refactoring is intended to be used early and often, preventing the build-up of hard-to-understand code. The proposition is counter-intuitive because it sounds like extra work. As a result, many teams never adopt the practice. It's a shame: refactoring does speed up coding by slashing the cognitive load imposed on the programmer. In other words, there are far fewer things to worry about when modifications are modest and unit tests are robust.</p>
+<h4>Why no-one does it</h4>
+<p>What happens in practice is that software quality is left to atrophy until a developer comes to a decision-maker and says "Hey, we <em>really</em> need to refactor this." Time is alotted but it's not enough so big chunks of the code are cleaned up haphazardly with no test coverage. A flurry of new bugs appears and refactoring gets another blemish on its reputation even though it was never brought to bear. Overcoming this anti-pattern requires adaptation on both sides:</p>
+<ul>
+<li>Software developers must get serious practical exposure to true refactoring as part of their training. The impact has to be experienced to be appreciated.</li>
+<li>Decision-makers must admit to themselves how critical sotware is to their organization and stop treating it as a "cost center" or an obstacle to achieving business objectives.</li>
+</ul>
+<h4>Why you should do it</h4>
+<p>A well-maintained body of code is valuable whether or not it's directly readable by non-technical decision-makers. Knowledge is at hand, answers are quick, changes are smooth. The company becomes nimble in a way it never could without automation. At a software startup, this notion forms the core of its competitive strategy - that's why working at a startup is so alluring to programmers. It also drives startups' disruptive potential. Decision-makers at conventional companies face the tough task of integrating the value of software into their cultures even if they don't compete with startups. <a href="http://www.businessspectator.com.au/article/2012/12/18/technology/app-assault-taxi-monopoly">Once they do</a> it may be too late.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="soundgraph-imon-pad-vs-linux-2636"></a>
+      <a href="../soundgraph-imon-pad-vs-linux-2636.html" rel="bookmark" title="Permalink to Soundgraph iMON PAD vs. Linux 2.6.36">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-09T12:09:00"> Sun 09 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I use a Soundgraph iMON PAD remote control to command my home-theater PC. The remote stopped working when I upgraded my kernel from 2.6.33 to 2.6.36, due to major infrastructure changes that started in 2.6.35. At first I simply reverted to the older kernel but this week I had a few spare hours to figure out what was going on. In short, the iMON driver has been cleaned up by Jarod Wilson and <a href="http://wilsonet.com/?p=85">included in the main kernel code base (finally!)</a>. Its logic was also standardized to route its output to the Linux input layer rather than to the <a href="http://www.lirc.org">LIRC</a> daemon. This obviously requires some re-configuration of the daemon, as <a href="http://old.nabble.com/Re:-Status-of-lirc-imon-usb-remotes-p28684857.html">Jarod explained</a> on the LIRC mailing list.</p>
+<p>On my HTPC I had to put the following settings into <em>/etc/lirc/hardware.conf</em>:</p>
+<div class="codehilite"><pre><span class="n">DRIVER</span><span class="o">=</span><span class="s">&quot;devinput&quot;</span>
+<span class="n">DEVICE</span><span class="o">=</span><span class="s">&quot;/dev/input/by-id/usb-15c2_ffdc-event-mouse&quot;</span>
+</pre></div>
+
+
+<p>I also had to adjust key codes in <em>/etc/lirc/lircd.conf</em> (note that I only need only six keys for my remote-control software, <a href="http://offhand.sourceforge.net/">Offhand</a>; others should simply use <a href="http://wilsonet.com/jarod/imon_stuff/imon-devinput-lirc/lircd.conf">Jarod's file</a>):</p>
+<div class="codehilite"><pre><span class="n">begin</span> <span class="n">codes</span>
+    <span class="n">KEY_BACKSPACE</span>            <span class="mh">0x000E</span>
+    <span class="n">KEY_COMPOSE</span>              <span class="mh">0x007F</span>
+    <span class="n">KEY_CONTEXT_MENU</span>         <span class="mh">0x01B6</span>
+    <span class="n">KEY_ENTER</span>                <span class="mh">0x001C</span>
+    <span class="n">KEY_KEYBOARD</span>             <span class="mh">0x0176</span>
+    <span class="n">KEY_SPACE</span>                <span class="mh">0x0039</span>
+<span class="n">end</span> <span class="n">codes</span>
+</pre></div>
+
+
+<p>Finally, I had to adjust the .lircrc file used by Offhand:</p>
+<div class="codehilite"><pre><span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_CONTEXT_MENU</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">back</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_COMPOSE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">forward</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_KEYBOARD</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">up</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_ENTER</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">down</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_SPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">ok</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_BACKSPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="n">end</span>
+</pre></div>
+
+
+<p>Separately, I also had to configure the iMON driver to forget about its mouse emulation mode. I did it by creating the file <em>/etc/modprobe.d/imon.conf</em> containing</p>
+<div class="codehilite"><pre><span class="n">options</span> <span class="n">imon</span> <span class="n">nomouse</span><span class="o">=</span><span class="mi">1</span>
+</pre></div> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+                        <a href="../author/jan-hustak2.html">&laquo;</a>
+                Page 3 / 5
+            <a href="../author/jan-hustak4.html">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

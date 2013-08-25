@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles by Jan Hustak</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>                        <a href="../author/jan-hustak.html">&laquo;</a>
+                Page 2 / 5
+            <a href="../author/jan-hustak3.html">&raquo;</a>
+    </h3>
+      <a href="#disabling-acpi-in-openbsd-48">Disabling ACPI in OpenBSD 4.8</a>
+      <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
+      <a href="#installing-openbsd-48-on-an-hp-mini-5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
+      <a href="#logitech-dinovo-edge-vs-aptosid">Logitech diNovo Edge vs. aptosid</a>
+      <a href="#look-mom-no-ports">Look mom, no ports!</a>
+      <a href="#october-2013">October 2013</a>
+      <a href="#oh-no-another-blog">Oh no, another blog</a>
+      <a href="#pimp-my-calendar-aftermath">PIMp my calendar: Aftermath</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles by Jan Hustak</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="disabling-acpi-in-openbsd-48"></a>
+      <a href="../disabling-acpi-in-openbsd-48.html" rel="bookmark" title="Permalink to Disabling ACPI in OpenBSD 4.8">Disabling ACPI in OpenBSD 4.8</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-21T08:56:00"> Sun 21 November 2010 </abbr> under
+        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I've <a href="../installing-openbsd-48-on-an-hp-mini-5101.html">mentioned</a>, OpenBSD 4.8 can't boot on a HP Mini 5101 netbook due to an apparent ACPI issue. The way to work around the issue is as follows:</p>
+<ul>
+<li>When booting, enter <strong>boot -c</strong> at the <em>boot&gt;</em> prompt. A <em>UKC&gt;</em> prompt will appear shortly.</li>
+<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; the kernel should proceed to 
+boot successfully to the login prompt.</li>
+<li>After logging in, enter <strong>su</strong> (sudo won't work since you haven't edited <em>/etc/sudoers</em> yet).</li>
+<li>Enter <strong>config -e -o bsd.noacpi /bsd</strong>; you will see the <em>UKC&gt;</em> prompt again.</li>
+<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; you should be back in the shell, with a new file called <em>bsd.noacpi</em> in the current directory.</li>
+<li>Enter <strong>mv /bsd /bsd.acpi &amp;&amp; mv bsd.noacpi /bsd</strong> to replace the current kernel with the new one.</li>
+<li>Enter <strong>chmod 0644 /bsd</strong> to set proper permissions for the new kernel.</li>
+<li>Enter <strong>reboot</strong> to test things out; the computer should now boot into the login prompt without any assistance.</li>
+</ul>
+<p>What's going on here? UKC is the <em>User Kernel Config</em>, OpenBSD's tool for tweaking a kernel without re-compiling it. As we've seen, it can be used to great effect even during the boot process. What's perhaps even more impressive, UKC can also tweak the currently running kernel without having to reboot. All relevant info can be found by entering <strong>man UKC</strong> and <strong>man config</strong> in the OpenBSD shell.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="idiosyncrasies-in-pythons-timezone-handling"></a>
+      <a href="../idiosyncrasies-in-pythons-timezone-handling.html" rel="bookmark" title="Permalink to Idiosyncrasies in Python's timezone handling">Idiosyncrasies in Python's timezone handling</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-23T04:13:00"> Sat 23 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/python.html">Python</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I work to fix timezone logic in <a href="https://github.com/codingjourney/upsheet">upsheet</a>, I've become somewhat frustrated with date and time handling in Python. Coming from a Java background, I know this stuff is awfully difficult to get right. Python has a large community driven by sophisticated users, however, so I expected things to be pretty smooth. I was wrong:</p>
+<ul>
+<li><strong><em>datetime</em> vs. <em>time</em></strong>
+Two modules with overlapping functionality and no clear separation of scope.</li>
+<li><strong><em>datetime.datetime</em></strong>
+A class with the same name as its module. This is probably common in the Python library but it makes for weird expressions such as <em>datetime.datetime.strptime(...)</em>. Kind of nudges you to drop the module prefix with <em>from datetime import *</em>.</li>
+<li><strong>timezone handling in <em>datetime</em> is a red-headed stepchild</strong>
+The <em>datetime</em> module tactfully avoids the gritty details of coming up with the local system's current timezone. You can supply a timezone but you have to provide your own <em>tzinfo</em> subclass to do it.</li>
+<li><strong>timezone handling in <em>time</em> is a red-headed stepchild</strong>
+You get <em>timezone</em> for the non-DST system timezone, <em>altzone</em> for the DST system timezone, <em>daylight</em> to see if <em>altzone</em> is even applicable and <em>localtime().tm_isdst</em> to decide (provided <em>altzone</em> is applicable) whether <em>timezone</em> or <em>altzone</em> is the local system's current timezone. Whew! I mean, it's wonderfully precise and flexible but kind of all over the place.</li>
+<li><strong>timezone offsets are represented inconsistently</strong>
+While <em>datetime.tzinfo.utcoffset()</em> must return its result in minutes, both <em>time.timezone</em> and <em>time.altzone</em> provide the offset in seconds. Trivial yet irritating.</li>
+<li><strong><em>datetime.time</em> vs. <em>time</em></strong>
+A class in one module with the same name as a related module. When you use <em>datetime</em> without the module prefix, this forces you to either also use <em>time</em> without the prefix - further polluting the naming scope - or alias it using <em>import time as sillytime</em>.</li>
+<li><strong>inconsistent timezone offsets</strong>
+While <em>time.timezone</em> and <em>time.altzone</em> specify timezone offsets in seconds west of UTC, <em>tzinfo.utcoffset()</em> must return minutes east of UTC.</li>
+<li><strong>mischievous documentation</strong>
+One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or -1; see below"</em>. Of course, there's no further mention of <em>tm_isdst</em> anywhere in the document. A sentence buried in the next paragraph does say <em>"A -1 argument as the daylight savings flag, passed to mktime() will usually result in the correct daylight savings state to be filled in."</em>. Which means the -1 is utterly irrelevant except for one specific use-case.</li>
+</ul>
+<p>Having figured all of this out, I can now construct a <em>datetime.datetime</em> instance equipped with the correct <em>tzinfo</em> for the current local timezone. This goes to show how hard it is to design a really good API.</p>
+<p>I do hope it all works the same way under Windows...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="installing-openbsd-48-on-an-hp-mini-5101"></a>
+      <a href="../installing-openbsd-48-on-an-hp-mini-5101.html" rel="bookmark" title="Permalink to Installing OpenBSD 4.8 on an HP Mini 5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-19T22:14:00"> Fri 19 November 2010 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I used to be baffled by the netbook form factor. I could see no use for a toy notebook nor for an overgrown PDA. One day, as I was reviewing the specs of yet another netbook model somewhere, it hit me: this is a light-duty server with a built-in console. No more searching for a PS/2 keyboard down in the basement! What a concept!</p>
+<p>I had been thinking of building a home server for some time so I went out and bought an Acer Aspire One. I put OpenBSD 4.5 on it and it has perfomed beautifully. It's served HTTP, SMTP, POP3 and the Squeezebox streaming protocol, as well as shared a printer and provided a backup destination for other boxes on the network.</p>
+<p>My only worry was that it might break down - after all, netbooks are not designed to be turned on 24/7. I decided to buy another one and periodically sync its disk from the "master" machine so that I could just swap them in case of need. Alas, the same model was no longer available, much to my disappointment. I ended up getting a pair of HP Mini 5101s instead.</p>
+<p>The main problem with installing an OS on a netbook is the lack of a CD-ROM drive. With the Acer I'd performed a network install using pxeboot but it was not something I would endure again if I could help it. I decided to try installing from a USB stick instead. First I had to create the installation medium, of course. I quickly found <a href="http://old.nabble.com/Install-OpenBSD-from-USB---td15057477.html">a great thread</a> at misc@openbsd.org that basically said one can either copy the install48.iso straight onto the raw USB stick device (under Linux this would be <em>dd if=install48.iso of=/dev/sdb</em> or something) or one can boot the OpenBSD CD-ROM and install onto the USB stick just like onto a hard drive.</p>
+<p>People on the thread couldn't agree on which method was better. I tried the simpler <em>dd</em> method first but the USB stick would not boot on the Mini. Funnily enough, it did boot on my ThinkPad (BIOS being the X factor). With a bit of trepidation, I booted the ThinkPad from the OpenBSD CD and installed onto the USB stick, hoping I would not ruin my notebook's hard disk instead. All went well and this time the USB stick did boot on the Mini.</p>
+<p>Installation onto the Mini from the USB stick was uneventful. For the first time after years I had the luxury of installing on the entire hard drive, letting the installer do the partitioning for me. I could reach all BSD packages over the network without problems as I had an Ethernet cable plugged into the machine and DHCP worked just fine.</p>
+<p>Rebooting after the install ended in a kernel panic, however. Neither <em>bsd.mp</em> nor <em>bsd.sp</em> at the boot prompt seemed to help. Off to Google I was yet again, with "openbsd hp mini 5101". It turned out someone had <a href="http://kerneltrap.org/mailarchive/openbsd-misc/2010/9/3/6691/thread">seen the problem before</a> and they solved it by <a href="http://www.mail-archive.com/tech@openbsd.org/msg00278.html">turning off ACPI</a> at the boot prompt. It helped me as well and I was finally able to log into my new OpenBSD system. I've yet to figure out how to disable ACPI permanently. I also have to see how running without ACPI affects power consumption and temperatures. Other than that, the Mini seems to handle OpenBSD just fine.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="logitech-dinovo-edge-vs-aptosid"></a>
+      <a href="../logitech-dinovo-edge-vs-aptosid.html" rel="bookmark" title="Permalink to Logitech diNovo Edge vs. aptosid">Logitech diNovo Edge vs. aptosid</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-06T13:09:00"> Thu 06 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>If you have no idea what a Logitech diNovo Edge could be, think about it for a while. You should quickly reach the obvious conclusion: it's a <a href="http://www.logitech.com/en-us/keyboards/keyboard/devices/192">super-thin wireless keyboard</a> featuring a built-in mouse pad. I happen to use one with my home-theater PC. It's a classy product, feels solid (even a bit luxurious) and works very well - that is, it used to work until I replaced the HTPC's ancient Kubuntu system with <a href="http://www.aptosid.com">aptosid</a>. Ever since then, I could use the keyboard in the bootloader but not once the system was up.</p>
+<p>aptosid, formerly known as sidux, is a running-release distribution of GNU/Linux descending from Debian Sid, the so-called "unstable" flavor of Debian. Being running-release means that instead of periodic releases of the entire environment, I get a constant trickle of new package versions as they are admitted into repositories. The upside is always being up-to-date. The downside is a not quite thoroughly tested environment where things occasionally stop working.</p>
+<p>The team managing aptosid does a pretty impressive job keeping the system stable. I'd been running it on my main notebook for a while and breakage had been pleasantly rare. I couldn't really fault the system for refusing to handle a relatively obscure piece of hardware. Given that I mostly run the HTPC with a remote and I manage the machine over the network, I had little need for the keyboard. Playing DVDs was the only scenario that was truly annoying. With a bit of time over the holidays, I decided to tackle it.</p>
+<p>I connected the keyboard to my notebook - having another, 100% reliable keyboard on the same computer made the investigation much smoother. I quickly foud out that the keyboard would work the first time its receiver dongle was plugged in, but after dis- and re-connecting it would behave identically as on the HTPC. A telling difference was the presence of an extra USB device: upon first connect, <em>lsusb</em> would list three new devices while after re-connecting it displayed four.</p>
+<p>Googling the incriminated USB IDs produced <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589388">the answer</a>: udev is configured in Sid to run <em>hid2hci</em> when the Edge is connected, making it a fully capable Bluetooth device rather than just a dumb USB keyboard. Except what I want is just a dumb USB keyboard.</p>
+<p>I tried adjusting udev rules on the HTPC to prevent <em>hid2hci</em> from running but no matter what I tried, it still somehow managed to launch itself during the boot sequence. I ended up replacing <em>/usr/sbin/hid2hci</em> with a shell script looking like this:</p>
+<div class="codehilite"><pre><span class="n">echo</span> <span class="s">&quot;pretending to run hid2hci&quot;</span>
+</pre></div>
+
+
+<p>Ever since then, I've been navigating DVD menus with much more flair. The keyboard suddenly seems brand new now that it works! Dead keyboard wasn't my HTPC's only problem, however. The story is set to continue...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="look-mom-no-ports"></a>
+      <a href="../look-mom-no-ports.html" rel="bookmark" title="Permalink to Look mom, no ports!">Look mom, no ports!</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-02-13T17:04:00"> Sun 13 February 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/qt.html">Qt</a>,        <a href="../tag/jetty.html">Jetty</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I'm currently updating a commercial HTML-based desktop application that I wrote a few years ago. Customers keep having permissions trouble on Windows with the back-end opening a TCP port for serving front-end's HTTP requests. I decided to try to refresh both the back-end (to Jetty 7.3.0) and the front-end (to WebKit running in Java via Qt Jambi) and run them in one process with no TCP ports involved. Both components have reputations for being easy to embed, so I thought it shouldn't be too hard. Yeah right...</p>
+<p>Actually, things went very smoothly at first. Here's what I discovered:</p>
+<ul>
+<li>Jetty accepts requests via Connectors; one of them is LocalConnector.</li>
+<li>Obviously, setting up Jetty with LocalConnector is beyond the scope of this post :-)</li>
+<li>LocalConnector.getResponses() accepts a String argument containing an HTTP request just as you would type it into a telnet window (like "GET /whatever HTTP/1.0" followed by two newlines) and returns an HTTP response, also as a String ("HTTP/200 OK blah blah..."). It's a primitive interface but it does work.</li>
+<li>The method mentioned above doesn't work very well if you want to GET binary data such as images (yeah, you could use "Content-Encoding: base64" but come on...). There is, fortunately, a variant of LocalConnector.getResponses() that accepts a ByteArrayBuffer along with a boolean "keepOpen" argument which I simply set to false. The method otherwise works just like the String variant.</li>
+</ul>
+<p>As for a WebKit front-end, once you have Qt Jambi set up properly (with -Djava.library.path etc.) it's really easy to create a QWebView, point it at a URL and splash it all over your display. To prevent HTTP traffic, however, I needed to intercept requests coming from WebKit and route them to my LocalConnector:</p>
+<ul>
+<li>The thing to do is QWebView.page().setNetworkAccessManager(magic), where "magic" is a subclass of QNetworkAccessManager that overrides createRequest() to do the necessary, well, magic.</li>
+<li>Despite superficial appearances, createRequest() actually accepts QNetworkRequest as a parameter and returns a QNetworkReply. Go figure. Additional parameters for createRequest() include an Operation enum to distinguish GETs from POSTs, and a QIODevice (think InputStream) containing the data of a POST request.</li>
+<li>Since QNetworkReply is also a stream-like QIODevice, returning custom content from createRequest() involves writing a QNetworkReply subclass that knows where to look for when clients call its read*() methods. This is not quite easy to do.</li>
+</ul>
+<p>Anyway. After a few hours I had a web application running in a WebKit window with not a TCP packet in sight.The trouble came when I tried to process a POST request (yes, the application does involve filling out forms). What followed was a bout of frustration, head-scratching and just plain unhappiness that I don't wish upon anyone:</p>
+<ul>
+<li>First, you have to realize that Qt Jambi (including its WebKit component) is actually a C++ beast in sheep-like Java clothing. No matter how sweet the API is, the implementation is a bitch to debug even if, technically, you have access to the source code.</li>
+<li>What happened is that my createRequest() was called with a PostOperation as it should be but the accompanying QIODevice was empty. More specifically, calling canReadLine() on it returned false.</li>
+<li>Setting a breakpoint and examining the QIODevice's internals didn't show anything interesting (it was basically a proxy object for a C++ implementation).</li>
+<li>I resorted to the oldest tool in a programmer's toolbox: trace statements. Here's what they gave me:<ul>
+<li>formData.isOpen(): true</li>
+<li>formData.isReadable(): true</li>
+<li>formData.isSequential(): true</li>
+<li>formData.atEnd(): true</li>
+<li>formData.bytesAvailable(): 0</li>
+<li>formData.size(): 0</li>
+<li>formData.pos(): 0</li>
+</ul>
+</li>
+</ul>
+<p>I tried routing regular HTTP post requests through the parent class and it worked even though the request objects looked exactly the same and returned exactly the same trace results! I was getting ready to give my own QNetworkRequest to the parent implementation that would trace all calls made to it but I tried getByte() and... there was data! WTF?! Point: QNetworkRequest was in a weird uninitialized state where it thought it was empty when it really wasn't. It snapped out of it when prodded for data.</p>
+<p>Another problem surfaced when I tried to get a Dojo Tree widget going. During initialization, Dojo loads its modules via AJAX and it was failing with the dreaded "NETWORK_ERR: XmlHttpRequest Exception 101". Cost me a lot of blind paths - I tried setting the .js files in different paths relative to the referring .jsp, reading compressed Dojo sources, diagnosing with window.alert() etc. In the end, I understood that WebKit was having some problem with the QNetworkReply I was producing. I made my Content-Length calculation more robust - no change. Finally, I looked at QNetworkReply objects produced by the regular QNetworkAccessManager and made sure all the attributes it fills out were also filled out in my replies. That helped. I know, I should have done it at the start but why did it matter with AJAX requests and not with regular ones? Oh well...</p>
+<p>The AJAX issue turned out to be the last major obstacle. My application now runs without opening any TCP ports and both WebKit and Jetty proved reasonably embeddable. I might use this set-up in other contexts as well.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="october-2013"></a>
+      <a href="../october-2013.html" rel="bookmark" title="Permalink to October 2013">October 2013</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-08-24T06:30:00"> Sat 24 August 2013 </abbr> under
+        <a href="../tag/motivation.html">motivation</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>30 June 2013 marked the conclusion of a successful co-operation between myself and an important client. My involvement in the project had lasted almost 6 years and I felt it was time to move on. Having handed over my responsibilities, I'm enjoying a three-month hiatus and plan to start another engagement in October.</p>
+<h4>What's on offer</h4>
+<p>As it says in the sidebar, I'm mostly a Java guy with 15 years of experience. The details are in my CV (<a href="../static/snippets/jan_hustak_cv_201307.doc">doc</a> or <a href="../static/snippets/jan_hustak_cv_201307.odt">odt</a>) but I don't think a CV can convey what really matters.</p>
+<p>I believe I have good analytical and problem-solving skills. I appreciate the complexities of requirement gathering and  the value of customer feedback. I always consider the usability impacts of my design decisions. I understand that IT is not a cure-all and that true solutions to many problems are actually non-technical.</p>
+<p>I'm keenly aware of the <a href="http://blogs.uw.edu/ajko/2012/08/22/john-carmack-discusses-the-art-and-science-of-software-engineering/">social nature</a> and the inherent <a href="http://nathanmarz.com/blog/principles-of-software-engineering-part-1.html">uncertainties</a> of software development. I crave good <a href="http://www.joelonsoftware.com/articles/Craftsmanship.html">craftsmanship</a> and wish there were more of it in our industry. I recognize the importance of great tools and take time to learn them properly. I'm always willing to reconsider my opinions but I'm also capable of defending them - always in a friendly and civil manner.</p>
+<h4>What I'm looking for</h4>
+<p>I hope to join a team of developers who care about the quality of their output. I like a developer culture with emphasis on knowledge sharing, learning and improvement. That implies open and constructive communication. Agile practices are a plus as long as they're implemented consequently.</p>
+<p>I'd love to work on stuff that matters. I'm especially interested in renewable energy, smart grid and energy efficiency, but also medical software, education or any other world-changing area I haven't thought of. Having said that, any software is worth working on as long as it improves the lives of its users or their customers.</p>
+<p>I'm largely geographically constrained to Europe (ideally somewhere around Vienna) but a really great offer might tempt me overseas. I'm keen to try teleworking - huge open-source projects come from dispersed teams so it's got to be feasible. Hybrid models are also an option (3 weeks at home, 1 week on-site etc.).</p>
+<h4>If you're interested</h4>
+<p>Do write me a quick note - <em>coding 'at' journey 'dot' sk</em>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="oh-no-another-blog"></a>
+      <a href="../oh-no-another-blog.html" rel="bookmark" title="Permalink to Oh no, another blog">Oh no, another blog</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-10-19T00:06:00"> Tue 19 October 2010 </abbr> under
+        <a href="../tag/meta.html">meta</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I am a software developer. My work involves a great deal of communication, much of it in writing. Sometimes it takes a lot of time and effort to get the message just right. I started this blog to practice my writing. I hope to evolve a fluid, consistent process for expressing my thoughts. This page has been made public as I hope a genuine audience, however small, may help me achieve that goal. I will do my best to return the favor in the most appropriate currency: interesting and maybe even useful prose.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-aftermath"></a>
+      <a href="../pimp-my-calendar-aftermath.html" rel="bookmark" title="Permalink to PIMp my calendar: Aftermath">PIMp my calendar: Aftermath</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T18:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I spent some of my free time over the past few weeks trying to get the Calendar app on my Android phone to run with a non-Google and non-MS-Exchange account (see <a href="../pimp-my-calendar-part-1.html">part 1</a>, <a href="../pimp-my-calendar-part-2.html">part 2</a>, <a href="../pimp-my-calendar-part-3.html">part 3</a>, <a href="../pimp-my-calendar-part-4.html">part 4</a> and <a href="../pimp-my-calendar-part-5.html">part 5</a>). As with my <a href="../the-battle-of-the-c5280-aftermath.html">printer woes</a>, it turned out to be an enlightening excercise. I ended up running the <a href="http://radicale.org/">Radicale</a> CALDav server on my home server and Marten Gajda's <a href="http://dmfs.org/caldav/">CalDAV adapter</a> on the little machine. I discovered fun facts about Android and its development tools along the way (the highlight was discovering that changing the minimum API level in Eclipse ADT fails to trigger a re-build).</p>
+<p>As for the lessons learned, I guess there is a balance to be struck when troubleshooting a technical issue. One approach involves poking and prodding the system, observing responses and formulating hypotheses. Another option is to study information <em>about</em> the system - source code, documentation, online forums and other resources. Combining these modes optimally is rather delicate and I do tend to err on the side of experimentation. The knowledge it yields may be overly specific and not very reusable but the process fosters a problem-solving mind-set that comes in handy in other situations as well. Besides, documentation may be out of date and, <a href="../pimp-my-calendar-part-4.html">as we've seen</a>, even source code may not be quite what it seems. In fact, what hindered me in resolving the calendaring problem was that I failed to recognize the extent of the system I was working with - namely that it included the development environment.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+                        <a href="../author/jan-hustak.html">&laquo;</a>
+                Page 2 / 5
+            <a href="../author/jan-hustak3.html">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

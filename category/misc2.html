@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>                        <a href="../category/misc.html">&laquo;</a>
+                Page 2 / 5
+            <a href="../category/misc3.html">&raquo;</a>
+    </h3>
+      <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
+      <a href="#pimp-my-calendar-part-4">PIMp my calendar, part 4</a>
+      <a href="#pimp-my-calendar-part-3">PIMp my calendar, part 3</a>
+      <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
+      <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
+      <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
+      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
+      <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles in the misc category</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-5"></a>
+      <a href="../pimp-my-calendar-part-5.html" rel="bookmark" title="Permalink to PIMp my calendar, part 5">PIMp my calendar, part 5</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T18:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The self-hosted calendaring solution I had been <a href="../pimp-my-calendar-part-4.html">trying to set up</a> turned out not to work due to an incompatibility between my Android phone and the CalDAV client I tried to run on it. My options at this point consisted of</p>
+<ol>
+<li>upgrading the firmware in my phone to Ice Cream Sandwich or higher</li>
+<li>buying a new phone</li>
+<li>porting the CalDAV Adapter to the unofficial and unsupported APIs</li>
+<li>choosing a different calendaring solution</li>
+</ol>
+<p>My handset is a <a href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/GeeksPhone_One">Geeksphone One</a> - a sturdy little machine well supported by Cyanogen Mod yet simply too weak to handle anything beyond 2.3.x. It's condemned to stay in the <a href="http://en.wikipedia.org/wiki/File:Android-dist-by-dessert.png">Gingerbread zombie army</a> until I retire it. Buying a new phone is plausible in the mid- to long-term but I do want a slide-out QWERTY keyboard. Looks like I'll have to overcome my allergy to <a href="http://www.gsmarena.com/sony_ericsson_xperia_pro-3779.php">Sony</a>.</p>
+<p>I looked into back-porting the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> to the unofficial APIs available in Gingerbread. It seemed like a ton of work with dubious benefits - especially when I found out the work had already been done. You see, the adapter I'd been working with (written by Gérald Garcia) was not the only one I'd found - there is also <a href="http://dmfs.org/caldav/">another adapter</a> written by Marten Gajda which I hadn't considered since it isn't distributed as open-source. It does work under Gingerbread, however, which made a proper impression on me given everything I knew at this stage.</p>
+<p>I ended up doing something I hadn't done in years - I purchased and installed a piece of closed-source software. One thing that convinced me was Marten's website which is simple and sticks to the point; the same can be said of the software. Unfortunately, even with a bona-fide polished product on the Android side it wasn't smooth sailing. I had a Radicale instance installed on my notebook for debugging and it talked to the adapter just fine - unlike the home server. Both were running Radicale 0.7 by this point so I compared their OS-specific patches (using <em>apt-get src</em> on my Debian notebook and the ports tree on the OpenBSD home server). One of the Debian patches added automatic creation of calendars which was lacking in the OpenBSD version (this functionality is mentioned in current Radicale documentation but that supposedly refers to 0.7.1; the experiment with <a href="http://www.mozilla.org/projects/calendar/lightning/">Mozilla Lightning</a> in <a href="../pimp-my-calendar-part-3.html">part 3</a> had worked because the Debian version was involved). Porting the patch and installing from ports was a matter of minutes. After that, <strong>everything worked like a charm</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-4"></a>
+      <a href="../pimp-my-calendar-part-4.html" rel="bookmark" title="Permalink to PIMp my calendar, part 4">PIMp my calendar, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T06:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><a href="../pimp-my-calendar-part-1.html">Previous</a> <a href="../pimp-my-calendar-part-2.html">parts</a> of the <a href="../pimp-my-calendar-part-3.html">saga</a> brought me to a point where I had an upgraded instance of the <a href="http://radicale.org/">Radicale</a> CalDAV server talking to my Android phone's <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> and still getting nowhere. I decided to debug the Android-side code.</p>
+<p>Attaching the debugger was <a href="http://stackoverflow.com/questions/5379129/debugging-not-working-in-a-service-class-what-can-cause-this-issue">a bit of a trick</a> since the adapter has no Activity. Once I got past that, I discovered the response from Radicale was getting parsed just fine but it was only happening in an authentication context (i.e. while adding the new "CalDAV account"). I generally found that the adapter was basically a bunch of callbacks and I seemed unable to properly trigger them.</p>
+<p>I then noticed something funny in the log (i.e. the LogCat view in the DDMS perspective in Eclipse):</p>
+<blockquote>
+<p><em>VFY: unable to resolve static field 27 (CONTENT_URI) in Landroid/provider/CalendarContract$Events;</em></p>
+</blockquote>
+<p>According to the <a href="http://developer.android.com/guide/topics/providers/calendar-provider.html">documentation</a>, <em>Events.CONTENT_URI</em> is one of the basic constants used when working with calendars - how could it be missing? The question led to a quick series of discoveries:</p>
+<ul>
+<li>My phone runs Android 2.3.7 a.k.a. Gingerbread (well, not really a discovery for me but a key piece of the puzzle).</li>
+<li>Proper support for non-Google calendars was only added in version 4.0 a.k.a. Ice Cream Sandwich; what there was before was <a href="http://www.techrepublic.com/blog/app-builder/programming-with-the-android-40-calendar-api-the-good-the-bad-and-the-ugly/825">unofficial and unsupported</a>.</li>
+<li>The CalDAV Adapter project lists API level 14 (Ice Cream Sandwich) as the minimum required API level in its Android manifest.</li>
+<li>Back when I first tried to run the CalDAV adapter, Eclipse ADT had told me I had no compatible device; I tried modifying the manifest, changing the minimum API level to 10 (Gingerbread).</li>
+<li>Changing the minimum API level of an Android project <em>doesn't trigger a re-build in Eclipse ADT</em>; changing the <em>target API level</em> does trigger a re-build.</li>
+<li>Once prompted to re-build the project, ADT flags usage of higher-than-minimum-level APIs as an error, breaking the build.</li>
+<li>When Dalvik encounters unknown API usage while executing the code, it marks the block where the API was used as <em>dead code</em> and moves on.</li>
+</ul>
+<p>So I was trying to use an application that was incompatible with my handset and both the development environment and the runtime responded with silent failures. I think ADT in particular behaved quite impolitely. If using APIs beyond the minimum level is off-limits then changing the minimum level should trigger a re-build, right? As for the Android runtime, the <a href="http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#min">documentation</a> says</p>
+<blockquote>
+<p><em>...the application will crash during runtime when attempting to access the unavailable APIs.</em></p>
+</blockquote>
+<p>which seems to be false (or at least no indication of a crash reaches the user). In any case, the approach I'd been taking turned out to be a dead end. <em>Continued in <a href="../pimp-my-calendar-part-5.html">part 5</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-3"></a>
+      <a href="../pimp-my-calendar-part-3.html" rel="bookmark" title="Permalink to PIMp my calendar, part 3">PIMp my calendar, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-17T05:45:00"> Wed 17 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My <a href="../pimp-my-calendar-part-1.html">efforts</a> to put a <a href="../pimp-my-calendar-part-2.html">server-backed</a> calendar on my Android phone entered a new phase. I had <a href="http://www.radicale.org/">Radicale</a> on the server and the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapater</a> on the phone but they seemed to talk past each other. My phone would set up a CalDAV account successfully but then tell me "You have no calendar" when I tried to create events.</p>
+<p>Radicale documentation says calendars are created automagically based on a URL convention, i.e. simply accessing a non-existent calendar should bring it into existence. I tried it with the Mozilla Lightning client and it worked as advertised. The Android adapter, however, still wouldn't see the new calendar nor its events.</p>
+<p><a href="http://www.wireshark.org">WireShark</a> revealed that a CalDAV client apparently enjoys a lot of freedom when formulating requests. A PROPFIND request from Lightning looked like this:</p>
+<div class="codehilite"><pre><span class="nt">&lt;D:propfind</span> <span class="na">xmlns:D=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;D:prop&gt;</span>
+    <span class="nt">&lt;D:resourcetype/&gt;</span>
+    <span class="nt">&lt;D:owner/&gt;</span>
+    <span class="nt">&lt;D:supported-report-set/&gt;</span>
+    <span class="nt">&lt;C:supported-calendar-component-set/&gt;</span>
+    <span class="nt">&lt;CS:getctag/&gt;</span>
+  <span class="nt">&lt;/D:prop&gt;</span>
+<span class="nt">&lt;/D:propfind&gt;</span>
+</pre></div>
+
+
+<p>whereas the Android adapter was sending</p>
+<div class="codehilite"><pre><span class="nt">&lt;d:propfind</span> <span class="na">xmlns:d=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:c=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:cs=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:ic=</span><span class="s">&quot;http://apple.com/ns/ical/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;d:prop&gt;</span>
+    <span class="nt">&lt;d:displayname</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;d:resourcetype</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;cs:getctag</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/d:prop&gt;</span>
+<span class="nt">&lt;/d:propfind&gt;</span>
+</pre></div>
+
+
+<p>and it seemed Radicale was not happy with the <em>displayname</em> bit:</p>
+<div class="codehilite"><pre><span class="nx">...</span>
+<span class="o">&lt;</span><span class="nx">propstat</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">prop</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">displayname</span> <span class="o">/&gt;</span>
+  <span class="o">&lt;/</span><span class="nx">prop</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">status</span><span class="o">&gt;</span><span class="nx">HTTP</span><span class="p">/</span><span class="nx">1.1</span> <span class="mi">404</span> <span class="ow">Not</span> <span class="nx">Found</span><span class="o">&lt;/</span><span class="nb">status</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">propstat</span><span class="o">&gt;</span>
+<span class="nx">...</span>
+</pre></div>
+
+
+<p>Server-side source code revealed that Radicale returns 404 for properties which it does not recognize (see the final <em>else</em> in the long <em>if-elif</em> chain in <em>_propfind_response()</em> in <em>xmlutils.py</em>). My installed version of Radicale was 0.7. I downloaded the most recent stable release (0.7.1) from the project site and tried that instead. Lo and behold, it finally said</p>
+<div class="codehilite"><pre><span class="nt">&lt;multistatus</span> <span class="na">xmlns=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;response&gt;</span>
+    <span class="nt">&lt;href&gt;</span>/jh/calendar/<span class="nt">&lt;/href&gt;</span>
+    <span class="nt">&lt;propstat&gt;</span>
+      <span class="nt">&lt;prop&gt;</span>
+        <span class="nt">&lt;displayname&gt;</span>calendar<span class="nt">&lt;/displayname&gt;</span>
+        <span class="nt">&lt;resourcetype&gt;</span>
+          <span class="nt">&lt;C:calendar</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;collection</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/resourcetype&gt;</span>
+        <span class="nt">&lt;CS:getctag&gt;</span>&quot;0&quot;<span class="nt">&lt;/CS:getctag&gt;</span>
+      <span class="nt">&lt;/prop&gt;</span>
+      <span class="nt">&lt;status&gt;</span>HTTP/1.1 200 OK<span class="nt">&lt;/status&gt;</span>
+    <span class="nt">&lt;/propstat&gt;</span>
+  <span class="nt">&lt;/response&gt;</span>
+<span class="nt">&lt;/multistatus&gt;</span>
+</pre></div>
+
+
+<p>The Calendar app on my phone, however, <em>still</em> insisted I had no calendar. <em>Continued in <a href="../pimp-my-calendar-part-4.html">part 4</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-2"></a>
+      <a href="../pimp-my-calendar-part-2.html" rel="bookmark" title="Permalink to PIMp my calendar, part 2">PIMp my calendar, part 2</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-08T04:00:00"> Mon 08 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My effort to set up a <a href="../pimp-my-calendar-part-1.html">self-hosted calendaring</a> solution is taking on epic proportions, turning into another <a href="../the-battle-of-the-c5280-aftermath.html">CUPS saga</a>:</p>
+<ul>
+<li>I quickly discarded the <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">local iCal option</a> because I can't trust a piece of closed-source freeware from someone calling themselves "Khaos".</li>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> dropped out of the race because Kolab itself has complex dependencies and no OpenBSD package.</li>
+<li><a href="http://www.zafara.com">Zafara</a> just felt too heavy-weight and, well, corporate for my needs.</li>
+</ul>
+<p>I decided to concentrate on CalDAV servers with existing OpenBSD packages: <a href="http://www.davical.org/">DAVical</a>, <a href="http://owncloud.org/">ownCloud</a>, <a href="http://www.radicale.org/">Radicale</a> and <a href="http://code.google.com/p/sabredav/">SabreDAV</a>. All except Radicale were PHP-based which made my decision easy as I'm <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">allergic to PHP</a>. I have to admit, though, ownCloud looks mighty fine and seems to have a lot of momentum.</p>
+<p>Radicale has a no-nonsense, focused feel. It is written in Python which is very nice indeed. Installing it was a breeze. I then tried to set up a calendar in Kontact and failed miserably. CalDAV support in Akonadi is apparently confined to a legacy KResource implementation and <em>blah blah blah</em>. I had no stamina to go there. What was important was my phone.</p>
+<p>Installing Gérald Garcia's open-source <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">AndroidCaldavSyncAdapater</a> via Google Play would have been a snap. The thing is, just as I don't want Google knowing about my appointments I don't want it knowing what I run on my phone. Don't get me wrong - I'm quite fond of Google. I'm simply more fond of my privacy.</p>
+<p>Installing the adapter from GitHub turned out to be quite smooth. Once I cloned the repository I found out the project relied on the <a href="http://developer.android.com/tools/sdk/eclipse-adt.html">ADT Eclipse plugin</a> for building and signing the installation package - no trouble there. I had a bit of fun getting ADT to <a href="http://developer.android.com/tools/device.html">see my phone</a> because I made a typo in the <em>udev</em> rule file. I figured it out eventually and got the package onto the phone.</p>
+<p>Adding a Radicale account on Android involved going to <em>Settings &gt; Accounts &amp; sync &gt; Add account &gt; CalDAV Sync Adapter</em> and filling out my user name, password and the URL. Excited, I opened the calendar application. No nagging about MS Exchange - great. Alas, when I tried to create an event I was told "You have no calendars." <em>Continued in <a href="../pimp-my-calendar-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-1"></a>
+      <a href="../pimp-my-calendar-part-1.html" rel="bookmark" title="Permalink to PIMp my calendar, part 1">PIMp my calendar, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-31T12:45:00"> Sun 31 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have a confession to make: I'm a PIM dinosaur. My appointment list resides in an ultra-minimalist GTD app I wrote as an exercise in HTML5 local storage. Even though it runs on my Android phone, it has no alarm function (did I say it was HTML5?). It's just a list of appointments I have to actively look into.</p>
+<p>Of course, the phone has a native calendar app. Back when I had stock firmware it demanded my Google account details before it would talk to me. My appointments are none of Google's business (despite what Google may think) so I stayed away from the app. Now that I run CyanogenMod it asks about my MS Exchange account. Let's just say I don't <em>do</em> MS Exchange.</p>
+<p>An alarm would be nice, though. Syncing with Kontact on my notebook wouldn't hurt either. Since I'm in the process of building a new home server, I considered fixing my calendar woes as well.</p>
+<p>My research turned up several interesting facts:</p>
+<ul>
+<li>The Android calendar can be backed by anything which says it's a "calendar service".</li>
+<li>The default calendar service on my phone talks ActiveSync - the MS Exchange calendar synchronization protocol.</li>
+<li>Other groupware tools besides MS Exchange talk ActiveSync.<ul>
+<li>Zafara with its <a href="http://z-push.sourceforge.net/soswp/">Z-Push</a> connector looks the most mature.</li>
+</ul>
+</li>
+<li>Other calendar services for Android exist.<ul>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> appeals to me since Kolab is friends with Kontact.</li>
+<li>Another interesting choice is a <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV service</a> which should talk to any CalDAV server.<ul>
+<li>There are <a href="http://caldav.calconnect.org/implementations/servers.html">a <em>ton</em> of CalDAV servers</a> including a CalDAV module for Apache.</li>
+</ul>
+</li>
+<li>There's also a calendar service backed by <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">an iCal file</a> right on the phone.</li>
+</ul>
+</li>
+</ul>
+<p>It seems I first need to decide whether I would actually use the syncing capability of a server or whether it's best to choose the iCal option and forget about a server altogether. <em>Continued in <a href="../pimp-my-calendar-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-aftermath"></a>
+      <a href="../the-battle-of-the-c5280-aftermath.html" rel="bookmark" title="Permalink to The battle of the C5280: Aftermath">The battle of the C5280: Aftermath</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-30T20:00:00"> Sat 30 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>After a protracted investigation spanning several days (see <a href="../alice-in-printerland.html">part 1</a>, <a href="../the-battle-of-the-c5280-part-1.html">part 2</a>, <a href="../the-battle-of-the-c5280-part-2.html">part 3</a> and <a href="../the-battle-of-the-c5280-part-3.html">part 4</a>), my new home server is finally providing access to my HP Photosmart C5280 printer-scanner combo. The basic goal has been achieved but I cannot be very happy with the end result. To get the printer to work, I had to disable the <em>ulpt</em> and <em>umass</em> USB drivers in the server's OpenBSD 5.2 kernel - they were both being assigned to the device along with the <em>ugen</em> driver the system actually wanted to talk to.</p>
+<p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
+<p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
+<p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-4"></a>
+      <a href="../the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have previously recounted how I <a href="../the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="../the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="../the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
+<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
+<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * If a device is attached to ugen(4) it has</span>
+<span class="cm"> * only one &#39;devname&#39;.</span>
+<span class="cm"> */</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
+        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+
+
+<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
+<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
+<p><em>For each USB device there may be additional drivers attached to it.</em></p>
+<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
+<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-3"></a>
+      <a href="../the-battle-of-the-c5280-part-3.html" rel="bookmark" title="Permalink to The battle of the C5280, part 3">The battle of the C5280, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T07:30:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>In <a href="../the-battle-of-the-c5280-part-1.html">part 1</a> and <a href="../the-battle-of-the-c5280-part-2.html">part 2</a> I describe how I got CUPS to recognize my printer. Alas, the battle was far from over: it still refused to print. Back in <em>/var/log/cups/error_log</em> I found</p>
+<div class="codehilite"><pre><span class="n">libusb</span> <span class="n">write</span> <span class="n">operation</span> <span class="n">returned</span> <span class="n">fffffff4</span><span class="p">.</span>
+</pre></div>
+
+
+<p>Of course, fffffff4 translates to -12 which translates to <em>LIBUSB_ERROR_NOT_SUPPORTED</em>. More trace statements were in order.</p>
+<p>From the surrounding log messages I figured out that the error was returned from <em>obsd_submit_transfer</em> in <em>openbsd_usb.c</em>. I found all places in that function where the error could have been returned and equipped them with traces. The culprit turned out to be one level deeper, in <em>_sync_gen_transfer</em>:</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">(</span><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">LIBUSB_ERROR_NOT_SUPPORTED</span><span class="p">);</span>
+</pre></div>
+
+
+<p>By now my round-trip was quite masochistic:</p>
+<ol>
+<li>Edit openbsd_usb.c as patched by the port.</li>
+<li>Make a new patch.</li>
+<li>Replace the port's patch with the new one.</li>
+<li>Rebuild port.</li>
+<li>Stop CUPS.</li>
+<li>Uninstall libusb and CUPS (CUPS depends on libusb).</li>
+<li>Install libusb from the port.</li>
+<li>Install CUPS.</li>
+<li>Start CUPS.</li>
+<li>Try something.</li>
+<li>See what turns up in the log.</li>
+</ol>
+<p>I did have a script for steps 2 through 9 but now I needed to find out how <em>NULL</em> got into <em>dpriv-&gt;devname</em>. I realized it was time to learn <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=gdb">gdb</a> - the GNU interactive debugger.</p>
+<p>If you click on that link you will find a typical OpenBSD man page: clear, succint, to the point (I've said this before: documentation is the most impressive thing about OpenBSD, by far). Figuring out how to compile libusb with debugging symbols was another stumbling block, however. The line <em>.ifdef DEBUG</em> in the port's <em>Makefile</em> had given me a mistaken impression that the value of <em>DEBUG</em> didn't matter. I put <em>DEBUG=1</em> into <em>/etc/mk.conf</em> and libusb promptly stopped building, with <em>configure</em> saying something to the effect that CC was unable to generate an executable. Rummaging throug <em>configure.log</em>, the incriminating lines looked approximately like this:</p>
+<div class="codehilite"><pre><span class="n">cc</span> <span class="o">-</span><span class="n">O2</span> <span class="o">-</span><span class="n">pipe</span> <span class="mi">1</span> <span class="n">conftest</span><span class="p">.</span><span class="n">c</span>
+<span class="nl">cc:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+</pre></div>
+
+
+<p>Silly me thought the first "1" was a parameter for the "-pipe" option while the other "1" was a line number. Once I put one and one together (ahem), <em>man cc</em> told me <em>DEBUG</em> should be <em>-g</em>, obviously, after which <em>make clean build</em> produced a file 100K bigger than before, pregnant with debugging wisdom. I was happy.</p>
+<p>Having conquered the last obstacle, I was stepping through my toy program in no time. I even found the multi-window ncurses-based TUI (text user interface) although that wasn't mentioned in the man page. One irritating thing about TUI was that it didn't have the debbuged program's standard streams under control. Each time a trace statement was printed it blew up the layout. I finally turned it off by running gdb with <em>-tty=/dev/null</em> which wasn't ideal either but it was an improvement. To be frank, I would expect TUI to have a dedicated console window to handle the program's I/O. Alas, that doesn't seem to be the case.</p>
+<p>The source seemed to be somewhat out of sync with the code being executed ("next" kept jumping back and forth, gdb itself would segfault once I launched the program a few times). I ascribed this to optimizations performed by CC so I turned them off by saying <em>CFLAGS=-O0 -g</em> in the port's <em>Makefile</em> and rebuilding (the <em>-g</em> was necessary because apparently <em>CFLAGS</em> in the <em>Makefile</em> overrides <em>CFLAGS</em> assembled by other means). To my surprise, it did help - stepping became perfectly smooth from then on.</p>
+<p>Of course, gdb only took me deeper into the mystery. <em>Continued in <a href="../the-battle-of-the-c5280-part-4.html">part 4</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+                        <a href="../category/misc.html">&laquo;</a>
+                Page 2 / 5
+            <a href="../category/misc3.html">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey - Articles with tag HTPC</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside class="links">
+  <h3>            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </h3>
+      <a href="#catching-a-boot-time-kernel-oops-call-trace">Catching a boot-time kernel oops call trace</a>
+    </aside>
+  <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+    </aside>
+    
+  
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content">
+<h2>Articles tagged with "HTPC"</h2>
+
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="catching-a-boot-time-kernel-oops-call-trace"></a>
+      <a href="../catching-a-boot-time-kernel-oops-call-trace.html" rel="bookmark" title="Permalink to Catching a boot-time kernel oops call trace">Catching a boot-time kernel oops call trace</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-09-13T00:27:00"> Tue 13 September 2011 </abbr> under
+        <a href="../tag/htpc.html">HTPC</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>Another issue my HTPC exhibited recently was a tendency to crash early in the boot process. It became apparent it was suffering from an <a href="https://lkml.org/lkml/2011/7/11/434">initialization issue</a> in the <a href="http://wilsonet.com/?page_id=99">iMon</a> driver. I couldn't confirm it, though, since the call trace was too long to fit on the screen and it didn't turn up in any of the files under /var/log.</p>
+<p>I studied various options for capturing the call trace, including <a href="http://www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html">netconsole</a> and <a href="http://mjg59.livejournal.com/137710.html">pstore</a> but since I had access to an RS-232 cable with switched RX/TX pins (a.k.a. "null-modem cable"?) I ended up choosing the good old serial console. This involved connecting the HTPC to my notebook with the serial cable, starting <a href="http://cutecom.sourceforge.net/">cutecom</a> on the notebook and doing the following on the HTPC:</p>
+<div class="codehilite"><pre><span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">grub</span>
+<span class="cp"># GRUB_CMDLINE_LINUX_DEFAULT=&quot;console=ttyS0,19200n8 console=tty0&quot;</span>
+<span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">grub</span>
+<span class="n">sudo</span> <span class="n">reboot</span>
+</pre></div>
+
+
+<p>Of course, "19200n8" must match the parameters set in cutecom on the other side of the link. With this setup, it only took a few reboots to reproduce the crash, capture the call trace and confirm the iMon driver as the culprit. Fortunately, a patch for the problem <a href="https://lkml.org/lkml/2011/7/18/221">already existed</a> so it was only a matter of either waiting until it reached my aptosid kernel or patching the kernel on my own. In the meantime, I'm booting into the previous kernel.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+            <a href="#" class="disabled">&laquo;</a>
+        Page 1 / 1
+            <a href="#" class="disabled">&raquo;</a>
+    </section><!-- /#content -->
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

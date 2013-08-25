@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="the-battle-of-the-c5280-part-3.html" rel="bookmark"
+         title="Permalink to The battle of the C5280, part 3">The battle of the C5280, part 3</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-03-29T07:30:00"> Fri 29 March 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>,        <a href="./tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>In <a href="./the-battle-of-the-c5280-part-1.html">part 1</a> and <a href="./the-battle-of-the-c5280-part-2.html">part 2</a> I describe how I got CUPS to recognize my printer. Alas, the battle was far from over: it still refused to print. Back in <em>/var/log/cups/error_log</em> I found</p>
+<div class="codehilite"><pre><span class="n">libusb</span> <span class="n">write</span> <span class="n">operation</span> <span class="n">returned</span> <span class="n">fffffff4</span><span class="p">.</span>
+</pre></div>
+
+
+<p>Of course, fffffff4 translates to -12 which translates to <em>LIBUSB_ERROR_NOT_SUPPORTED</em>. More trace statements were in order.</p>
+<p>From the surrounding log messages I figured out that the error was returned from <em>obsd_submit_transfer</em> in <em>openbsd_usb.c</em>. I found all places in that function where the error could have been returned and equipped them with traces. The culprit turned out to be one level deeper, in <em>_sync_gen_transfer</em>:</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">(</span><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">LIBUSB_ERROR_NOT_SUPPORTED</span><span class="p">);</span>
+</pre></div>
+
+
+<p>By now my round-trip was quite masochistic:</p>
+<ol>
+<li>Edit openbsd_usb.c as patched by the port.</li>
+<li>Make a new patch.</li>
+<li>Replace the port's patch with the new one.</li>
+<li>Rebuild port.</li>
+<li>Stop CUPS.</li>
+<li>Uninstall libusb and CUPS (CUPS depends on libusb).</li>
+<li>Install libusb from the port.</li>
+<li>Install CUPS.</li>
+<li>Start CUPS.</li>
+<li>Try something.</li>
+<li>See what turns up in the log.</li>
+</ol>
+<p>I did have a script for steps 2 through 9 but now I needed to find out how <em>NULL</em> got into <em>dpriv-&gt;devname</em>. I realized it was time to learn <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=gdb">gdb</a> - the GNU interactive debugger.</p>
+<p>If you click on that link you will find a typical OpenBSD man page: clear, succint, to the point (I've said this before: documentation is the most impressive thing about OpenBSD, by far). Figuring out how to compile libusb with debugging symbols was another stumbling block, however. The line <em>.ifdef DEBUG</em> in the port's <em>Makefile</em> had given me a mistaken impression that the value of <em>DEBUG</em> didn't matter. I put <em>DEBUG=1</em> into <em>/etc/mk.conf</em> and libusb promptly stopped building, with <em>configure</em> saying something to the effect that CC was unable to generate an executable. Rummaging throug <em>configure.log</em>, the incriminating lines looked approximately like this:</p>
+<div class="codehilite"><pre><span class="n">cc</span> <span class="o">-</span><span class="n">O2</span> <span class="o">-</span><span class="n">pipe</span> <span class="mi">1</span> <span class="n">conftest</span><span class="p">.</span><span class="n">c</span>
+<span class="nl">cc:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
+</pre></div>
+
+
+<p>Silly me thought the first "1" was a parameter for the "-pipe" option while the other "1" was a line number. Once I put one and one together (ahem), <em>man cc</em> told me <em>DEBUG</em> should be <em>-g</em>, obviously, after which <em>make clean build</em> produced a file 100K bigger than before, pregnant with debugging wisdom. I was happy.</p>
+<p>Having conquered the last obstacle, I was stepping through my toy program in no time. I even found the multi-window ncurses-based TUI (text user interface) although that wasn't mentioned in the man page. One irritating thing about TUI was that it didn't have the debbuged program's standard streams under control. Each time a trace statement was printed it blew up the layout. I finally turned it off by running gdb with <em>-tty=/dev/null</em> which wasn't ideal either but it was an improvement. To be frank, I would expect TUI to have a dedicated console window to handle the program's I/O. Alas, that doesn't seem to be the case.</p>
+<p>The source seemed to be somewhat out of sync with the code being executed ("next" kept jumping back and forth, gdb itself would segfault once I launched the program a few times). I ascribed this to optimizations performed by CC so I turned them off by saying <em>CFLAGS=-O0 -g</em> in the port's <em>Makefile</em> and rebuilding (the <em>-g</em> was necessary because apparently <em>CFLAGS</em> in the <em>Makefile</em> overrides <em>CFLAGS</em> assembled by other means). To my surprise, it did help - stepping became perfectly smooth from then on.</p>
+<p>Of course, gdb only took me deeper into the mystery. <em>Continued in <a href="./the-battle-of-the-c5280-part-4.html">part 4</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="pimp-my-calendar-part-4.html" rel="bookmark"
+         title="Permalink to PIMp my calendar, part 4">PIMp my calendar, part 4</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-04-21T06:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/android.html">Android</a>,        <a href="./tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p><a href="./pimp-my-calendar-part-1.html">Previous</a> <a href="./pimp-my-calendar-part-2.html">parts</a> of the <a href="./pimp-my-calendar-part-3.html">saga</a> brought me to a point where I had an upgraded instance of the <a href="http://radicale.org/">Radicale</a> CalDAV server talking to my Android phone's <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> and still getting nowhere. I decided to debug the Android-side code.</p>
+<p>Attaching the debugger was <a href="http://stackoverflow.com/questions/5379129/debugging-not-working-in-a-service-class-what-can-cause-this-issue">a bit of a trick</a> since the adapter has no Activity. Once I got past that, I discovered the response from Radicale was getting parsed just fine but it was only happening in an authentication context (i.e. while adding the new "CalDAV account"). I generally found that the adapter was basically a bunch of callbacks and I seemed unable to properly trigger them.</p>
+<p>I then noticed something funny in the log (i.e. the LogCat view in the DDMS perspective in Eclipse):</p>
+<blockquote>
+<p><em>VFY: unable to resolve static field 27 (CONTENT_URI) in Landroid/provider/CalendarContract$Events;</em></p>
+</blockquote>
+<p>According to the <a href="http://developer.android.com/guide/topics/providers/calendar-provider.html">documentation</a>, <em>Events.CONTENT_URI</em> is one of the basic constants used when working with calendars - how could it be missing? The question led to a quick series of discoveries:</p>
+<ul>
+<li>My phone runs Android 2.3.7 a.k.a. Gingerbread (well, not really a discovery for me but a key piece of the puzzle).</li>
+<li>Proper support for non-Google calendars was only added in version 4.0 a.k.a. Ice Cream Sandwich; what there was before was <a href="http://www.techrepublic.com/blog/app-builder/programming-with-the-android-40-calendar-api-the-good-the-bad-and-the-ugly/825">unofficial and unsupported</a>.</li>
+<li>The CalDAV Adapter project lists API level 14 (Ice Cream Sandwich) as the minimum required API level in its Android manifest.</li>
+<li>Back when I first tried to run the CalDAV adapter, Eclipse ADT had told me I had no compatible device; I tried modifying the manifest, changing the minimum API level to 10 (Gingerbread).</li>
+<li>Changing the minimum API level of an Android project <em>doesn't trigger a re-build in Eclipse ADT</em>; changing the <em>target API level</em> does trigger a re-build.</li>
+<li>Once prompted to re-build the project, ADT flags usage of higher-than-minimum-level APIs as an error, breaking the build.</li>
+<li>When Dalvik encounters unknown API usage while executing the code, it marks the block where the API was used as <em>dead code</em> and moves on.</li>
+</ul>
+<p>So I was trying to use an application that was incompatible with my handset and both the development environment and the runtime responded with silent failures. I think ADT in particular behaved quite impolitely. If using APIs beyond the minimum level is off-limits then changing the minimum level should trigger a re-build, right? As for the Android runtime, the <a href="http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#min">documentation</a> says</p>
+<blockquote>
+<p><em>...the application will crash during runtime when attempting to access the unavailable APIs.</em></p>
+</blockquote>
+<p>which seems to be false (or at least no indication of a crash reaches the user). In any case, the approach I'd been taking turned out to be a dead end. <em>Continued in <a href="./pimp-my-calendar-part-5.html">part 5</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

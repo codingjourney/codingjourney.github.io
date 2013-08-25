@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="the-battle-of-the-c5280-part-2.html" rel="bookmark"
+         title="Permalink to The battle of the C5280, part 2">The battle of the C5280, part 2</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-03-29T06:30:00"> Fri 29 March 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>,        <a href="./tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>I ended <a href="./the-battle-of-the-c5280-part-1.html">part 1</a> with a description of my struggles to display trace statements inserted into libusb. One spot where I needed to add a trace was</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">busnode</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENXIO</span><span class="p">)</span>
+        <span class="n">usbi_err</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;could not open %s&quot;</span><span class="p">,</span> <span class="n">busnode</span><span class="p">);</span>
+    <span class="k">continue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Notice that the code here keeps a rather important detail (errno) to itself. I changed the code to</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">((</span><span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="n">busnode</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">ENOENT</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">!=</span> <span class="n">ENXIO</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">usbi_err</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;could not open %s&quot;</span><span class="p">,</span> <span class="n">busnode</span><span class="p">);</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;errno: %d&quot;</span><span class="p">,</span> <span class="n">errno</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">continue</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>and once the output started flowing I found out that errno was 13 (EACCESS). A classic file permissions problem, it's just that it wasn't very well reported. It should have been apparent back when I saw the backend work without problems when run directly.</p>
+<p>Rather than figuring out which user's permissions are in effect when CUPS calls the backend, I simply turned on global read-write permissions for <em>/dev/ugen*</em> to see if it would help. It didn't.</p>
+<p>After another bit of "fun" detective work, I found the reason buried in the libusb port. For those unfamiliar with OpenBSD ports, a port is basically a recipe for turning an external piece of software into an OpenBSD package. It contains instructions for fetching and unpacking the source, patching it for OpenBSD, building it, packaging the result in a neat <em>.tgz</em> file and even installing an unistalling it.</p>
+<p>I noticed that the patch for <em>openbsd_usb.c</em> was rather big - almost 18K. On closer look, it was a substantial rewrite of the whole file which was kind of unexpected since the original code was already supposed to be OpenBSD-specific. One thing the rewrite changed was that it was no longer iterating over <em>/dev/ugen<em><em> but rather over </em>/dev/usb</em></em>. I failed to notice it when inserting trace statements - the pattern had been extracted into constants at the start of the file.</p>
+<p>Armed with new wisdom, I turned on global read-write permissions for <em>/dev/usb*</em>. <strong>Progress! CUPS finally found my printer.</strong> I clicked on "Print test page". As you may have guessed, nothing happened. <em>Continued in <a href="./the-battle-of-the-c5280-part-3.html">part 3</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

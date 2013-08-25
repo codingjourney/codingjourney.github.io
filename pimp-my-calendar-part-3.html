@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="./theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live in
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+  Looking for a contracting gig or dev job starting in
+  <a href="october-2013.html">October 2013</a>.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="./tag/motivation.html">motivation</a>
+      -     <a href="./tag/htpc.html">HTPC</a>
+      -     <a href="./tag/openbsd.html">OpenBSD</a>
+      -     <a href="./tag/qt.html">Qt</a>
+      -     <a href="./tag/upsheet.html">upsheet</a>
+      -     <a href="./tag/python.html">Python</a>
+      -     <a href="./tag/kde.html">KDE</a>
+      -     <a href="./tag/cloud-computing.html">cloud computing</a>
+      -     <a href="./tag/caldav.html">CalDAV</a>
+      -     <a href="./tag/howto.html">howto</a>
+      -     <a href="./tag/jetty.html">Jetty</a>
+      -     <a href="./tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="./tag/meta.html">meta</a>
+      -     <a href="./tag/music.html">music</a>
+      -     <a href="./tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="./tag/algorithms.html">algorithms</a>
+      -     <a href="./tag/android.html">Android</a>
+      -     <a href="./tag/cups.html">CUPS</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="./october-2013.html">October 2013</a>
+      <a href="./the-levenshtein-rules.html">The Levenshtein rules</a>
+      <a href="./the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
+      <a href="./software-as-knowledge-repository.html">Software as knowledge repository</a>
+      <a href="./reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
+      <a href="./the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
+      <a href="./the-minimal-patch-fallacy.html">The minimal patch fallacy</a>
+      <a href="./pimp-my-calendar-aftermath.html">PIMp my calendar: Aftermath</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href=".">meandering<img src="./theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="pimp-my-calendar-part-3.html" rel="bookmark"
+         title="Permalink to PIMp my calendar, part 3">PIMp my calendar, part 3</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2013-04-17T05:45:00"> Wed 17 April 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/android.html">Android</a>,        <a href="./tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>My <a href="./pimp-my-calendar-part-1.html">efforts</a> to put a <a href="./pimp-my-calendar-part-2.html">server-backed</a> calendar on my Android phone entered a new phase. I had <a href="http://www.radicale.org/">Radicale</a> on the server and the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapater</a> on the phone but they seemed to talk past each other. My phone would set up a CalDAV account successfully but then tell me "You have no calendar" when I tried to create events.</p>
+<p>Radicale documentation says calendars are created automagically based on a URL convention, i.e. simply accessing a non-existent calendar should bring it into existence. I tried it with the Mozilla Lightning client and it worked as advertised. The Android adapter, however, still wouldn't see the new calendar nor its events.</p>
+<p><a href="http://www.wireshark.org">WireShark</a> revealed that a CalDAV client apparently enjoys a lot of freedom when formulating requests. A PROPFIND request from Lightning looked like this:</p>
+<div class="codehilite"><pre><span class="nt">&lt;D:propfind</span> <span class="na">xmlns:D=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;D:prop&gt;</span>
+    <span class="nt">&lt;D:resourcetype/&gt;</span>
+    <span class="nt">&lt;D:owner/&gt;</span>
+    <span class="nt">&lt;D:supported-report-set/&gt;</span>
+    <span class="nt">&lt;C:supported-calendar-component-set/&gt;</span>
+    <span class="nt">&lt;CS:getctag/&gt;</span>
+  <span class="nt">&lt;/D:prop&gt;</span>
+<span class="nt">&lt;/D:propfind&gt;</span>
+</pre></div>
+
+
+<p>whereas the Android adapter was sending</p>
+<div class="codehilite"><pre><span class="nt">&lt;d:propfind</span> <span class="na">xmlns:d=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:c=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:cs=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:ic=</span><span class="s">&quot;http://apple.com/ns/ical/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;d:prop&gt;</span>
+    <span class="nt">&lt;d:displayname</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;d:resourcetype</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;cs:getctag</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/d:prop&gt;</span>
+<span class="nt">&lt;/d:propfind&gt;</span>
+</pre></div>
+
+
+<p>and it seemed Radicale was not happy with the <em>displayname</em> bit:</p>
+<div class="codehilite"><pre><span class="nx">...</span>
+<span class="o">&lt;</span><span class="nx">propstat</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">prop</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">displayname</span> <span class="o">/&gt;</span>
+  <span class="o">&lt;/</span><span class="nx">prop</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">status</span><span class="o">&gt;</span><span class="nx">HTTP</span><span class="p">/</span><span class="nx">1.1</span> <span class="mi">404</span> <span class="ow">Not</span> <span class="nx">Found</span><span class="o">&lt;/</span><span class="nb">status</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">propstat</span><span class="o">&gt;</span>
+<span class="nx">...</span>
+</pre></div>
+
+
+<p>Server-side source code revealed that Radicale returns 404 for properties which it does not recognize (see the final <em>else</em> in the long <em>if-elif</em> chain in <em>_propfind_response()</em> in <em>xmlutils.py</em>). My installed version of Radicale was 0.7. I downloaded the most recent stable release (0.7.1) from the project site and tried that instead. Lo and behold, it finally said</p>
+<div class="codehilite"><pre><span class="nt">&lt;multistatus</span> <span class="na">xmlns=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;response&gt;</span>
+    <span class="nt">&lt;href&gt;</span>/jh/calendar/<span class="nt">&lt;/href&gt;</span>
+    <span class="nt">&lt;propstat&gt;</span>
+      <span class="nt">&lt;prop&gt;</span>
+        <span class="nt">&lt;displayname&gt;</span>calendar<span class="nt">&lt;/displayname&gt;</span>
+        <span class="nt">&lt;resourcetype&gt;</span>
+          <span class="nt">&lt;C:calendar</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;collection</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/resourcetype&gt;</span>
+        <span class="nt">&lt;CS:getctag&gt;</span>&quot;0&quot;<span class="nt">&lt;/CS:getctag&gt;</span>
+      <span class="nt">&lt;/prop&gt;</span>
+      <span class="nt">&lt;status&gt;</span>HTTP/1.1 200 OK<span class="nt">&lt;/status&gt;</span>
+    <span class="nt">&lt;/propstat&gt;</span>
+  <span class="nt">&lt;/response&gt;</span>
+<span class="nt">&lt;/multistatus&gt;</span>
+</pre></div>
+
+
+<p>The Calendar app on my phone, however, <em>still</em> insisted I had no calendar. <em>Continued in <a href="./pimp-my-calendar-part-4.html">part 4</a>.</em></p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>
