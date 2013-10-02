@@ -23,8 +23,6 @@
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
-  Looking for a contracting gig or dev job starting in
-  <a href="october-2013.html">October 2013</a>.
 </aside>
 <aside>
   <h3>Links</h3>
@@ -39,6 +37,7 @@
                 Page 3 / 5
             <a href="../author/jan-hustak4.html">&raquo;</a>
     </h3>
+      <a href="#pimp-my-calendar-aftermath">PIMp my calendar: Aftermath</a>
       <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
       <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
       <a href="#pimp-my-calendar-part-3">PIMp my calendar, part 3</a>
@@ -46,7 +45,6 @@
       <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
       <a href="#reputation-as-a-measure-of-success">Reputation as a measure of success</a>
       <a href="#software-as-knowledge-repository">Software as knowledge repository</a>
-      <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -79,6 +77,20 @@
         <section id="content">
 <h2>Articles by Jan Hustak</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-aftermath"></a>
+      <a href="../pimp-my-calendar-aftermath.html" rel="bookmark" title="Permalink to PIMp my calendar: Aftermath">PIMp my calendar: Aftermath</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T18:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I spent some of my free time over the past few weeks trying to get the Calendar app on my Android phone to run with a non-Google and non-MS-Exchange account (see <a href="../pimp-my-calendar-part-1.html">part 1</a>, <a href="../pimp-my-calendar-part-2.html">part 2</a>, <a href="../pimp-my-calendar-part-3.html">part 3</a>, <a href="../pimp-my-calendar-part-4.html">part 4</a> and <a href="../pimp-my-calendar-part-5.html">part 5</a>). As with my <a href="../the-battle-of-the-c5280-aftermath.html">printer woes</a>, it turned out to be an enlightening excercise. I ended up running the <a href="http://radicale.org/">Radicale</a> CALDav server on my home server and Marten Gajda's <a href="http://dmfs.org/caldav/">CalDAV adapter</a> on the little machine. I discovered fun facts about Android and its development tools along the way (the highlight was discovering that changing the minimum API level in Eclipse ADT fails to trigger a re-build).</p>
+<p>As for the lessons learned, I guess there is a balance to be struck when troubleshooting a technical issue. One approach involves poking and prodding the system, observing responses and formulating hypotheses. Another option is to study information <em>about</em> the system - source code, documentation, online forums and other resources. Combining these modes optimally is rather delicate and I do tend to err on the side of experimentation. The knowledge it yields may be overly specific and not very reusable but the process fosters a problem-solving mind-set that comes in handy in other situations as well. Besides, documentation may be out of date and, <a href="../pimp-my-calendar-part-4.html">as we've seen</a>, even source code may not be quite what it seems. In fact, what hindered me in resolving the calendaring problem was that I failed to recognize the extent of the system I was working with - namely that it included the development environment.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -345,76 +357,6 @@
 </ul>
 <h4>Why you should do it</h4>
 <p>A well-maintained body of code is valuable whether or not it's directly readable by non-technical decision-makers. Knowledge is at hand, answers are quick, changes are smooth. The company becomes nimble in a way it never could without automation. At a software startup, this notion forms the core of its competitive strategy - that's why working at a startup is so alluring to programmers. It also drives startups' disruptive potential. Decision-makers at conventional companies face the tough task of integrating the value of software into their cultures even if they don't compete with startups. <a href="http://www.businessspectator.com.au/article/2012/12/18/technology/app-assault-taxi-monopoly">Once they do</a> it may be too late.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="soundgraph-imon-pad-vs-linux-2636"></a>
-      <a href="../soundgraph-imon-pad-vs-linux-2636.html" rel="bookmark" title="Permalink to Soundgraph iMON PAD vs. Linux 2.6.36">Soundgraph iMON PAD vs. Linux 2.6.36</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2011-01-09T12:09:00"> Sun 09 January 2011 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I use a Soundgraph iMON PAD remote control to command my home-theater PC. The remote stopped working when I upgraded my kernel from 2.6.33 to 2.6.36, due to major infrastructure changes that started in 2.6.35. At first I simply reverted to the older kernel but this week I had a few spare hours to figure out what was going on. In short, the iMON driver has been cleaned up by Jarod Wilson and <a href="http://wilsonet.com/?p=85">included in the main kernel code base (finally!)</a>. Its logic was also standardized to route its output to the Linux input layer rather than to the <a href="http://www.lirc.org">LIRC</a> daemon. This obviously requires some re-configuration of the daemon, as <a href="http://old.nabble.com/Re:-Status-of-lirc-imon-usb-remotes-p28684857.html">Jarod explained</a> on the LIRC mailing list.</p>
-<p>On my HTPC I had to put the following settings into <em>/etc/lirc/hardware.conf</em>:</p>
-<div class="codehilite"><pre><span class="n">DRIVER</span><span class="o">=</span><span class="s">&quot;devinput&quot;</span>
-<span class="n">DEVICE</span><span class="o">=</span><span class="s">&quot;/dev/input/by-id/usb-15c2_ffdc-event-mouse&quot;</span>
-</pre></div>
-
-
-<p>I also had to adjust key codes in <em>/etc/lirc/lircd.conf</em> (note that I only need only six keys for my remote-control software, <a href="http://offhand.sourceforge.net/">Offhand</a>; others should simply use <a href="http://wilsonet.com/jarod/imon_stuff/imon-devinput-lirc/lircd.conf">Jarod's file</a>):</p>
-<div class="codehilite"><pre><span class="n">begin</span> <span class="n">codes</span>
-    <span class="n">KEY_BACKSPACE</span>            <span class="mh">0x000E</span>
-    <span class="n">KEY_COMPOSE</span>              <span class="mh">0x007F</span>
-    <span class="n">KEY_CONTEXT_MENU</span>         <span class="mh">0x01B6</span>
-    <span class="n">KEY_ENTER</span>                <span class="mh">0x001C</span>
-    <span class="n">KEY_KEYBOARD</span>             <span class="mh">0x0176</span>
-    <span class="n">KEY_SPACE</span>                <span class="mh">0x0039</span>
-<span class="n">end</span> <span class="n">codes</span>
-</pre></div>
-
-
-<p>Finally, I had to adjust the .lircrc file used by Offhand:</p>
-<div class="codehilite"><pre><span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_CONTEXT_MENU</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">back</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_COMPOSE</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">forward</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_KEYBOARD</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">up</span>
-      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_ENTER</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">down</span>
-      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_SPACE</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">ok</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_BACKSPACE</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">cancel</span>
-    <span class="n">end</span>
-</pre></div>
-
-
-<p>Separately, I also had to configure the iMON driver to forget about its mouse emulation mode. I did it by creating the file <em>/etc/modprobe.d/imon.conf</em> containing</p>
-<div class="codehilite"><pre><span class="n">options</span> <span class="n">imon</span> <span class="n">nomouse</span><span class="o">=</span><span class="mi">1</span>
-</pre></div> </div><!-- /.entry-content -->
   <hr/>
 </article>
                         <a href="../author/jan-hustak2.html">&laquo;</a>

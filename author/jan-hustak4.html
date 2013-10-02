@@ -23,8 +23,6 @@
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
-  Looking for a contracting gig or dev job starting in
-  <a href="october-2013.html">October 2013</a>.
 </aside>
 <aside>
   <h3>Links</h3>
@@ -39,6 +37,7 @@
                 Page 4 / 5
             <a href="../author/jan-hustak5.html">&raquo;</a>
     </h3>
+      <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
       <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
       <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
       <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
@@ -46,7 +45,6 @@
       <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
       <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
       <a href="#the-heroku-mess">The Heroku mess</a>
-      <a href="#the-levenshtein-puzzle">The Levenshtein puzzle</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -79,6 +77,76 @@
         <section id="content">
 <h2>Articles by Jan Hustak</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="soundgraph-imon-pad-vs-linux-2636"></a>
+      <a href="../soundgraph-imon-pad-vs-linux-2636.html" rel="bookmark" title="Permalink to Soundgraph iMON PAD vs. Linux 2.6.36">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-09T12:09:00"> Sun 09 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I use a Soundgraph iMON PAD remote control to command my home-theater PC. The remote stopped working when I upgraded my kernel from 2.6.33 to 2.6.36, due to major infrastructure changes that started in 2.6.35. At first I simply reverted to the older kernel but this week I had a few spare hours to figure out what was going on. In short, the iMON driver has been cleaned up by Jarod Wilson and <a href="http://wilsonet.com/?p=85">included in the main kernel code base (finally!)</a>. Its logic was also standardized to route its output to the Linux input layer rather than to the <a href="http://www.lirc.org">LIRC</a> daemon. This obviously requires some re-configuration of the daemon, as <a href="http://old.nabble.com/Re:-Status-of-lirc-imon-usb-remotes-p28684857.html">Jarod explained</a> on the LIRC mailing list.</p>
+<p>On my HTPC I had to put the following settings into <em>/etc/lirc/hardware.conf</em>:</p>
+<div class="codehilite"><pre><span class="n">DRIVER</span><span class="o">=</span><span class="s">&quot;devinput&quot;</span>
+<span class="n">DEVICE</span><span class="o">=</span><span class="s">&quot;/dev/input/by-id/usb-15c2_ffdc-event-mouse&quot;</span>
+</pre></div>
+
+
+<p>I also had to adjust key codes in <em>/etc/lirc/lircd.conf</em> (note that I only need only six keys for my remote-control software, <a href="http://offhand.sourceforge.net/">Offhand</a>; others should simply use <a href="http://wilsonet.com/jarod/imon_stuff/imon-devinput-lirc/lircd.conf">Jarod's file</a>):</p>
+<div class="codehilite"><pre><span class="n">begin</span> <span class="n">codes</span>
+    <span class="n">KEY_BACKSPACE</span>            <span class="mh">0x000E</span>
+    <span class="n">KEY_COMPOSE</span>              <span class="mh">0x007F</span>
+    <span class="n">KEY_CONTEXT_MENU</span>         <span class="mh">0x01B6</span>
+    <span class="n">KEY_ENTER</span>                <span class="mh">0x001C</span>
+    <span class="n">KEY_KEYBOARD</span>             <span class="mh">0x0176</span>
+    <span class="n">KEY_SPACE</span>                <span class="mh">0x0039</span>
+<span class="n">end</span> <span class="n">codes</span>
+</pre></div>
+
+
+<p>Finally, I had to adjust the .lircrc file used by Offhand:</p>
+<div class="codehilite"><pre><span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_CONTEXT_MENU</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">back</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_COMPOSE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">forward</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_KEYBOARD</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">up</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_ENTER</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">down</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_SPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">ok</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_BACKSPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="n">end</span>
+</pre></div>
+
+
+<p>Separately, I also had to configure the iMON driver to forget about its mouse emulation mode. I did it by creating the file <em>/etc/modprobe.d/imon.conf</em> containing</p>
+<div class="codehilite"><pre><span class="n">options</span> <span class="n">imon</span> <span class="n">nomouse</span><span class="o">=</span><span class="mi">1</span>
+</pre></div> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -297,63 +365,6 @@
 </ul>
 <p>What's truly puzzling is that none of Heroku's other Rails customers seems to have encountered this issue before RapGenius. One possibility is that RapGenius is the first Heroku Rails app to achieve sufficient scale for the problem to occur. Another is that some customers did indeed catch the problem right at the start, adapted to the new configuration and simply never thought to give a heads-up to the rest of the community.</p>
 <p>The morale of the story for me is that it's foolish to use a monitoring service with business ties to the entity being monitored (or, indeed, to outsource monitoring in the first place - it's a critical QA function, after all). An independent monitoring service must still be given enough access to the monitored system to provide necessary detail. This is not trivial as monitoring can interfere with the monitored system. Some form of meta-monitoring is perhaps needed. Ah, the ever-fascinating world of IT :-)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-levenshtein-puzzle"></a>
-      <a href="../the-levenshtein-puzzle.html" rel="bookmark" title="Permalink to The Levenshtein puzzle">The Levenshtein puzzle</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-06-09T04:30:00"> Sun 09 June 2013 </abbr> under
-        <a href="../tag/algorithms.html">algorithms</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I've read a few blog posts recently that mentioned the concept of Levenshtein distance. It's a measure of the difference between two strings <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">defined as</a> <em>"the minimum number of single-character edits (insertion, deletion, substitution) required to change one word into the other"</em>. The definition is very straightforward but when I thought about calculating it I saw no immediately obvious way. Rather than looking it up, I decided to discover an algorithm on my own, with nothing but the definition to start from.</p>
-<p>After a period of requisite head-scratching and ad-hoc attempts I identified two trivial corner cases: identical words (<em>d=0</em>) and words with no letters in common (<em>d=max(first.length, second.length)</em>, let's call them <em>orthogonal</em>). Then came the crucial realization: any pair of words can be chopped up into a sequence of identical and orthogonal sub-words:</p>
-<p style="font-family: monospace">
-d<span style="color: #e08020">ar</span>t<span style="color: red">e</span>d<br/>
-st<span style="color: #e08020">ar</span><span style="color: red">e</span>
-</p>
-
-<p>The total distance is then the sum of the distances of the orthogonal parts. Note that an orthogonal pair may consist of one empty and one non-empty string as well, such as "t" vs. "" in the example above.</p>
-<p>Trouble is, there may be more than one way to slice the words:</p>
-<p style="font-family: monospace">
-b<span style="color: #e08020">a</span>r<span style="color: red">b</span>a<span style="color: #6060e0">ra</span><br/>
-<span style="color: #e08020">a</span><span style="color: red">b</span><span style="color: #6060e0">ra</span>cadabra
-</p>
-
-<p style="font-family: monospace">
-<span style="color: #e08020">b</span><span style="color: red">a</span><span style="color: #6060e0">r</span>bara<br/>
-a<span style="color: #e08020">b</span>r<span style="color: red">a</span>cadab<span style="color: #6060e0">r</span>a
-</p>
-
-<p style="font-family: monospace">
-b<span style="color: #e08020">a</span><span style="color: red">r</span><span style="color: #6060e0">b</span>a<span style="color: #a06060">ra</span><br/>
-<span style="color: #e08020">a</span>b<span style="color: red">r</span>acada<span style="color: #6060e0">b</span><span style="color: #a06060">ra</span>
-</p>
-
-<p>and so on. The distances corresponding to these splits are 10, 11 and 8, respectively. The actual minimal distance is 6; discovering the correct split (or splits) is left as an exercise for the reader. The way my algorithm goes about it is a straightforward exhaustive trawling of the solution space. In pseudo-Python:</p>
-<div class="codehilite"><pre><span class="n">def</span> <span class="n">distance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span><span class="o">:</span>
-  <span class="n">result</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="n">length</span><span class="p">,</span> <span class="n">right</span><span class="p">.</span><span class="n">length</span><span class="p">)</span>
-  <span class="k">for</span> <span class="n">each</span> <span class="n">index</span> <span class="n">x</span> <span class="n">in</span> <span class="n">left</span><span class="o">:</span>
-     <span class="n">letter</span> <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-     <span class="k">for</span> <span class="n">each</span> <span class="n">location</span> <span class="n">y</span> <span class="n">of</span> <span class="n">letter</span> <span class="n">in</span> <span class="n">right</span><span class="o">:</span>
-       <span class="n">subLeft</span>  <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="n">x</span><span class="o">:</span><span class="p">]</span>
-       <span class="n">subRight</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="n">y</span><span class="o">:</span><span class="p">]</span>
-       <span class="n">beforeMatch</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-       <span class="n">match</span> <span class="o">=</span> <span class="n">length</span> <span class="n">of</span> <span class="n">the</span> <span class="n">identical</span> <span class="n">prefix</span> <span class="n">of</span> <span class="n">subLeft</span> <span class="n">and</span> <span class="n">subRight</span>
-       <span class="n">afterMatch</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">subLeft</span><span class="p">[</span><span class="n">match</span><span class="o">:</span><span class="p">],</span> <span class="n">subRight</span><span class="p">[</span><span class="n">match</span><span class="o">:</span><span class="p">])</span>
-       <span class="n">newDistance</span> <span class="o">=</span> <span class="n">beforeMatch</span> <span class="o">+</span> <span class="n">afterMatch</span>
-       <span class="n">result</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">newDistance</span><span class="p">)</span>
-  <span class="k">return</span> <span class="n">result</span>
-</pre></div>
-
-
-<p>As you can see, it's a recursive function not amenable to tail-call optimization so it's prone to overflowing the stack, among other things. There's a ton of potential for performance improvement. One thing I actually have in my implementation is that when beforeMatch &gt;= result I don't go into recursion as it can't possibly produce a lower newDistance. This mini-optimization is omitted from the pseudo-code for clarity.</p>
-<p>Other than that, proper ordering seems to be the key. The algorithm is asymmetric in that it "starts from" the left word and tries to "reach" the right one. Should it always start from the shorter word or from the longer one? Or from the word with fewer unique letters or more unique letters? Should the letters with most locations in the starting word be tried first? Or the ones closest to its beginning?</p>
-<p>A proper complexity analysis (or a robust set of test pairs with known Levenshtein distances) would answer those questions, increasing the likelihood of encountering good matches early, cutting off bigger branches of the search tree. Alas, I have no time for such work, no matter how much fun it would be and how much I'd learn from it. I've solved the puzzle itself and the optimization paths are all well trodden by more capable explorers, I'm sure. Also, given that my solution completely ignores the distribution of letters in the "target" word, there's bound to be a fundamentally better, more symmetric approach. I'm looking forward to reading up on it :-)</p>
-<p>My original implementation is in JavaScript with a <a href="../static/snippets/levenshtein.html">web page</a> for easy testing of correctness. I later re-wrote it as command-line scripts in <a href="../static/snippets/levenshtein.js">node.js</a>, <a href="../static/snippets/levenshtein.py">Python</a> and <a href="../static/snippets/levenshtein.go">Go</a> in order to compare performance. Surprisingly, Go seems to be only about 33 % faster than both node.js and Python. Mind you, I don't know any of those languages intimately enough to be sure I didn't screw something up performance-wise so the comparison is very rough and not serious in any way. Tasting the different langages' flavors was great fun, though, and I'm itching for C and Drools implementations if I find the time. A functional variant in Scala or Clojure would also be nice but swapping between the imperative and functional mind-sets is <em>really</em> time-consuming.</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
                         <a href="../author/jan-hustak3.html">&laquo;</a>

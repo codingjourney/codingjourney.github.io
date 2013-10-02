@@ -23,8 +23,6 @@
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
-  Looking for a contracting gig or dev job starting in
-  <a href="october-2013.html">October 2013</a>.
 </aside>
 <aside>
   <h3>Links</h3>
@@ -39,6 +37,7 @@
                 Page 4 / 5
             <a href="../category/misc5.html">&raquo;</a>
     </h3>
+      <a href="#catching-a-boot-time-kernel-oops-call-trace">Catching a boot-time kernel oops call trace</a>
       <a href="#update-on-logitech-dinovo-edge-and-imon-pad">Update on Logitech diNovo Edge and iMON PAD</a>
       <a href="#look-mom-no-ports">Look mom, no ports!</a>
       <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
@@ -46,7 +45,6 @@
       <a href="#akai-ewi-usb-and-linux-part-3">Akai EWI USB and Linux, part 3</a>
       <a href="#disabling-acpi-in-openbsd-48">Disabling ACPI in OpenBSD 4.8</a>
       <a href="#installing-openbsd-48-on-an-hp-mini-5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
-      <a href="#akai-ewi-usb-and-linux-part-2">Akai EWI USB and Linux, part 2</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -79,6 +77,28 @@
         <section id="content">
 <h2>Articles in the misc category</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="catching-a-boot-time-kernel-oops-call-trace"></a>
+      <a href="../catching-a-boot-time-kernel-oops-call-trace.html" rel="bookmark" title="Permalink to Catching a boot-time kernel oops call trace">Catching a boot-time kernel oops call trace</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-09-13T00:27:00"> Tue 13 September 2011 </abbr> under
+        <a href="../tag/htpc.html">HTPC</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>Another issue my HTPC exhibited recently was a tendency to crash early in the boot process. It became apparent it was suffering from an <a href="https://lkml.org/lkml/2011/7/11/434">initialization issue</a> in the <a href="http://wilsonet.com/?page_id=99">iMon</a> driver. I couldn't confirm it, though, since the call trace was too long to fit on the screen and it didn't turn up in any of the files under /var/log.</p>
+<p>I studied various options for capturing the call trace, including <a href="http://www.cyberciti.biz/tips/linux-netconsole-log-management-tutorial.html">netconsole</a> and <a href="http://mjg59.livejournal.com/137710.html">pstore</a> but since I had access to an RS-232 cable with switched RX/TX pins (a.k.a. "null-modem cable"?) I ended up choosing the good old serial console. This involved connecting the HTPC to my notebook with the serial cable, starting <a href="http://cutecom.sourceforge.net/">cutecom</a> on the notebook and doing the following on the HTPC:</p>
+<div class="codehilite"><pre><span class="n">sudo</span> <span class="n">vi</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">grub</span>
+<span class="cp"># GRUB_CMDLINE_LINUX_DEFAULT=&quot;console=ttyS0,19200n8 console=tty0&quot;</span>
+<span class="n">sudo</span> <span class="n">update</span><span class="o">-</span><span class="n">grub</span>
+<span class="n">sudo</span> <span class="n">reboot</span>
+</pre></div>
+
+
+<p>Of course, "19200n8" must match the parameters set in cutecom on the other side of the link. With this setup, it only took a few reboots to reproduce the crash, capture the call trace and confirm the iMon driver as the culprit. Fortunately, a patch for the problem <a href="https://lkml.org/lkml/2011/7/18/221">already existed</a> so it was only a matter of either waiting until it reached my aptosid kernel or patching the kernel on my own. In the meantime, I'm booting into the previous kernel.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -315,28 +335,6 @@ boot successfully to the login prompt.</li>
 <p>People on the thread couldn't agree on which method was better. I tried the simpler <em>dd</em> method first but the USB stick would not boot on the Mini. Funnily enough, it did boot on my ThinkPad (BIOS being the X factor). With a bit of trepidation, I booted the ThinkPad from the OpenBSD CD and installed onto the USB stick, hoping I would not ruin my notebook's hard disk instead. All went well and this time the USB stick did boot on the Mini.</p>
 <p>Installation onto the Mini from the USB stick was uneventful. For the first time after years I had the luxury of installing on the entire hard drive, letting the installer do the partitioning for me. I could reach all BSD packages over the network without problems as I had an Ethernet cable plugged into the machine and DHCP worked just fine.</p>
 <p>Rebooting after the install ended in a kernel panic, however. Neither <em>bsd.mp</em> nor <em>bsd.sp</em> at the boot prompt seemed to help. Off to Google I was yet again, with "openbsd hp mini 5101". It turned out someone had <a href="http://kerneltrap.org/mailarchive/openbsd-misc/2010/9/3/6691/thread">seen the problem before</a> and they solved it by <a href="http://www.mail-archive.com/tech@openbsd.org/msg00278.html">turning off ACPI</a> at the boot prompt. It helped me as well and I was finally able to log into my new OpenBSD system. I've yet to figure out how to disable ACPI permanently. I also have to see how running without ACPI affects power consumption and temperatures. Other than that, the Mini seems to handle OpenBSD just fine.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="akai-ewi-usb-and-linux-part-2"></a>
-      <a href="../akai-ewi-usb-and-linux-part-2.html" rel="bookmark" title="Permalink to Akai EWI USB and Linux, part 2">Akai EWI USB and Linux, part 2</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-19T06:15:00"> Fri 19 November 2010 </abbr> under
-        <a href="../tag/music.html">music</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p><a href="../akai-ewi-usb-and-linux-part-1.html">Part 1</a> of my Akai saga ended with the EWI producing sound, a disappearing symlink and a shocking latency. This was unacceptable.</p>
-<p>To get a flavor of how things should work, I did something I hadn't done in months: boot into Windows. I dutifully installed the software from EWI's companion CD and tried a few tones. The software itself was nice, polished and simple enough, except that the latency was pretty much the same as under Linux! Google said one should install a different audio stack, "winaudio" or something, but I had no such inclination.</p>
-<p>I pulled out the big guns instead. I installed <a href="http://www.64studio.com/">64studio</a> on a spare partition. It's a specialized multimedia-production Linux with pre-configured <a href="http://jackaudio.org/node/11">JACK</a> low-latency audio server etc. and I was certain that it would help. Except it wouldn't talk to my graphics card. Next up was <a href="http://ubuntustudio.org/">Ubuntu Studio</a> - same purpose, different vendor. It installed beautifully, had tons of pre-installed audio software including JACK and QSynth and... exhibited the same latency problem as my regular aptosid and Windows. It was back to the drawing board.</p>
-<p>I knew it wasn't a hardware problem - when I ran fluidsynth in verbose mode it would print MIDI events very swiftly, only the sound was lagging. CPU load was negligible so it wasn't any slowness on my computer's part, either. I tried the only thing I could think of - further tweaking fluidsynth's options, this time on the output (audio) side. Lo and behold, when I chose the legacy OSS output driver the system started reacting like a <a href="http://l.yimg.com/eb/ymv/us/img/hv/photo/movie_pix/dreamworks_skg/over_the_hedge/steve_carell/overthehedge_poster.jpg">caffeine-doped squirrel</a>. Sound was coming out almost before I touched the pads. I had reached the Akai EWI nirvana.</p>
-<p>The utterly perplexing aspect of this outcome is that I don't even have true OSS on my system; virtually no-one has these days. OSS on my notebook is just a special legacy emulation mode of ALSA, yet it performs better than ALSA proper. Go figure...</p>
-<p>I had basically two options to resolve the disappearing symlink from <em>/dev/snd/midiC1D0</em> to <em>/dev/snd/midiC0D0</em>. I could either automate its creation in a start-up script or I could remove the need for it, i.e. make fluidsynth talk to <em>midiC1D0</em> as it should. The latter was obviously a cleaner solution so I started pursuing it. Tweaking the command line had been useless before, hence I downloaded the source code (<em>apt-get source fluidsynth</em>) and started looking around the error messages I was getting ("Unknown RawMidi" etc.).</p>
-<p>It turned out that when fluidsynth documentation says I should specify a MIDI device, it doesn't really mean "a path to a device file" but rather "an ALSA device ID", at least when <em>alsa_raw</em> is specified as the MIDI driver. ALSA device IDs have a special syntax that looks like "hw0,0", with the first number identifying a sound card and the second one determining a feature of that sound card one wants to work with. I tried to formulate a device ID for <em>midiC1D0</em> but couldn't figure it out.</p>
-<p>Looking through the code, I noticed that when no MIDI device is explicitly specified fluidsynth deduces an ID from various ALSA settings, mainly the default sound card. It occurred to me that I could set the EWI as the default sound card. I remembered that ALSA reads user-specific configuration from <em>~/.asoundrc</em> and a short trip to Google yielded this incantation: <em>defaults.rawmidi.card 1</em>. Having that line in my <em>.asoundrc</em> finally let fluidsynth talk to the EWI without a symlink hack. This wasn't as exciting as doing away with the latency but I felt satisfied that things were finally set up the way they should be.</p>
-<p>In summary, all I had needed from the start was that single line in <em>.asoundrc</em> and a simple <em>fluidsynth -m alsa_raw -a oss TimGM6mb.sf2</em> (I use the soundfonts provided on EWI's companion CD). It took a while to get there but I finally had a straightforward way to play the EWI through my notebook.</p>
-<p>Once I knew what to set in fluidsynth I configured QSynth with the same settings to get a nice graphical UI for switching sounds and tweaking the effects (fluidsynth has built-in reverb and chorus). This was really comfortable and I became spoiled after a while. It started bugging me that I had to launch QSynth by hand each time I wanted to play. I knew that the computer should be able to do it automatically when the EWI gets plugged in. It should even be able to exit QSynth when the EWI gets unplugged. I decided to tackle that one as well to make my playing truly comfortable. It's a story for another post, however...</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
                         <a href="../category/misc3.html">&laquo;</a>
