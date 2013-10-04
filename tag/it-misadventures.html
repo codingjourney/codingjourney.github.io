@@ -37,6 +37,7 @@
         Page 1 / 3
             <a href="../tag/it-misadventures2.html">&raquo;</a>
     </h3>
+      <a href="#what-i-did-last-summer">What I did last summer</a>
       <a href="#pimp-my-calendar-aftermath">PIMp my calendar: Aftermath</a>
       <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
       <a href="#pimp-my-calendar-part-4">PIMp my calendar, part 4</a>
@@ -44,7 +45,6 @@
       <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
       <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
       <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
-      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -77,6 +77,46 @@
         <section id="content">
 <h2>Articles tagged with "IT misadventures"</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="what-i-did-last-summer"></a>
+      <a href="../what-i-did-last-summer.html" rel="bookmark" title="Permalink to What I did last summer">What I did last summer</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-10-04T06:00:00"> Fri 04 October 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My three-month break from paid programming work was largely spent dealing with various Real Life issues. I did get to try a few things, however, mostly in September in preparation for various interviews. Here's an overview of those experiences for posterity:</p>
+<ul>
+<li>
+<p>I started on my first Android app. I was surprised by how rich my own testing feedback was - it substantially changed the whole proposition I'd had in mind. Touch UIs really are a completely different ballgame. That's why I can't see myself developing with emulated devices. I don't worry too much about fragmentation, testing on one specimen of each feasible screen size (say 4.5", 7" and 10"). For a modest app that doesn't use any esoteric hardware features, it seems to be working out OK.</p>
+</li>
+<li>
+<p>I took a look at <a href="http://refcardz.dzone.com/refcardz/javaserver-faces-20">JSF 2</a>, <a href="http://refcardz.dzone.com/refcardz/contexts-and-dependency">CDI</a> and the rest of the JEE 5 stack (or at least the web profile). I was pleasantly surprised by how easy it was to deploy a toy application into the various containsers. I tried <a href="http://glassfish.java.net/">GlassFish</a>, <a href="http://tomee.apache.org/apache-tomee.html">TomEE</a> and <a href="https://www.jboss.org/jbossas">JBoss</a>. Especially the latter surprised me as a well-thought-out, approachable piece of software. I even ventured to create a FrankenContainer by mashing up JBoss Weld with Mojarra, Apache OpenEJB, Hibernate JPA etc. That didn't quite work but the few hours of debugging proved amusing.
+<br/><br/>
+<em>I also used the JEE web profile to implement a basic version of a web app idea I'd had for some time. I deployed to all three containers and there wasn't any issue. I do have to say, though, that I didn't find the experience all that enjoyable. The templating approach taken by JSF 2 is about equally powerful as other mature approaches yet it makes you suffer its baroque verbosity. This became even more apparent when I re-implemented the app in Python (using the <a href="http://www.pylonsproject.org/projects/pylons-framework/about">Pylons</a> framework and <a href="">Mako</a> templating) to keep my OpenBSD home server free of Java. The Python version is much more compact and has much easier URL manipulation. I suppose JEE comes into its own with really big projects.</em></p>
+</li>
+<li>
+<p>I was fortunate to play a little with <a href="http://wicket.apache.org/">Apache Wicket</a>, as well. It feels incredibly fresh compared to JEE. I found the binding between the Java and HTML incarnations of a page to be slightly tighter than I'd expected (the component trees have to match pretty much exactly) and I missed an expression language a bit (not wanting to muck around with Velocity integration) but I found myself doing a lot of work very quickly and fluently. Unless the <a href="http://tech.small-improvements.com/2012/01/11/tuning-wicket-session-size/">heavy sessions</a> are a deal-breaker, I find Wicket a pretty obvious choice for writing web apps.
+<br/><br/>
+<em>Regarding Wicket, I was amused by how varied the Spring integration examples I found turned out to be. One had the standard Wicket servlet with a Spring context starting in the init method of the Application class. Another used a special Spring dispatcher servlet with the Application class as its init parameter. It goes to show that both technologies are well suited for working with other components (in case of Spring that's the whole point, of course). Having multiple ways of doing the same thing is a mixed blessing but what I saw was pretty easy to follow.</em></p>
+</li>
+<li>
+<p>I wrote a plug-in for the <a href="http://qstardict.ylsoftware.com/index.php">QStarDict</a> desktop dictionary. QStarDict has a really nice <a href="http://qt-project.org/">Qt</a>-based UI and perfect <a href="http://www.kde.org/">KDE</a> integration but I found its German-Czech dataset quite useless. I did found a great German-English dataset that ships with <a href="http://www-user.tu-chemnitz.de/~fri/ding/">another tool</a>, though, so I taught QStarDict to parse it. This was my first "major" C++ undertaking since my high-scool project in 1995 so I spent some time scratching my head over things such as namespaces, references and nested template parameters. In the end it all worked out OK. I have to find the time to polish it a bit and talk to the QStarDict folks to see if it's interesting for them.
+<br/><br/>
+<em>Working with Qt was a pleasure as always, it all looked rather civilized despite the C++. It even made me feel a bit uneasy the way <a href="http://www.codeproject.com/Articles/570638/Ten-Cplusplus11-Features-Every-Cplusplus-Developer">C++11</a> does. On the one hand, improved safety and readability are generally worthy goals. On the other, the language should signal its fundamentally unsafe nature. Hiding it too well gives a false sense of safety and it somehow feels hypocritical. I do suppose experienced C++ folks working on large projects simply appreciate all the help they can get.</em></p>
+</li>
+<li>
+<p>Finally, for the current project I needed to look into the <a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform">Eclipse Rich Client Platform</a>. It's not trivial and I'm sure I'll keep discovering new facets for a while. It's really nice to interact with the underlying UI libraries (<a href="http://wiki.eclipse.org/SWT">SWT</a> and <a href="http://wiki.eclipse.org/JFace">JFace</a>) simply due to their contrast vis-a-vis <a href="http://en.wikipedia.org/wiki/Swing_(Java)">Swing</a>. Exploring a different way of thinking is always useful as well as fascinating.
+<br/><br/>
+<em>While investigating Eclipse RCP I stumbled upon <a href="http://wiki.eclipse.org/SWTBot">SWTBot</a>, a functional testing tool for SWT applications. It's not perfect but it seems to be usable. It fits neatly into my toolbox alongside <a href="http://fest.easytesting.org/">FEST</a> and <a href="http://docs.seleniumhq.org/">Selenium</a>.</em></p>
+</li>
+</ul>
+<p><br/>
+Now that I look at it, the summer wasn't completely wasted after all! I wish I could've delved into some of the topics a little deeper but so is life. I don't like how I've been neglecting the <a href="http://www.html5rocks.com/en/">JavaScript/HTML/CSS</a> universe. I hope I'll make good use of my commute time to fill this void.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -295,37 +335,6 @@
 <p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
 <p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
 <p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-battle-of-the-c5280-part-4"></a>
-      <a href="../the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I have previously recounted how I <a href="../the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="../the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="../the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
-<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
-<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-
-<span class="cm">/*</span>
-<span class="cm"> * If a device is attached to ugen(4) it has</span>
-<span class="cm"> * only one &#39;devname&#39;.</span>
-<span class="cm"> */</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
-        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</pre></div>
-
-
-<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
-<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
-<p><em>For each USB device there may be additional drivers attached to it.</em></p>
-<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
-<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
             <a href="#" class="disabled">&laquo;</a>

@@ -37,6 +37,7 @@
                 Page 3 / 5
             <a href="./index4.html">&raquo;</a>
     </h3>
+      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
       <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
       <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
       <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
@@ -44,7 +45,6 @@
       <a href="#what-i-learned-about-pelican">What I learned about Pelican</a>
       <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
       <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
-      <a href="#the-heroku-mess">The Heroku mess</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -76,6 +76,37 @@
   </header><!-- /#banner -->
         <section id="content">
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-4"></a>
+      <a href="./the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>,        <a href="./tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have previously recounted how I <a href="./the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="./the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="./the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
+<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
+<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * If a device is attached to ugen(4) it has</span>
+<span class="cm"> * only one &#39;devname&#39;.</span>
+<span class="cm"> */</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
+        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+
+
+<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
+<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
+<p><em>For each USB device there may be additional drivers attached to it.</em></p>
+<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
+<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -292,28 +323,6 @@ One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or 
 <p>After some time I noticed this collision detection was often failing. I had no time to analyze it so I simply took care to upload my timesheet all at once and re-upload only the failed entries if there were errors. It was a pain but still much better than stuffing JIRA manually.</p>
 <p>When I got more free time in January I discovered the true nature of the bug. Both me and my JIRA server had effectively switched timezones when the Daylight Savings Time ended in October. The script, however, still had <em>+0200</em> in its outgoing timestamps. This meant that I uploaded an entry with <em>08:30:00.000+0200</em> but then it came back as <em>09:30:00.000+0100</em>. Ignoring the timezone, the script detected no overlap (as long as duration was under 61 minutes) and proceeded to re-upload the entry, again with <em>08:30:00.000+0200</em> in the timestamp.</p>
 <p>It turns out that no, I can't ignore timezones in my calculations after all. Besides, the code is already <a href="https://github.com/codingjourney/upsheet">on GitHub</a> and right now collision detection works only for the lucky users who are two hours East from UTC together with their JIRA servers. Good thing I haven't told anyone yet :-)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-heroku-mess"></a>
-      <a href="./the-heroku-mess.html" rel="bookmark" title="Permalink to The Heroku mess">The Heroku mess</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-02-16T07:35:00"> Sat 16 February 2013 </abbr> under
-        <a href="./tag/cloud-computing.html">cloud computing</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>On February 12, 2013, a startup called RapGenius accused the <a href="http://www.heroku.com">Heroku cloud host</a> of knowingly stifling the performance of the RapGenius Rails app, causing the need for extra instances and subsequent higher service charges.</p>
-<p>RapGenius' <a href="http://rapgenius.com/James-somers-herokus-ugly-secret-lyrics">blog post</a> is impressive in that it describes the issues clearly yet provides sufficient details. It is really worth a read which is why I'm not going to reproduce nor summarize it here.</p>
-<p>I believe none of the parties involved (Heroku, RapGenius and the monitoring outfit New Relic) come out looking good:</p>
-<ul>
-<li><em><strong>Heroku</strong> failed to announce a substantial platform change to customers.</em> The company provides Platform as a Service (several platforms, actually). A platform is a system of components working together to provide essential services for applications. Heroku switched their Rails platform from an optimal combination of components (single-request dynos, intelligent routing) to a substantially sub-optimal one (single-request dynos, random routing). They failed to notify customers of the switch in advance. They either failed to measure the performance impact of the switch or purposefully withheld knowledge of the impact from their customers. They failed to reflect the switch in their documentation.</li>
-<li><em><strong>New Relic</strong> simply failed to account for all latencies in their monitoring.</em> It appears they measured many internal values within the platform but failed to cross-check them against a black-box view from the outside. It seems quite unprofessional, especially given the pricing of their service.</li>
-<li><em><strong>RapGenius</strong> put too much trust in an external entity.</em> Instead of an independent monitoring service they used one sold as an add-on to their platform by the platform provider. They took more than two years to detect a major performance degradation in their platform (in fairness, the problem only becomes apparent when the number of dynos reaches a certain threshold).</li>
-</ul>
-<p>What's truly puzzling is that none of Heroku's other Rails customers seems to have encountered this issue before RapGenius. One possibility is that RapGenius is the first Heroku Rails app to achieve sufficient scale for the problem to occur. Another is that some customers did indeed catch the problem right at the start, adapted to the new configuration and simply never thought to give a heads-up to the rest of the community.</p>
-<p>The morale of the story for me is that it's foolish to use a monitoring service with business ties to the entity being monitored (or, indeed, to outsource monitoring in the first place - it's a critical QA function, after all). An independent monitoring service must still be given enough access to the monitored system to provide necessary detail. This is not trivial as monitoring can interfere with the monitored system. Some form of meta-monitoring is perhaps needed. Ah, the ever-fascinating world of IT :-)</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
                         <a href="./index2.html">&laquo;</a>

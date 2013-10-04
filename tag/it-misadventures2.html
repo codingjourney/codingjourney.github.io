@@ -37,6 +37,7 @@
                 Page 2 / 3
             <a href="../tag/it-misadventures3.html">&raquo;</a>
     </h3>
+      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
       <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
       <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
       <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
@@ -44,7 +45,6 @@
       <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
       <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
       <a href="#update-on-logitech-dinovo-edge-and-imon-pad">Update on Logitech diNovo Edge and iMON PAD</a>
-      <a href="#look-mom-no-ports">Look mom, no ports!</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -77,6 +77,37 @@
         <section id="content">
 <h2>Articles tagged with "IT misadventures"</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-4"></a>
+      <a href="../the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have previously recounted how I <a href="../the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="../the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="../the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
+<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
+<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * If a device is attached to ugen(4) it has</span>
+<span class="cm"> * only one &#39;devname&#39;.</span>
+<span class="cm"> */</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
+        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</pre></div>
+
+
+<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
+<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
+<p><em>For each USB device there may be additional drivers attached to it.</em></p>
+<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
+<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -294,51 +325,6 @@ One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or 
 
 
 <p>and the remote works like a charm again (for a while, anyway...)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="look-mom-no-ports"></a>
-      <a href="../look-mom-no-ports.html" rel="bookmark" title="Permalink to Look mom, no ports!">Look mom, no ports!</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2011-02-13T17:04:00"> Sun 13 February 2011 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/qt.html">Qt</a>,        <a href="../tag/jetty.html">Jetty</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I'm currently updating a commercial HTML-based desktop application that I wrote a few years ago. Customers keep having permissions trouble on Windows with the back-end opening a TCP port for serving front-end's HTTP requests. I decided to try to refresh both the back-end (to Jetty 7.3.0) and the front-end (to WebKit running in Java via Qt Jambi) and run them in one process with no TCP ports involved. Both components have reputations for being easy to embed, so I thought it shouldn't be too hard. Yeah right...</p>
-<p>Actually, things went very smoothly at first. Here's what I discovered:</p>
-<ul>
-<li>Jetty accepts requests via Connectors; one of them is LocalConnector.</li>
-<li>Obviously, setting up Jetty with LocalConnector is beyond the scope of this post :-)</li>
-<li>LocalConnector.getResponses() accepts a String argument containing an HTTP request just as you would type it into a telnet window (like "GET /whatever HTTP/1.0" followed by two newlines) and returns an HTTP response, also as a String ("HTTP/200 OK blah blah..."). It's a primitive interface but it does work.</li>
-<li>The method mentioned above doesn't work very well if you want to GET binary data such as images (yeah, you could use "Content-Encoding: base64" but come on...). There is, fortunately, a variant of LocalConnector.getResponses() that accepts a ByteArrayBuffer along with a boolean "keepOpen" argument which I simply set to false. The method otherwise works just like the String variant.</li>
-</ul>
-<p>As for a WebKit front-end, once you have Qt Jambi set up properly (with -Djava.library.path etc.) it's really easy to create a QWebView, point it at a URL and splash it all over your display. To prevent HTTP traffic, however, I needed to intercept requests coming from WebKit and route them to my LocalConnector:</p>
-<ul>
-<li>The thing to do is QWebView.page().setNetworkAccessManager(magic), where "magic" is a subclass of QNetworkAccessManager that overrides createRequest() to do the necessary, well, magic.</li>
-<li>Despite superficial appearances, createRequest() actually accepts QNetworkRequest as a parameter and returns a QNetworkReply. Go figure. Additional parameters for createRequest() include an Operation enum to distinguish GETs from POSTs, and a QIODevice (think InputStream) containing the data of a POST request.</li>
-<li>Since QNetworkReply is also a stream-like QIODevice, returning custom content from createRequest() involves writing a QNetworkReply subclass that knows where to look for when clients call its read*() methods. This is not quite easy to do.</li>
-</ul>
-<p>Anyway. After a few hours I had a web application running in a WebKit window with not a TCP packet in sight.The trouble came when I tried to process a POST request (yes, the application does involve filling out forms). What followed was a bout of frustration, head-scratching and just plain unhappiness that I don't wish upon anyone:</p>
-<ul>
-<li>First, you have to realize that Qt Jambi (including its WebKit component) is actually a C++ beast in sheep-like Java clothing. No matter how sweet the API is, the implementation is a bitch to debug even if, technically, you have access to the source code.</li>
-<li>What happened is that my createRequest() was called with a PostOperation as it should be but the accompanying QIODevice was empty. More specifically, calling canReadLine() on it returned false.</li>
-<li>Setting a breakpoint and examining the QIODevice's internals didn't show anything interesting (it was basically a proxy object for a C++ implementation).</li>
-<li>I resorted to the oldest tool in a programmer's toolbox: trace statements. Here's what they gave me:<ul>
-<li>formData.isOpen(): true</li>
-<li>formData.isReadable(): true</li>
-<li>formData.isSequential(): true</li>
-<li>formData.atEnd(): true</li>
-<li>formData.bytesAvailable(): 0</li>
-<li>formData.size(): 0</li>
-<li>formData.pos(): 0</li>
-</ul>
-</li>
-</ul>
-<p>I tried routing regular HTTP post requests through the parent class and it worked even though the request objects looked exactly the same and returned exactly the same trace results! I was getting ready to give my own QNetworkRequest to the parent implementation that would trace all calls made to it but I tried getByte() and... there was data! WTF?! Point: QNetworkRequest was in a weird uninitialized state where it thought it was empty when it really wasn't. It snapped out of it when prodded for data.</p>
-<p>Another problem surfaced when I tried to get a Dojo Tree widget going. During initialization, Dojo loads its modules via AJAX and it was failing with the dreaded "NETWORK_ERR: XmlHttpRequest Exception 101". Cost me a lot of blind paths - I tried setting the .js files in different paths relative to the referring .jsp, reading compressed Dojo sources, diagnosing with window.alert() etc. In the end, I understood that WebKit was having some problem with the QNetworkReply I was producing. I made my Content-Length calculation more robust - no change. Finally, I looked at QNetworkReply objects produced by the regular QNetworkAccessManager and made sure all the attributes it fills out were also filled out in my replies. That helped. I know, I should have done it at the start but why did it matter with AJAX requests and not with regular ones? Oh well...</p>
-<p>The AJAX issue turned out to be the last major obstacle. My application now runs without opening any TCP ports and both WebKit and Jetty proved reasonably embeddable. I might use this set-up in other contexts as well.</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
                         <a href="../tag/it-misadventures.html">&laquo;</a>

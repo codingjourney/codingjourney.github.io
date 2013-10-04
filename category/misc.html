@@ -37,6 +37,7 @@
         Page 1 / 5
             <a href="../category/misc2.html">&raquo;</a>
     </h3>
+      <a href="#what-i-did-last-summer">What I did last summer</a>
       <a href="#october-2013-is-here">October 2013 is here</a>
       <a href="#october-2013">October 2013</a>
       <a href="#the-levenshtein-rules">The Levenshtein rules</a>
@@ -44,7 +45,6 @@
       <a href="#software-as-knowledge-repository">Software as knowledge repository</a>
       <a href="#reputation-as-a-measure-of-success">Reputation as a measure of success</a>
       <a href="#the-psychology-of-casual-street-cleaning">The psychology of casual street cleaning</a>
-      <a href="#the-minimal-patch-fallacy">The minimal patch fallacy</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -77,6 +77,46 @@
         <section id="content">
 <h2>Articles in the misc category</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="what-i-did-last-summer"></a>
+      <a href="../what-i-did-last-summer.html" rel="bookmark" title="Permalink to What I did last summer">What I did last summer</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-10-04T06:00:00"> Fri 04 October 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My three-month break from paid programming work was largely spent dealing with various Real Life issues. I did get to try a few things, however, mostly in September in preparation for various interviews. Here's an overview of those experiences for posterity:</p>
+<ul>
+<li>
+<p>I started on my first Android app. I was surprised by how rich my own testing feedback was - it substantially changed the whole proposition I'd had in mind. Touch UIs really are a completely different ballgame. That's why I can't see myself developing with emulated devices. I don't worry too much about fragmentation, testing on one specimen of each feasible screen size (say 4.5", 7" and 10"). For a modest app that doesn't use any esoteric hardware features, it seems to be working out OK.</p>
+</li>
+<li>
+<p>I took a look at <a href="http://refcardz.dzone.com/refcardz/javaserver-faces-20">JSF 2</a>, <a href="http://refcardz.dzone.com/refcardz/contexts-and-dependency">CDI</a> and the rest of the JEE 5 stack (or at least the web profile). I was pleasantly surprised by how easy it was to deploy a toy application into the various containsers. I tried <a href="http://glassfish.java.net/">GlassFish</a>, <a href="http://tomee.apache.org/apache-tomee.html">TomEE</a> and <a href="https://www.jboss.org/jbossas">JBoss</a>. Especially the latter surprised me as a well-thought-out, approachable piece of software. I even ventured to create a FrankenContainer by mashing up JBoss Weld with Mojarra, Apache OpenEJB, Hibernate JPA etc. That didn't quite work but the few hours of debugging proved amusing.
+<br/><br/>
+<em>I also used the JEE web profile to implement a basic version of a web app idea I'd had for some time. I deployed to all three containers and there wasn't any issue. I do have to say, though, that I didn't find the experience all that enjoyable. The templating approach taken by JSF 2 is about equally powerful as other mature approaches yet it makes you suffer its baroque verbosity. This became even more apparent when I re-implemented the app in Python (using the <a href="http://www.pylonsproject.org/projects/pylons-framework/about">Pylons</a> framework and <a href="">Mako</a> templating) to keep my OpenBSD home server free of Java. The Python version is much more compact and has much easier URL manipulation. I suppose JEE comes into its own with really big projects.</em></p>
+</li>
+<li>
+<p>I was fortunate to play a little with <a href="http://wicket.apache.org/">Apache Wicket</a>, as well. It feels incredibly fresh compared to JEE. I found the binding between the Java and HTML incarnations of a page to be slightly tighter than I'd expected (the component trees have to match pretty much exactly) and I missed an expression language a bit (not wanting to muck around with Velocity integration) but I found myself doing a lot of work very quickly and fluently. Unless the <a href="http://tech.small-improvements.com/2012/01/11/tuning-wicket-session-size/">heavy sessions</a> are a deal-breaker, I find Wicket a pretty obvious choice for writing web apps.
+<br/><br/>
+<em>Regarding Wicket, I was amused by how varied the Spring integration examples I found turned out to be. One had the standard Wicket servlet with a Spring context starting in the init method of the Application class. Another used a special Spring dispatcher servlet with the Application class as its init parameter. It goes to show that both technologies are well suited for working with other components (in case of Spring that's the whole point, of course). Having multiple ways of doing the same thing is a mixed blessing but what I saw was pretty easy to follow.</em></p>
+</li>
+<li>
+<p>I wrote a plug-in for the <a href="http://qstardict.ylsoftware.com/index.php">QStarDict</a> desktop dictionary. QStarDict has a really nice <a href="http://qt-project.org/">Qt</a>-based UI and perfect <a href="http://www.kde.org/">KDE</a> integration but I found its German-Czech dataset quite useless. I did found a great German-English dataset that ships with <a href="http://www-user.tu-chemnitz.de/~fri/ding/">another tool</a>, though, so I taught QStarDict to parse it. This was my first "major" C++ undertaking since my high-scool project in 1995 so I spent some time scratching my head over things such as namespaces, references and nested template parameters. In the end it all worked out OK. I have to find the time to polish it a bit and talk to the QStarDict folks to see if it's interesting for them.
+<br/><br/>
+<em>Working with Qt was a pleasure as always, it all looked rather civilized despite the C++. It even made me feel a bit uneasy the way <a href="http://www.codeproject.com/Articles/570638/Ten-Cplusplus11-Features-Every-Cplusplus-Developer">C++11</a> does. On the one hand, improved safety and readability are generally worthy goals. On the other, the language should signal its fundamentally unsafe nature. Hiding it too well gives a false sense of safety and it somehow feels hypocritical. I do suppose experienced C++ folks working on large projects simply appreciate all the help they can get.</em></p>
+</li>
+<li>
+<p>Finally, for the current project I needed to look into the <a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform">Eclipse Rich Client Platform</a>. It's not trivial and I'm sure I'll keep discovering new facets for a while. It's really nice to interact with the underlying UI libraries (<a href="http://wiki.eclipse.org/SWT">SWT</a> and <a href="http://wiki.eclipse.org/JFace">JFace</a>) simply due to their contrast vis-a-vis <a href="http://en.wikipedia.org/wiki/Swing_(Java)">Swing</a>. Exploring a different way of thinking is always useful as well as fascinating.
+<br/><br/>
+<em>While investigating Eclipse RCP I stumbled upon <a href="http://wiki.eclipse.org/SWTBot">SWTBot</a>, a functional testing tool for SWT applications. It's not perfect but it seems to be usable. It fits neatly into my toolbox alongside <a href="http://fest.easytesting.org/">FEST</a> and <a href="http://docs.seleniumhq.org/">Selenium</a>.</em></p>
+</li>
+</ul>
+<p><br/>
+Now that I look at it, the summer wasn't completely wasted after all! I wish I could've delved into some of the topics a little deeper but so is life. I don't like how I've been neglecting the <a href="http://www.html5rocks.com/en/">JavaScript/HTML/CSS</a> universe. I hope I'll make good use of my commute time to fill this void.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -362,23 +402,6 @@ b<span style="color: #e08020">a</span><span style="color: red">r</span><span sty
 <p>From a more long-term perspective, the effort to remove one piece of trash is a one-time investment which pays off every time we visit the affected place. This is a delayed reward further compromised by new garbage appearing all the time, so it's not very significant. What's more important is that if we experience the immediate reward often enough a habit starts to form, lowering the mental cost of the act itself and making the reward even more attractive. A virtuous cycle forms.</p>
 <p>All of this speculation may sound rather abstract but the psychological benefit I've experienced is real and substantial. When I notice a piece of litter these days it doesn't bother me anymore. I either pick it up and dispose of it properly or concede to myself that it's too far off my path. There's a sober honesty and clarity about it which does feel liberating. At the same time, I get regular experiences of doing noticeable good with modest effort.</p>
 <p>In conclusion, I can recommend casual street cleaning as a worthwhile activity (given proper sanitary precautions, of course). Next time you find yourself angry at the unknown hooligans, why not try undoing their carelessness? You will help yourself more than anyone else.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-minimal-patch-fallacy"></a>
-      <a href="../the-minimal-patch-fallacy.html" rel="bookmark" title="Permalink to The minimal patch fallacy">The minimal patch fallacy</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-04-25T21:10:00"> Thu 25 April 2013 </abbr> under
-        <a href="../tag/craftsmanship.html">craftsmanship</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>One of the goals of refactoring is to improve the readability of code. I have noticed, however, that I sometimes forsake a refactoring in order to preserve the readability of the resulting changeset. It tends to happen when I'm making a sensitive change in a complicated spot - the point is to make future "detective work" easier. I have evolved this approach after delving into Mercurial history way too many times while trying to understand opaque code.</p>
-<p>At first blush, it seems there is a genuine trade-off at play. A refactoring - by definition - introduces changes that don't impact the observable behavior of a program. Mixing such modifications into a bug-fixing or feature-implementing changeset necessarily obscures its purpose. Clarity of the code is at odds with the clarity of its history.</p>
-<p>Closer inspection reveals that the trade-off is pure nonsense. <em>Code</em> gets executed - not history. The present code must hence be readable on its own, in its present context. The very need to consult version control only arises when there are code smells all over the place. The urge to keep history clean is thus nothing more than a symptom of fear - fear of disrupting the fragile mess the code has become. <em>The same fear refactoring works to obliterate.</em></p>
-<p>Having said that, isolating refactorings in their own changesets is certainly a good idea - it makes the history clearer with no negative impact on the code. It may not be always possible, though (the need for a clean-up often arises in the middle of other work).</p>
-<p>I fell prey to the minimal patch fallacy while working on an allegedly agile project. Despite the efforts of all involved there came a point when deadlines defeated test coverage, technical debt payments were postponed and all that remained were stand-ups. I started leaning on code history not long thereafter. Goes to show that cargo-cult agility ruins not just the code but also programming habits...</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
             <a href="#" class="disabled">&laquo;</a>

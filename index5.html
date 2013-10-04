@@ -37,6 +37,7 @@
                 Page 5 / 5
             <a href="#" class="disabled">&raquo;</a>
     </h3>
+      <a href="#installing-openbsd-48-on-an-hp-mini-5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
       <a href="#akai-ewi-usb-and-linux-part-2">Akai EWI USB and Linux, part 2</a>
       <a href="#akai-ewi-usb-and-linux-part-1">Akai EWI USB and Linux, part 1</a>
       <a href="#akai-ewi-usb-and-me">Akai EWI USB and me</a>
@@ -75,6 +76,25 @@
   </header><!-- /#banner -->
         <section id="content">
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="installing-openbsd-48-on-an-hp-mini-5101"></a>
+      <a href="./installing-openbsd-48-on-an-hp-mini-5101.html" rel="bookmark" title="Permalink to Installing OpenBSD 4.8 on an HP Mini 5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-19T22:14:00"> Fri 19 November 2010 </abbr> under
+        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I used to be baffled by the netbook form factor. I could see no use for a toy notebook nor for an overgrown PDA. One day, as I was reviewing the specs of yet another netbook model somewhere, it hit me: this is a light-duty server with a built-in console. No more searching for a PS/2 keyboard down in the basement! What a concept!</p>
+<p>I had been thinking of building a home server for some time so I went out and bought an Acer Aspire One. I put OpenBSD 4.5 on it and it has perfomed beautifully. It's served HTTP, SMTP, POP3 and the Squeezebox streaming protocol, as well as shared a printer and provided a backup destination for other boxes on the network.</p>
+<p>My only worry was that it might break down - after all, netbooks are not designed to be turned on 24/7. I decided to buy another one and periodically sync its disk from the "master" machine so that I could just swap them in case of need. Alas, the same model was no longer available, much to my disappointment. I ended up getting a pair of HP Mini 5101s instead.</p>
+<p>The main problem with installing an OS on a netbook is the lack of a CD-ROM drive. With the Acer I'd performed a network install using pxeboot but it was not something I would endure again if I could help it. I decided to try installing from a USB stick instead. First I had to create the installation medium, of course. I quickly found <a href="http://old.nabble.com/Install-OpenBSD-from-USB---td15057477.html">a great thread</a> at misc@openbsd.org that basically said one can either copy the install48.iso straight onto the raw USB stick device (under Linux this would be <em>dd if=install48.iso of=/dev/sdb</em> or something) or one can boot the OpenBSD CD-ROM and install onto the USB stick just like onto a hard drive.</p>
+<p>People on the thread couldn't agree on which method was better. I tried the simpler <em>dd</em> method first but the USB stick would not boot on the Mini. Funnily enough, it did boot on my ThinkPad (BIOS being the X factor). With a bit of trepidation, I booted the ThinkPad from the OpenBSD CD and installed onto the USB stick, hoping I would not ruin my notebook's hard disk instead. All went well and this time the USB stick did boot on the Mini.</p>
+<p>Installation onto the Mini from the USB stick was uneventful. For the first time after years I had the luxury of installing on the entire hard drive, letting the installer do the partitioning for me. I could reach all BSD packages over the network without problems as I had an Ethernet cable plugged into the machine and DHCP worked just fine.</p>
+<p>Rebooting after the install ended in a kernel panic, however. Neither <em>bsd.mp</em> nor <em>bsd.sp</em> at the boot prompt seemed to help. Off to Google I was yet again, with "openbsd hp mini 5101". It turned out someone had <a href="http://kerneltrap.org/mailarchive/openbsd-misc/2010/9/3/6691/thread">seen the problem before</a> and they solved it by <a href="http://www.mail-archive.com/tech@openbsd.org/msg00278.html">turning off ACPI</a> at the boot prompt. It helped me as well and I was finally able to log into my new OpenBSD system. I've yet to figure out how to disable ACPI permanently. I also have to see how running without ACPI affects power consumption and temperatures. Other than that, the Mini seems to handle OpenBSD just fine.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>

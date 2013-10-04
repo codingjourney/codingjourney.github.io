@@ -37,6 +37,7 @@
                 Page 2 / 5
             <a href="./index3.html">&raquo;</a>
     </h3>
+      <a href="#the-minimal-patch-fallacy">The minimal patch fallacy</a>
       <a href="#pimp-my-calendar-aftermath">PIMp my calendar: Aftermath</a>
       <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
       <a href="#pimp-my-calendar-part-4">PIMp my calendar, part 4</a>
@@ -44,7 +45,6 @@
       <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
       <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
       <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
-      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -76,6 +76,23 @@
   </header><!-- /#banner -->
         <section id="content">
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-minimal-patch-fallacy"></a>
+      <a href="./the-minimal-patch-fallacy.html" rel="bookmark" title="Permalink to The minimal patch fallacy">The minimal patch fallacy</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-25T21:10:00"> Thu 25 April 2013 </abbr> under
+        <a href="./tag/craftsmanship.html">craftsmanship</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>One of the goals of refactoring is to improve the readability of code. I have noticed, however, that I sometimes forsake a refactoring in order to preserve the readability of the resulting changeset. It tends to happen when I'm making a sensitive change in a complicated spot - the point is to make future "detective work" easier. I have evolved this approach after delving into Mercurial history way too many times while trying to understand opaque code.</p>
+<p>At first blush, it seems there is a genuine trade-off at play. A refactoring - by definition - introduces changes that don't impact the observable behavior of a program. Mixing such modifications into a bug-fixing or feature-implementing changeset necessarily obscures its purpose. Clarity of the code is at odds with the clarity of its history.</p>
+<p>Closer inspection reveals that the trade-off is pure nonsense. <em>Code</em> gets executed - not history. The present code must hence be readable on its own, in its present context. The very need to consult version control only arises when there are code smells all over the place. The urge to keep history clean is thus nothing more than a symptom of fear - fear of disrupting the fragile mess the code has become. <em>The same fear refactoring works to obliterate.</em></p>
+<p>Having said that, isolating refactorings in their own changesets is certainly a good idea - it makes the history clearer with no negative impact on the code. It may not be always possible, though (the need for a clean-up often arises in the middle of other work).</p>
+<p>I fell prey to the minimal patch fallacy while working on an allegedly agile project. Despite the efforts of all involved there came a point when deadlines defeated test coverage, technical debt payments were postponed and all that remained were stand-ups. I started leaning on code history not long thereafter. Goes to show that cargo-cult agility ruins not just the code but also programming habits...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -294,37 +311,6 @@
 <p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
 <p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
 <p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-battle-of-the-c5280-part-4"></a>
-      <a href="./the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
-        <a href="./tag/it-misadventures.html">IT misadventures</a>,        <a href="./tag/openbsd.html">OpenBSD</a>,        <a href="./tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I have previously recounted how I <a href="./the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="./the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="./the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
-<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
-<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-
-<span class="cm">/*</span>
-<span class="cm"> * If a device is attached to ugen(4) it has</span>
-<span class="cm"> * only one &#39;devname&#39;.</span>
-<span class="cm"> */</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
-        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</pre></div>
-
-
-<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
-<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
-<p><em>For each USB device there may be additional drivers attached to it.</em></p>
-<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
-<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
                         <a href="./index.html">&laquo;</a>
