@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>                        <a href="../tag/it-misadventures.html">&laquo;</a>
-                Page 2 / 3
+                Page 2 / 4
             <a href="../tag/it-misadventures3.html">&raquo;</a>
     </h3>
+      <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
+      <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
       <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
       <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
       <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
       <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
       <a href="#alice-in-printerland">Alice in Printerland</a>
       <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
-      <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
-      <a href="#update-on-logitech-dinovo-edge-and-imon-pad">Update on Logitech diNovo Edge and iMON PAD</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,56 @@
         <section id="content">
 <h2>Articles tagged with "IT misadventures"</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-1"></a>
+      <a href="../pimp-my-calendar-part-1.html" rel="bookmark" title="Permalink to PIMp my calendar, part 1">PIMp my calendar, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-31T12:45:00"> Sun 31 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have a confession to make: I'm a PIM dinosaur. My appointment list resides in an ultra-minimalist GTD app I wrote as an exercise in HTML5 local storage. Even though it runs on my Android phone, it has no alarm function (did I say it was HTML5?). It's just a list of appointments I have to actively look into.</p>
+<p>Of course, the phone has a native calendar app. Back when I had stock firmware it demanded my Google account details before it would talk to me. My appointments are none of Google's business (despite what Google may think) so I stayed away from the app. Now that I run CyanogenMod it asks about my MS Exchange account. Let's just say I don't <em>do</em> MS Exchange.</p>
+<p>An alarm would be nice, though. Syncing with Kontact on my notebook wouldn't hurt either. Since I'm in the process of building a new home server, I considered fixing my calendar woes as well.</p>
+<p>My research turned up several interesting facts:</p>
+<ul>
+<li>The Android calendar can be backed by anything which says it's a "calendar service".</li>
+<li>The default calendar service on my phone talks ActiveSync - the MS Exchange calendar synchronization protocol.</li>
+<li>Other groupware tools besides MS Exchange talk ActiveSync.<ul>
+<li>Zafara with its <a href="http://z-push.sourceforge.net/soswp/">Z-Push</a> connector looks the most mature.</li>
+</ul>
+</li>
+<li>Other calendar services for Android exist.<ul>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> appeals to me since Kolab is friends with Kontact.</li>
+<li>Another interesting choice is a <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV service</a> which should talk to any CalDAV server.<ul>
+<li>There are <a href="http://caldav.calconnect.org/implementations/servers.html">a <em>ton</em> of CalDAV servers</a> including a CalDAV module for Apache.</li>
+</ul>
+</li>
+<li>There's also a calendar service backed by <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">an iCal file</a> right on the phone.</li>
+</ul>
+</li>
+</ul>
+<p>It seems I first need to decide whether I would actually use the syncing capability of a server or whether it's best to choose the iCal option and forget about a server altogether. <em>Continued in <a href="../pimp-my-calendar-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-aftermath"></a>
+      <a href="../the-battle-of-the-c5280-aftermath.html" rel="bookmark" title="Permalink to The battle of the C5280: Aftermath">The battle of the C5280: Aftermath</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-30T20:00:00"> Sat 30 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>After a protracted investigation spanning several days (see <a href="../alice-in-printerland.html">part 1</a>, <a href="../the-battle-of-the-c5280-part-1.html">part 2</a>, <a href="../the-battle-of-the-c5280-part-2.html">part 3</a> and <a href="../the-battle-of-the-c5280-part-3.html">part 4</a>), my new home server is finally providing access to my HP Photosmart C5280 printer-scanner combo. The basic goal has been achieved but I cannot be very happy with the end result. To get the printer to work, I had to disable the <em>ulpt</em> and <em>umass</em> USB drivers in the server's OpenBSD 5.2 kernel - they were both being assigned to the device along with the <em>ugen</em> driver the system actually wanted to talk to.</p>
+<p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
+<p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
+<p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -289,46 +341,8 @@ One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or 
 <p>I do hope it all works the same way under Windows...</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="stuck-in-a-timezone"></a>
-      <a href="../stuck-in-a-timezone.html" rel="bookmark" title="Permalink to Stuck in a timezone">Stuck in a timezone</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-02-22T07:16:00"> Fri 22 February 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>My <a href="https://github.com/codingjourney/upsheet">timesheet uploader</a> micro-project started off as a spontaneous scratch-your-own-itch effort with very little polish. No error handling, liberal copy-paste, vague structure - you know the story. The code obviously involved some parsing and formatting of dates and times. It wasn't very complicated so I avoided the <a href="http://docs.python.org/2.7/library/datetime.html">big</a> <a href="http://docs.python.org/2.7/library/time.html">guns</a>, sticking to string manipulation and simple arithmetic (figuring out that <em>0830-1030</em> means 120 minutes etc.).</p>
-<p>Timesheet entries are fed to JIRA as JSON documents via its REST API. JSON doesn't define a standard timestamp format but examples in the <a href="http://docs.atlassian.com/jira/REST/latest/#id225379">documentation</a> use ISO8601 with a timezone suffix - something like <em>2012-08-14T08:30:00.000+0200</em>. I dutifully slapped on the suffix as a constant to all my outgoing timestamp data.</p>
-<p>One of the things I wanted from the script was to detect timesheet entries that were already in JIRA to prevent duplication in the worklogs. This involved downloading the worklog for the relevant issue and comparing it with the entry that was to be uploaded. When parsing timestamps in the worklog I happily ignored the timezone suffix. I figured I would always be in the same timezone as my JIRA server.</p>
-<p>After some time I noticed this collision detection was often failing. I had no time to analyze it so I simply took care to upload my timesheet all at once and re-upload only the failed entries if there were errors. It was a pain but still much better than stuffing JIRA manually.</p>
-<p>When I got more free time in January I discovered the true nature of the bug. Both me and my JIRA server had effectively switched timezones when the Daylight Savings Time ended in October. The script, however, still had <em>+0200</em> in its outgoing timestamps. This meant that I uploaded an entry with <em>08:30:00.000+0200</em> but then it came back as <em>09:30:00.000+0100</em>. Ignoring the timezone, the script detected no overlap (as long as duration was under 61 minutes) and proceeded to re-upload the entry, again with <em>08:30:00.000+0200</em> in the timestamp.</p>
-<p>It turns out that no, I can't ignore timezones in my calculations after all. Besides, the code is already <a href="https://github.com/codingjourney/upsheet">on GitHub</a> and right now collision detection works only for the lucky users who are two hours East from UTC together with their JIRA servers. Good thing I haven't told anyone yet :-)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="update-on-logitech-dinovo-edge-and-imon-pad"></a>
-      <a href="../update-on-logitech-dinovo-edge-and-imon-pad.html" rel="bookmark" title="Permalink to Update on Logitech diNovo Edge and iMON PAD">Update on Logitech diNovo Edge and iMON PAD</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2011-08-03T19:50:00"> Wed 03 August 2011 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>My HTPC lived a few months without an update to its <a href="http://www.aptosid.com/">aptosid</a> installation. When I subsequently did perform an update, I ran into some of the same problems I used to have with my Logitech wireless keyboard and iMON remote control. With the help of my <a href="../logitech-dinovo-edge-vs-aptosid.html">previous</a> <a href="../soundgraph-imon-pad-vs-linux-2636.html">blog posts</a>, I was able to set things straight rather quickly.</p>
-<p>The solution to my original keyboard problem had been to replace <em>/usr/sbin/hid2hci</em> with a dummy version. In the meantime, <em>/usr/sbin/hid2hci</em> was superseded by <em>/lib/udev/hid2hci</em>. I simply replaced the new file with a dummy version as well.</p>
-<p>As for the remote control, the current problem resembled a broken "nomouse" mode of the imon kernel module that I had encountered before. The module seemed to be OK this time, however, so I kept looking and eventually the LIRC manual offered a <a href="http://www.lirc.org/html/devinput.html">great description</a> of a LIRC-HAL interaction that seemed to match my symptoms. I tried following the advice from the manual but it just didn't work. It turned out the <em>DEVICE</em> setting in <em>/etc/lirc/hardware.conf</em> had become obsolete. The correct new setting is</p>
-<div class="codehilite"><pre><span class="n">DEVICE</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">input</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">id</span><span class="o">/</span><span class="n">usb</span><span class="o">-</span><span class="mi">15</span><span class="n">c2_ffdc</span><span class="o">-</span><span class="n">event</span><span class="o">-</span><span class="n">if00</span>
-</pre></div>
-
-
-<p>and the remote works like a charm again (for a while, anyway...)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
                         <a href="../tag/it-misadventures.html">&laquo;</a>
-                Page 2 / 3
+                Page 2 / 4
             <a href="../tag/it-misadventures3.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">

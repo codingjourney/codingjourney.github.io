@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>                        <a href="../category/misc3.html">&laquo;</a>
-                Page 4 / 5
+                Page 4 / 6
             <a href="../category/misc5.html">&raquo;</a>
     </h3>
+      <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
+      <a href="#alice-in-printerland">Alice in Printerland</a>
+      <a href="#what-i-learned-about-pelican">What I learned about Pelican</a>
+      <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
+      <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
       <a href="#the-heroku-mess">The Heroku mess</a>
       <a href="#catching-a-boot-time-kernel-oops-call-trace">Catching a boot-time kernel oops call trace</a>
       <a href="#update-on-logitech-dinovo-edge-and-imon-pad">Update on Logitech diNovo Edge and iMON PAD</a>
-      <a href="#look-mom-no-ports">Look mom, no ports!</a>
-      <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
-      <a href="#logitech-dinovo-edge-vs-aptosid">Logitech diNovo Edge vs. aptosid</a>
-      <a href="#akai-ewi-usb-and-linux-part-3">Akai EWI USB and Linux, part 3</a>
-      <a href="#disabling-acpi-in-openbsd-48">Disabling ACPI in OpenBSD 4.8</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,138 @@
         <section id="content">
 <h2>Articles in the misc category</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-part-1"></a>
+      <a href="../the-battle-of-the-c5280-part-1.html" rel="bookmark" title="Permalink to The battle of the C5280, part 1">The battle of the C5280, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-28T05:05:00"> Thu 28 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The other day I posted a <a href="../alice-in-printerland.html">frustrated rant</a> about my troubles getting the printer to work under OpenBSD. This has evolved into a massive struggle which is still ongoing. On the one hand, it's ridiculous how much time I'm devoting to this. On the other, I've dusted off my C chops, built basic proficiency with gdb and discovered a bunch of curious facts about OpenBSD and USB which I'll probably never use again and forget in a matter of weeks. So it's perhaps worth writing some of them down.</p>
+<p>First, a bit of background. My home server runs on OpenBSD. One of its duties is providing access to a HP Photosmart C5280 printer via CUPS and it works like a charm. The version of OpenBSD I'm running is getting old, however, so I've purchased the 5.2 CD set and I'm setting it up on another machine.</p>
+<p>Everything went well until I tried to add the printer via CUPS' web interface. No local connection was detected. I turned on extra logging (by saying <em>LogLevel debug</em> in <em>/etc/cups/cupsd.conf</em>), clicked around in the web UI and found this in <em>/var/log/cups/error_log</em>:</p>
+<div class="codehilite"><pre><span class="n">libusb_get_device_list</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>It looked like libusb was having trouble finding the printer. I looked up libusb <a href="http://www.libusb.org">on the web</a>, looked at the source code and confirmed my suspicion. I also found out there was an OpenBSD-specific file (<a href="http://www.libusb.org/browser/libusb/libusb/os/openbsd_usb.c">openbsd_usb.c</a>) which looked for <em>/dev/ugen*</em> devices. Those were present on my system in abundance, so a missing device wasn't a problem.</p>
+<p>The error log also mentioned <em>/usr/local/libexec/cups/backend/usb</em> and browsing CUPS help gave me a hint of what <a href="http://www.cups.org/documentation.php/man-backend.html">backends</a> were about. So I ran the USB backend directly on the command line. To my surprise, it had no problem finding the device. Something was wrong in the way CUPS was calling the backend.</p>
+<p><a id="test"></a>I decided to <a href="http://www.openbsd.org/faq/faq15.html#Ports">set up OpenBSD ports</a> and compile libusb with some trace statements. I wrote a minimal program to test things:</p>
+<div class="codehilite"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;libusb.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">libusb_device</span> <span class="o">**</span><span class="n">list</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="n">libusb_init</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">libusb_get_device_list</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;Devices: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+    <span class="n">libusb_free_device_list</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">libusb_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>I hadn't done C hacking in a while so I spent a fair amount of time just crafting the proper <em>cc</em> command line but eventually I could read a nice "Devices: 7" in the output. I then started sprinkling trace statements over libusb. I naively thought using <em>fprintf(stderr, ...)</em> would be easier than figuring out how to activate the existing logging functions (<em>usbi_warn</em>, <em>usbi_dbg</em> etc.). No matter what I did, the traces wouldn't show up. Eventually I did activate libusb's logging (commenting out <em>.ifdef DEBUG</em> in the port's <em>Makefile</em>). Didn't help.</p>
+<p>After much wailing and gnashing of teeth, it turned out it was a linking problem. I'd trusted <em>cc</em> would link the library statically by default (I have no idea how to override the default anyway). The bastard used dynamic linking instead which meant that upon running the program I was talking to <em>/usr/local/lib/libusb-1.0.so.1.0</em> from the installed libusb package. Running with</p>
+<div class="codehilite"><pre><span class="n">PORT_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">obj</span><span class="o">/</span><span class="n">ports</span><span class="o">/</span><span class="n">libusb1</span><span class="o">-</span><span class="mf">1.0.9</span><span class="o">/</span><span class="n">libusb</span><span class="o">-</span><span class="mf">1.0.9</span>
+<span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PORT_PATH</span><span class="o">/</span><span class="n">libusb</span><span class="o">/</span><span class="p">.</span><span class="n">libs</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span>
+</pre></div>
+
+
+<p>brought a revelation. <em>Continued in <a href="../the-battle-of-the-c5280-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="alice-in-printerland"></a>
+      <a href="../alice-in-printerland.html" rel="bookmark" title="Permalink to Alice in Printerland">Alice in Printerland</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-24T11:55:00"> Sun 24 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I've just spent about 12 hours trying to set up CUPS on my OpenBSD home server, with no success. The USB backend didn't want to recognize the local printer. After setting up OpenBSD ports, inserting trace statements into libusb sources and forcing ld to talk to the newly compiled library instead of the one from the standard package, I found out that the backend stumbled on "Permission denied". I made the /dev entries global-readable and -writable to see if it would help. The printer was recognized and I could install it properly.</p>
+<p>Then I tried printing a test page and LIBUSB_ERROR_ACCESS became LIBUSB_ERROR_OTHER.</p>
+<p>There are 13 places in libusb where the _OTHER could come from and I have lost the will to see where the rabbit hole leads. Time for a fresh start.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="what-i-learned-about-pelican"></a>
+      <a href="../what-i-learned-about-pelican.html" rel="bookmark" title="Permalink to What I learned about Pelican">What I learned about Pelican</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-28T22:05:00"> Thu 28 February 2013 </abbr> under
+        <a href="../tag/meta.html">meta</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <ul>
+<li>initialize a site: <strong>pelican-quickstart</strong> (launches an interactive questionnaire)</li>
+<li>write content: just put .md files in content/</li>
+<li>generate site: <strong>make html</strong></li>
+<li>autorefresh mode:  <strong>make devserver</strong> (also hosts the site at <a href="http://localhost:8000/">localhost:8000</a>)</li>
+<li>further information: <a href="http://docs.getpelican.com/">docs.getpelican.com</a></li>
+</ul> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="idiosyncrasies-in-pythons-timezone-handling"></a>
+      <a href="../idiosyncrasies-in-pythons-timezone-handling.html" rel="bookmark" title="Permalink to Idiosyncrasies in Python's timezone handling">Idiosyncrasies in Python's timezone handling</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-23T04:13:00"> Sat 23 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/python.html">Python</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I work to fix timezone logic in <a href="https://github.com/codingjourney/upsheet">upsheet</a>, I've become somewhat frustrated with date and time handling in Python. Coming from a Java background, I know this stuff is awfully difficult to get right. Python has a large community driven by sophisticated users, however, so I expected things to be pretty smooth. I was wrong:</p>
+<ul>
+<li><strong><em>datetime</em> vs. <em>time</em></strong>
+Two modules with overlapping functionality and no clear separation of scope.</li>
+<li><strong><em>datetime.datetime</em></strong>
+A class with the same name as its module. This is probably common in the Python library but it makes for weird expressions such as <em>datetime.datetime.strptime(...)</em>. Kind of nudges you to drop the module prefix with <em>from datetime import *</em>.</li>
+<li><strong>timezone handling in <em>datetime</em> is a red-headed stepchild</strong>
+The <em>datetime</em> module tactfully avoids the gritty details of coming up with the local system's current timezone. You can supply a timezone but you have to provide your own <em>tzinfo</em> subclass to do it.</li>
+<li><strong>timezone handling in <em>time</em> is a red-headed stepchild</strong>
+You get <em>timezone</em> for the non-DST system timezone, <em>altzone</em> for the DST system timezone, <em>daylight</em> to see if <em>altzone</em> is even applicable and <em>localtime().tm_isdst</em> to decide (provided <em>altzone</em> is applicable) whether <em>timezone</em> or <em>altzone</em> is the local system's current timezone. Whew! I mean, it's wonderfully precise and flexible but kind of all over the place.</li>
+<li><strong>timezone offsets are represented inconsistently</strong>
+While <em>datetime.tzinfo.utcoffset()</em> must return its result in minutes, both <em>time.timezone</em> and <em>time.altzone</em> provide the offset in seconds. Trivial yet irritating.</li>
+<li><strong><em>datetime.time</em> vs. <em>time</em></strong>
+A class in one module with the same name as a related module. When you use <em>datetime</em> without the module prefix, this forces you to either also use <em>time</em> without the prefix - further polluting the naming scope - or alias it using <em>import time as sillytime</em>.</li>
+<li><strong>inconsistent timezone offsets</strong>
+While <em>time.timezone</em> and <em>time.altzone</em> specify timezone offsets in seconds west of UTC, <em>tzinfo.utcoffset()</em> must return minutes east of UTC.</li>
+<li><strong>mischievous documentation</strong>
+One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or -1; see below"</em>. Of course, there's no further mention of <em>tm_isdst</em> anywhere in the document. A sentence buried in the next paragraph does say <em>"A -1 argument as the daylight savings flag, passed to mktime() will usually result in the correct daylight savings state to be filled in."</em>. Which means the -1 is utterly irrelevant except for one specific use-case.</li>
+</ul>
+<p>Having figured all of this out, I can now construct a <em>datetime.datetime</em> instance equipped with the correct <em>tzinfo</em> for the current local timezone. This goes to show how hard it is to design a really good API.</p>
+<p>I do hope it all works the same way under Windows...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="stuck-in-a-timezone"></a>
+      <a href="../stuck-in-a-timezone.html" rel="bookmark" title="Permalink to Stuck in a timezone">Stuck in a timezone</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-02-22T07:16:00"> Fri 22 February 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My <a href="https://github.com/codingjourney/upsheet">timesheet uploader</a> micro-project started off as a spontaneous scratch-your-own-itch effort with very little polish. No error handling, liberal copy-paste, vague structure - you know the story. The code obviously involved some parsing and formatting of dates and times. It wasn't very complicated so I avoided the <a href="http://docs.python.org/2.7/library/datetime.html">big</a> <a href="http://docs.python.org/2.7/library/time.html">guns</a>, sticking to string manipulation and simple arithmetic (figuring out that <em>0830-1030</em> means 120 minutes etc.).</p>
+<p>Timesheet entries are fed to JIRA as JSON documents via its REST API. JSON doesn't define a standard timestamp format but examples in the <a href="http://docs.atlassian.com/jira/REST/latest/#id225379">documentation</a> use ISO8601 with a timezone suffix - something like <em>2012-08-14T08:30:00.000+0200</em>. I dutifully slapped on the suffix as a constant to all my outgoing timestamp data.</p>
+<p>One of the things I wanted from the script was to detect timesheet entries that were already in JIRA to prevent duplication in the worklogs. This involved downloading the worklog for the relevant issue and comparing it with the entry that was to be uploaded. When parsing timestamps in the worklog I happily ignored the timezone suffix. I figured I would always be in the same timezone as my JIRA server.</p>
+<p>After some time I noticed this collision detection was often failing. I had no time to analyze it so I simply took care to upload my timesheet all at once and re-upload only the failed entries if there were errors. It was a pain but still much better than stuffing JIRA manually.</p>
+<p>When I got more free time in January I discovered the true nature of the bug. Both me and my JIRA server had effectively switched timezones when the Daylight Savings Time ended in October. The script, however, still had <em>+0200</em> in its outgoing timestamps. This meant that I uploaded an entry with <em>08:30:00.000+0200</em> but then it came back as <em>09:30:00.000+0100</em>. Ignoring the timezone, the script detected no overlap (as long as duration was under 61 minutes) and proceeded to re-upload the entry, again with <em>08:30:00.000+0200</em> in the timestamp.</p>
+<p>It turns out that no, I can't ignore timezones in my calculations after all. Besides, the code is already <a href="https://github.com/codingjourney/upsheet">on GitHub</a> and right now collision detection works only for the lucky users who are two hours East from UTC together with their JIRA servers. Good thing I haven't told anyone yet :-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -141,207 +275,8 @@
 <p>and the remote works like a charm again (for a while, anyway...)</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="look-mom-no-ports"></a>
-      <a href="../look-mom-no-ports.html" rel="bookmark" title="Permalink to Look mom, no ports!">Look mom, no ports!</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2011-02-13T17:04:00"> Sun 13 February 2011 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/qt.html">Qt</a>,        <a href="../tag/jetty.html">Jetty</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I'm currently updating a commercial HTML-based desktop application that I wrote a few years ago. Customers keep having permissions trouble on Windows with the back-end opening a TCP port for serving front-end's HTTP requests. I decided to try to refresh both the back-end (to Jetty 7.3.0) and the front-end (to WebKit running in Java via Qt Jambi) and run them in one process with no TCP ports involved. Both components have reputations for being easy to embed, so I thought it shouldn't be too hard. Yeah right...</p>
-<p>Actually, things went very smoothly at first. Here's what I discovered:</p>
-<ul>
-<li>Jetty accepts requests via Connectors; one of them is LocalConnector.</li>
-<li>Obviously, setting up Jetty with LocalConnector is beyond the scope of this post :-)</li>
-<li>LocalConnector.getResponses() accepts a String argument containing an HTTP request just as you would type it into a telnet window (like "GET /whatever HTTP/1.0" followed by two newlines) and returns an HTTP response, also as a String ("HTTP/200 OK blah blah..."). It's a primitive interface but it does work.</li>
-<li>The method mentioned above doesn't work very well if you want to GET binary data such as images (yeah, you could use "Content-Encoding: base64" but come on...). There is, fortunately, a variant of LocalConnector.getResponses() that accepts a ByteArrayBuffer along with a boolean "keepOpen" argument which I simply set to false. The method otherwise works just like the String variant.</li>
-</ul>
-<p>As for a WebKit front-end, once you have Qt Jambi set up properly (with -Djava.library.path etc.) it's really easy to create a QWebView, point it at a URL and splash it all over your display. To prevent HTTP traffic, however, I needed to intercept requests coming from WebKit and route them to my LocalConnector:</p>
-<ul>
-<li>The thing to do is QWebView.page().setNetworkAccessManager(magic), where "magic" is a subclass of QNetworkAccessManager that overrides createRequest() to do the necessary, well, magic.</li>
-<li>Despite superficial appearances, createRequest() actually accepts QNetworkRequest as a parameter and returns a QNetworkReply. Go figure. Additional parameters for createRequest() include an Operation enum to distinguish GETs from POSTs, and a QIODevice (think InputStream) containing the data of a POST request.</li>
-<li>Since QNetworkReply is also a stream-like QIODevice, returning custom content from createRequest() involves writing a QNetworkReply subclass that knows where to look for when clients call its read*() methods. This is not quite easy to do.</li>
-</ul>
-<p>Anyway. After a few hours I had a web application running in a WebKit window with not a TCP packet in sight.The trouble came when I tried to process a POST request (yes, the application does involve filling out forms). What followed was a bout of frustration, head-scratching and just plain unhappiness that I don't wish upon anyone:</p>
-<ul>
-<li>First, you have to realize that Qt Jambi (including its WebKit component) is actually a C++ beast in sheep-like Java clothing. No matter how sweet the API is, the implementation is a bitch to debug even if, technically, you have access to the source code.</li>
-<li>What happened is that my createRequest() was called with a PostOperation as it should be but the accompanying QIODevice was empty. More specifically, calling canReadLine() on it returned false.</li>
-<li>Setting a breakpoint and examining the QIODevice's internals didn't show anything interesting (it was basically a proxy object for a C++ implementation).</li>
-<li>I resorted to the oldest tool in a programmer's toolbox: trace statements. Here's what they gave me:<ul>
-<li>formData.isOpen(): true</li>
-<li>formData.isReadable(): true</li>
-<li>formData.isSequential(): true</li>
-<li>formData.atEnd(): true</li>
-<li>formData.bytesAvailable(): 0</li>
-<li>formData.size(): 0</li>
-<li>formData.pos(): 0</li>
-</ul>
-</li>
-</ul>
-<p>I tried routing regular HTTP post requests through the parent class and it worked even though the request objects looked exactly the same and returned exactly the same trace results! I was getting ready to give my own QNetworkRequest to the parent implementation that would trace all calls made to it but I tried getByte() and... there was data! WTF?! Point: QNetworkRequest was in a weird uninitialized state where it thought it was empty when it really wasn't. It snapped out of it when prodded for data.</p>
-<p>Another problem surfaced when I tried to get a Dojo Tree widget going. During initialization, Dojo loads its modules via AJAX and it was failing with the dreaded "NETWORK_ERR: XmlHttpRequest Exception 101". Cost me a lot of blind paths - I tried setting the .js files in different paths relative to the referring .jsp, reading compressed Dojo sources, diagnosing with window.alert() etc. In the end, I understood that WebKit was having some problem with the QNetworkReply I was producing. I made my Content-Length calculation more robust - no change. Finally, I looked at QNetworkReply objects produced by the regular QNetworkAccessManager and made sure all the attributes it fills out were also filled out in my replies. That helped. I know, I should have done it at the start but why did it matter with AJAX requests and not with regular ones? Oh well...</p>
-<p>The AJAX issue turned out to be the last major obstacle. My application now runs without opening any TCP ports and both WebKit and Jetty proved reasonably embeddable. I might use this set-up in other contexts as well.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="soundgraph-imon-pad-vs-linux-2636"></a>
-      <a href="../soundgraph-imon-pad-vs-linux-2636.html" rel="bookmark" title="Permalink to Soundgraph iMON PAD vs. Linux 2.6.36">Soundgraph iMON PAD vs. Linux 2.6.36</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2011-01-09T12:09:00"> Sun 09 January 2011 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I use a Soundgraph iMON PAD remote control to command my home-theater PC. The remote stopped working when I upgraded my kernel from 2.6.33 to 2.6.36, due to major infrastructure changes that started in 2.6.35. At first I simply reverted to the older kernel but this week I had a few spare hours to figure out what was going on. In short, the iMON driver has been cleaned up by Jarod Wilson and <a href="http://wilsonet.com/?p=85">included in the main kernel code base (finally!)</a>. Its logic was also standardized to route its output to the Linux input layer rather than to the <a href="http://www.lirc.org">LIRC</a> daemon. This obviously requires some re-configuration of the daemon, as <a href="http://old.nabble.com/Re:-Status-of-lirc-imon-usb-remotes-p28684857.html">Jarod explained</a> on the LIRC mailing list.</p>
-<p>On my HTPC I had to put the following settings into <em>/etc/lirc/hardware.conf</em>:</p>
-<div class="codehilite"><pre><span class="n">DRIVER</span><span class="o">=</span><span class="s">&quot;devinput&quot;</span>
-<span class="n">DEVICE</span><span class="o">=</span><span class="s">&quot;/dev/input/by-id/usb-15c2_ffdc-event-mouse&quot;</span>
-</pre></div>
-
-
-<p>I also had to adjust key codes in <em>/etc/lirc/lircd.conf</em> (note that I only need only six keys for my remote-control software, <a href="http://offhand.sourceforge.net/">Offhand</a>; others should simply use <a href="http://wilsonet.com/jarod/imon_stuff/imon-devinput-lirc/lircd.conf">Jarod's file</a>):</p>
-<div class="codehilite"><pre><span class="n">begin</span> <span class="n">codes</span>
-    <span class="n">KEY_BACKSPACE</span>            <span class="mh">0x000E</span>
-    <span class="n">KEY_COMPOSE</span>              <span class="mh">0x007F</span>
-    <span class="n">KEY_CONTEXT_MENU</span>         <span class="mh">0x01B6</span>
-    <span class="n">KEY_ENTER</span>                <span class="mh">0x001C</span>
-    <span class="n">KEY_KEYBOARD</span>             <span class="mh">0x0176</span>
-    <span class="n">KEY_SPACE</span>                <span class="mh">0x0039</span>
-<span class="n">end</span> <span class="n">codes</span>
-</pre></div>
-
-
-<p>Finally, I had to adjust the .lircrc file used by Offhand:</p>
-<div class="codehilite"><pre><span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_CONTEXT_MENU</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">back</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_COMPOSE</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">forward</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_KEYBOARD</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">up</span>
-      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_ENTER</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">down</span>
-      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_SPACE</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">ok</span>
-    <span class="n">end</span>
-<span class="n">begin</span>
-      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
-      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_BACKSPACE</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="n">cancel</span>
-    <span class="n">end</span>
-</pre></div>
-
-
-<p>Separately, I also had to configure the iMON driver to forget about its mouse emulation mode. I did it by creating the file <em>/etc/modprobe.d/imon.conf</em> containing</p>
-<div class="codehilite"><pre><span class="n">options</span> <span class="n">imon</span> <span class="n">nomouse</span><span class="o">=</span><span class="mi">1</span>
-</pre></div> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="logitech-dinovo-edge-vs-aptosid"></a>
-      <a href="../logitech-dinovo-edge-vs-aptosid.html" rel="bookmark" title="Permalink to Logitech diNovo Edge vs. aptosid">Logitech diNovo Edge vs. aptosid</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2011-01-06T13:09:00"> Thu 06 January 2011 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>If you have no idea what a Logitech diNovo Edge could be, think about it for a while. You should quickly reach the obvious conclusion: it's a <a href="http://www.logitech.com/en-us/keyboards/keyboard/devices/192">super-thin wireless keyboard</a> featuring a built-in mouse pad. I happen to use one with my home-theater PC. It's a classy product, feels solid (even a bit luxurious) and works very well - that is, it used to work until I replaced the HTPC's ancient Kubuntu system with <a href="http://www.aptosid.com">aptosid</a>. Ever since then, I could use the keyboard in the bootloader but not once the system was up.</p>
-<p>aptosid, formerly known as sidux, is a running-release distribution of GNU/Linux descending from Debian Sid, the so-called "unstable" flavor of Debian. Being running-release means that instead of periodic releases of the entire environment, I get a constant trickle of new package versions as they are admitted into repositories. The upside is always being up-to-date. The downside is a not quite thoroughly tested environment where things occasionally stop working.</p>
-<p>The team managing aptosid does a pretty impressive job keeping the system stable. I'd been running it on my main notebook for a while and breakage had been pleasantly rare. I couldn't really fault the system for refusing to handle a relatively obscure piece of hardware. Given that I mostly run the HTPC with a remote and I manage the machine over the network, I had little need for the keyboard. Playing DVDs was the only scenario that was truly annoying. With a bit of time over the holidays, I decided to tackle it.</p>
-<p>I connected the keyboard to my notebook - having another, 100% reliable keyboard on the same computer made the investigation much smoother. I quickly foud out that the keyboard would work the first time its receiver dongle was plugged in, but after dis- and re-connecting it would behave identically as on the HTPC. A telling difference was the presence of an extra USB device: upon first connect, <em>lsusb</em> would list three new devices while after re-connecting it displayed four.</p>
-<p>Googling the incriminated USB IDs produced <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589388">the answer</a>: udev is configured in Sid to run <em>hid2hci</em> when the Edge is connected, making it a fully capable Bluetooth device rather than just a dumb USB keyboard. Except what I want is just a dumb USB keyboard.</p>
-<p>I tried adjusting udev rules on the HTPC to prevent <em>hid2hci</em> from running but no matter what I tried, it still somehow managed to launch itself during the boot sequence. I ended up replacing <em>/usr/sbin/hid2hci</em> with a shell script looking like this:</p>
-<div class="codehilite"><pre><span class="n">echo</span> <span class="s">&quot;pretending to run hid2hci&quot;</span>
-</pre></div>
-
-
-<p>Ever since then, I've been navigating DVD menus with much more flair. The keyboard suddenly seems brand new now that it works! Dead keyboard wasn't my HTPC's only problem, however. The story is set to continue...</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="akai-ewi-usb-and-linux-part-3"></a>
-      <a href="../akai-ewi-usb-and-linux-part-3.html" rel="bookmark" title="Permalink to Akai EWI USB and Linux, part 3">Akai EWI USB and Linux, part 3</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-23T05:26:00"> Tue 23 November 2010 </abbr> under
-        <a href="../tag/music.html">music</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>In <a href="../akai-ewi-usb-and-linux-part-1.html">part 1</a> and <a href="../akai-ewi-usb-and-linux-part-2.html">part 2</a> of my Akai odyssey, I've described getting the EWI to produce sound and configuring fluidsynth (plus QSynth) for optimum performance without latency. I was happy with my setup but after a while I started craving a little convenience.</p>
-<p>Setting up a playing session is a silly affair involving the instrument itself, my notebook, a pair of headphones, 2 cables and 4 connectors. The same goes for winding things down after playing. It used to be even more obnoxious since I had to manually start and exit the QSynth software. I knew that Linux can react to USB hot-plug events and this reaction can be configured; so I decided to make QSynth start and stop automagically.</p>
-<p>The system-du-jour for reacting to hotplug events in Linux is currently <em>udev</em>. Debian's wiki happens to have a <a href="http://wiki.debian.org/udev">very nice udev page</a> which explains that all one needs to do is to put a line in a file under <em>/etc/udev/rules.d</em>. One can either use one of the existing files under that directory or create a new one, which is what I did just to keep things tidy.</p>
-<p>Entries in udev rule files rely on an IF-THEN syntax where the IF part indicates in what circumstances the rule should trigger and THEN stipulates what should be done. The syntax is quite restrictive in that each rule has to fit on a line - i.e. no fancy procedural tricks. The IF part offers a lot of ways to pick up an event, though. One can specify the BUS on which the event happens, the NAME of the device, the ACTION that the event represents, expected environment variable values etc. I found the options quite extensive, making it easy to specify any event.</p>
-<p>Having to run <em>sudo udevadm control --reload-rules</em> after each rule update was a bit annoying but what really held me up was figuring out which events the rule should react to. I found out that plugging the EWI into and out of the USB port caused entire cascades of events with different characteristics. I eventually settled on the following rules:</p>
-<div class="codehilite"><pre><span class="n">ATTR</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;09e8&quot;</span><span class="p">,</span> <span class="n">ATTR</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;006d&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;add&quot;</span><span class="p">,</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
-<span class="n">ENV</span><span class="p">{</span><span class="n">DEVNAME</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;/dev/snd/midiC1D0&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;remove&quot;</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
-</pre></div>
-
-
-<p>The first rule fires when I plug the device in, the second one upon unplugging. Both rules launch the same shell script when invoked. The shell script itself looks like this:</p>
-<div class="codehilite"><pre><span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;add&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
- <span class="n">set</span> <span class="o">-</span><span class="n">x</span> 
- <span class="n">xhost</span> <span class="n">local</span><span class="o">:</span><span class="n">username</span>
- <span class="n">export</span> <span class="n">DISPLAY</span><span class="o">=:</span><span class="mf">0.0</span>
- <span class="n">su</span> <span class="n">username</span> <span class="o">-</span><span class="n">c</span> <span class="n">qsynth</span> <span class="o">&amp;</span>
-<span class="n">elif</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;remove&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
- <span class="n">killall</span> <span class="n">qsynth</span>
-<span class="n">fi</span>
-</pre></div>
-
-
-<p>The "add" section contains incantations needed to properly launch a GUI program from a shell script. I picked them up in some forum and have unfortunately lost the link. Kudos to the original poster, anyway.</p>
-<p>With this bit of scripting, my EWI is the very definition of Plug-and-Play, as well as Stop-Playing-and-Unplug ;-) . All is not perfect, though; one problem remains and it's completely unrelated to udev. Since I use legacy OSS emulation <a href="../akai-ewi-usb-and-linux-part-2.html">due to latency issues</a>, I cannot run any other sound-producing application while QSynth is active (OSS doesn't support software mixing). I don't mind that just yet but as I get my fingerings in order and advance my playing I will need to resolve it. The saga continues...</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="disabling-acpi-in-openbsd-48"></a>
-      <a href="../disabling-acpi-in-openbsd-48.html" rel="bookmark" title="Permalink to Disabling ACPI in OpenBSD 4.8">Disabling ACPI in OpenBSD 4.8</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-21T08:56:00"> Sun 21 November 2010 </abbr> under
-        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>As I've <a href="../installing-openbsd-48-on-an-hp-mini-5101.html">mentioned</a>, OpenBSD 4.8 can't boot on a HP Mini 5101 netbook due to an apparent ACPI issue. The way to work around the issue is as follows:</p>
-<ul>
-<li>When booting, enter <strong>boot -c</strong> at the <em>boot&gt;</em> prompt. A <em>UKC&gt;</em> prompt will appear shortly.</li>
-<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; the kernel should proceed to 
-boot successfully to the login prompt.</li>
-<li>After logging in, enter <strong>su</strong> (sudo won't work since you haven't edited <em>/etc/sudoers</em> yet).</li>
-<li>Enter <strong>config -e -o bsd.noacpi /bsd</strong>; you will see the <em>UKC&gt;</em> prompt again.</li>
-<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; you should be back in the shell, with a new file called <em>bsd.noacpi</em> in the current directory.</li>
-<li>Enter <strong>mv /bsd /bsd.acpi &amp;&amp; mv bsd.noacpi /bsd</strong> to replace the current kernel with the new one.</li>
-<li>Enter <strong>chmod 0644 /bsd</strong> to set proper permissions for the new kernel.</li>
-<li>Enter <strong>reboot</strong> to test things out; the computer should now boot into the login prompt without any assistance.</li>
-</ul>
-<p>What's going on here? UKC is the <em>User Kernel Config</em>, OpenBSD's tool for tweaking a kernel without re-compiling it. As we've seen, it can be used to great effect even during the boot process. What's perhaps even more impressive, UKC can also tweak the currently running kernel without having to reboot. All relevant info can be found by entering <strong>man UKC</strong> and <strong>man config</strong> in the OpenBSD shell.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
                         <a href="../category/misc3.html">&laquo;</a>
-                Page 4 / 5
+                Page 4 / 6
             <a href="../category/misc5.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">

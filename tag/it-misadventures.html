@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>            <a href="#" class="disabled">&laquo;</a>
-        Page 1 / 3
+        Page 1 / 4
             <a href="../tag/it-misadventures2.html">&raquo;</a>
     </h3>
+      <a href="#much-more-fun-with-planning-poker">Much more fun with Planning poker</a>
+      <a href="#too-much-fun-with-planning-poker">Too much fun with Planning poker</a>
       <a href="#what-i-did-last-summer">What I did last summer</a>
       <a href="#pimp-my-calendar-aftermath">PIMp my calendar: Aftermath</a>
       <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
       <a href="#pimp-my-calendar-part-4">PIMp my calendar, part 4</a>
       <a href="#pimp-my-calendar-part-3">PIMp my calendar, part 3</a>
       <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
-      <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
-      <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,54 @@
         <section id="content">
 <h2>Articles tagged with "IT misadventures"</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="much-more-fun-with-planning-poker"></a>
+      <a href="../much-more-fun-with-planning-poker.html" rel="bookmark" title="Permalink to Much more fun with Planning poker">Much more fun with Planning poker</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-06-08T19:00:00"> Mon 08 June 2015 </abbr> under
+        <a href="../tag/html5.html">HTML5</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>When I wrote about my <em>Planning poker</em> app <a href="../too-much-fun-with-planning-poker.html">for the first time</a>, I had invested 3.5 hours into the app itself plus some more time into rescuing its version history. Things have been moving forward since then. More precisely, they've been moving in several different directions - sometimes all at once - for about 16 more coding hours.</p>
+<p>What bothered me about the first "finished" version were slight glitches in the layout. Some gaps between cards were one pixel wider than the rest and it was just <em>wrong</em>. The wrongness was exacerbated by the fact that the cards were being carefully laid out by a script upon page load (I had to use <a href="http://www.w3.org/TR/CSS2/visuren.html#absolute-positioning">absolute positioning</a> due to the particular transition effect I had come up with).</p>
+<p>I decided to fix both problems by letting CSS do its thing and using an overlaid extra card for the transition (yeah, I called it "joker"). It simplified the code and removed the layout irregularities. It also introduced aliasing artifacts. In other words, edges of cards were getting blurred at certain viewport sizes. The new transition mechanic also didn't work flawlessly - it glitched when you poked the app during the transition. I chalked it up as a failed experiment (the best kind!) and decided to be rigorous.</p>
+<p>In the end, I have a responsive layout script that works with a size unit one might call <em>VRSTAWPP</em> (<a href="http://dev.w3.org/csswg/css-values-3/#viewport-relative-lengths">vmin</a> reduced slightly to align with <a href="http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html">physical pixels</a>). The entire layout takes up 100 <em>VRSTAWPP</em> on the shorter side of the display and however many are necessary on the longer side. As it's a reduced vmin, there may be extra pixels left. I distribute those as evenly and symmetrically as possible. The result is a joy to look at, provided you have a phone-vs.-eyes setup that lets you discern individual pixels. Otherwise you just won't care.</p>
+<p>So what's next? <em>Planning poker</em> is now in that weird limbo between a project and a product. I'm  happy with how it works but there are still bits that need polishing:</p>
+<ul>
+<li>the cards look like they were designed by a programmer</li>
+<li>there is no proper logo and no proper icon to show in the Firefox Marketplace</li>
+<li>the app has no proper name to distinguish it from other Planning poker efforts</li>
+<li>only one <a href="http://en.wikipedia.org/wiki/Planning_poker#Equipment">deck of cards</a> is supported</li>
+<li>there are other features I'd like to add (OK, those are "nice to haves")</li>
+</ul>
+<p>As for cross-browser support, testing in Chrome has indicated that the web platform is as inconsistent as ever. There's a schism, for instance, when changing the <em>transition</em> CSS property on an element while it is transitioning: Chrome cancels the running transition immediately, Firefox lets it finish. The app is thus pretty much unusable in Chrome. I haven't done any testing in other browsers.</p>
+<p>You can check out the current version of <em>Planning poker</em> at my modest <a href="http://coding.journey.sk/">projects page</a>. The page features an install link as well; if clicked in a recent Firefox, it should store the entire app on your device for easy offline use. On Android and Debian it even gets nicely integrated into the appropriate menu.</p>
+<p>I have yet to seriously try turning <em>Planning poker</em> into a faux-native Android app (for possible inclusion in the <a href="https://f-droid.org/">F-Droid market</a>). I've played with <a href="https://hacks.mozilla.org/2014/06/testing-your-native-android-app/">mozilla-apk-cli</a> but the resulting .apk weighs just 1.4 MB and I don't suppose it'd work on a device without Firefox installed.</p>
+<p>I'm not really sure this is worth pursuing further but at least I could try publishing it into the <a href="https://marketplace.firefox.com/">Firefox Marketplace</a>. As of now it only contains two other Planning poker apps, what a shame :-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="too-much-fun-with-planning-poker"></a>
+      <a href="../too-much-fun-with-planning-poker.html" rel="bookmark" title="Permalink to Too much fun with Planning poker">Too much fun with Planning poker</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-04-01T19:30:00"> Wed 01 April 2015 </abbr> under
+        <a href="../tag/html5.html">HTML5</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The new team lead on my current project started using Planning poker for estimation. It turned out that all colleagues except me had installed a corresponding smartphone app in order to avoid mucking about with actual paper cards. The apps are exceedingly simple: all the cards are displayed on the screen, you tap one and it fills the entire screen, you tap it again to restore the initial view. Pretty graphics and fancy animated transitions are just about the only embellishments.</p>
+<p>My Fairphone comes without Google Play and I usually fulfill my app needs through F-Droid, the app store dedicated to open source offerings. To my surprise, F-Droid offered no Planning poker app (granted, the store is rather small at about 1000 items). I decided to build my own, of course. Given my current interests, I chose to write it as a HTML5 page instead of a native Android job.</p>
+<p>I was done in about 30 minutes and the result was perfectly adequate for the intended purpose. It was pretty spartan, though, so I spent about an hour tweaking the visuals and two more hours adding an animated transition effect. I did all the work in one file without any version control and by the end I wished I had kept track of the various stages. I hadn't done much work in HTML5 before and there was a lot of trial and error involved, especially concerning CSS (I have to thank the friendly spirits at Stackoverflow, MDN and W3C, of course, for speeding up the journey immensely).</p>
+<p>And then I found out that I had, in fact, kept all the intermediate versions without even knowing about it! You see, I had set up a shortcut to the Poker page on my Android home screen to speed things up a bit. As it happens, each time I tapped the icon, Firefox opened the page in a new tab. By the time I noticed, I had 60 open tabs. It's a pretty annoying behavior, if you ask me, but in this case it provided a welcome benefit: all iterations of my creation were neatly laid out in chronological order. I only had to save them as separate files.</p>
+<p>Yeah, I didn't think it would be simple, either. Firefox for Android offers just one "Save as" option: "Save as PDF" which wasn't much use to me as I was after the source code. The Firefox Add-ons page yielded an interesting extension called "View Source Code". I installed it pronto, only to find out that it displayed the source code of the <em>latest</em> version of the file, regardless of which tab I was looking at (all the tabs had the same URL and the extension obviously reloads the source in order to display it).</p>
+<p>I tried another extension: "Save as TXT". This one saved only the text visible on the rendered page, of course, which wasn't that useful either. The extension looked rather simple, though, so I downloaded it and poked around in <em>its</em> source code to see if I could adapt it for my purposes. I had had some exposure to the XUL universe before so I wasn't completely confused but even so, the task was far from simple.</p>
+<p>My biggest hurdle consisted of the fact that I had to iterate here as well but couldn't restart Firefox in between (lest I lose all my precious tabs!). I found out that uninstalling an extension and installing a newer version of it leaves some hooks registered by the older version in place (something a restart would surely fix) so my changes weren't taking effect. I had to install each new version with a different extension ID, making the whole process pretty cumbersome.</p>
+<p>In the end, I bludgeoned the extension into doing what I needed after 8 or 9 iterations. It took two and a half hours and the result was a primitive hack. Having to activate the extension 60x by hand afterwards wasn't much fun either. I did rescue the history of my Planning poker page, however, and that's all that matters.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -287,58 +337,8 @@ Now that I look at it, the summer wasn't completely wasted after all! I wish I c
 <p>Adding a Radicale account on Android involved going to <em>Settings &gt; Accounts &amp; sync &gt; Add account &gt; CalDAV Sync Adapter</em> and filling out my user name, password and the URL. Excited, I opened the calendar application. No nagging about MS Exchange - great. Alas, when I tried to create an event I was told "You have no calendars." <em>Continued in <a href="../pimp-my-calendar-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="pimp-my-calendar-part-1"></a>
-      <a href="../pimp-my-calendar-part-1.html" rel="bookmark" title="Permalink to PIMp my calendar, part 1">PIMp my calendar, part 1</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-31T12:45:00"> Sun 31 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I have a confession to make: I'm a PIM dinosaur. My appointment list resides in an ultra-minimalist GTD app I wrote as an exercise in HTML5 local storage. Even though it runs on my Android phone, it has no alarm function (did I say it was HTML5?). It's just a list of appointments I have to actively look into.</p>
-<p>Of course, the phone has a native calendar app. Back when I had stock firmware it demanded my Google account details before it would talk to me. My appointments are none of Google's business (despite what Google may think) so I stayed away from the app. Now that I run CyanogenMod it asks about my MS Exchange account. Let's just say I don't <em>do</em> MS Exchange.</p>
-<p>An alarm would be nice, though. Syncing with Kontact on my notebook wouldn't hurt either. Since I'm in the process of building a new home server, I considered fixing my calendar woes as well.</p>
-<p>My research turned up several interesting facts:</p>
-<ul>
-<li>The Android calendar can be backed by anything which says it's a "calendar service".</li>
-<li>The default calendar service on my phone talks ActiveSync - the MS Exchange calendar synchronization protocol.</li>
-<li>Other groupware tools besides MS Exchange talk ActiveSync.<ul>
-<li>Zafara with its <a href="http://z-push.sourceforge.net/soswp/">Z-Push</a> connector looks the most mature.</li>
-</ul>
-</li>
-<li>Other calendar services for Android exist.<ul>
-<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> appeals to me since Kolab is friends with Kontact.</li>
-<li>Another interesting choice is a <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV service</a> which should talk to any CalDAV server.<ul>
-<li>There are <a href="http://caldav.calconnect.org/implementations/servers.html">a <em>ton</em> of CalDAV servers</a> including a CalDAV module for Apache.</li>
-</ul>
-</li>
-<li>There's also a calendar service backed by <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">an iCal file</a> right on the phone.</li>
-</ul>
-</li>
-</ul>
-<p>It seems I first need to decide whether I would actually use the syncing capability of a server or whether it's best to choose the iCal option and forget about a server altogether. <em>Continued in <a href="../pimp-my-calendar-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-battle-of-the-c5280-aftermath"></a>
-      <a href="../the-battle-of-the-c5280-aftermath.html" rel="bookmark" title="Permalink to The battle of the C5280: Aftermath">The battle of the C5280: Aftermath</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-30T20:00:00"> Sat 30 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>After a protracted investigation spanning several days (see <a href="../alice-in-printerland.html">part 1</a>, <a href="../the-battle-of-the-c5280-part-1.html">part 2</a>, <a href="../the-battle-of-the-c5280-part-2.html">part 3</a> and <a href="../the-battle-of-the-c5280-part-3.html">part 4</a>), my new home server is finally providing access to my HP Photosmart C5280 printer-scanner combo. The basic goal has been achieved but I cannot be very happy with the end result. To get the printer to work, I had to disable the <em>ulpt</em> and <em>umass</em> USB drivers in the server's OpenBSD 5.2 kernel - they were both being assigned to the device along with the <em>ugen</em> driver the system actually wanted to talk to.</p>
-<p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
-<p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
-<p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
             <a href="#" class="disabled">&laquo;</a>
-        Page 1 / 3
+        Page 1 / 4
             <a href="../tag/it-misadventures2.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">

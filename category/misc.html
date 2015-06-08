@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>            <a href="#" class="disabled">&laquo;</a>
-        Page 1 / 5
+        Page 1 / 6
             <a href="../category/misc2.html">&raquo;</a>
     </h3>
+      <a href="#much-more-fun-with-planning-poker">Much more fun with Planning poker</a>
+      <a href="#the-child-that-grew-too-fast">The child that grew too fast</a>
+      <a href="#mare-nostrum-at-konzerthaus">Mare Nostrum at Konzerthaus</a>
+      <a href="#too-much-fun-with-planning-poker">Too much fun with Planning poker</a>
+      <a href="#long-time-no-blog">Long time no blog</a>
       <a href="#what-i-did-last-summer">What I did last summer</a>
       <a href="#october-2013-is-here">October 2013 is here</a>
       <a href="#october-2013">October 2013</a>
-      <a href="#the-levenshtein-rules">The Levenshtein rules</a>
-      <a href="#the-levenshtein-puzzle">The Levenshtein puzzle</a>
-      <a href="#software-as-knowledge-repository">Software as knowledge repository</a>
-      <a href="#reputation-as-a-measure-of-success">Reputation as a measure of success</a>
-      <a href="#the-psychology-of-casual-street-cleaning">The psychology of casual street cleaning</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,102 @@
         <section id="content">
 <h2>Articles in the misc category</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="much-more-fun-with-planning-poker"></a>
+      <a href="../much-more-fun-with-planning-poker.html" rel="bookmark" title="Permalink to Much more fun with Planning poker">Much more fun with Planning poker</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-06-08T19:00:00"> Mon 08 June 2015 </abbr> under
+        <a href="../tag/html5.html">HTML5</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>When I wrote about my <em>Planning poker</em> app <a href="../too-much-fun-with-planning-poker.html">for the first time</a>, I had invested 3.5 hours into the app itself plus some more time into rescuing its version history. Things have been moving forward since then. More precisely, they've been moving in several different directions - sometimes all at once - for about 16 more coding hours.</p>
+<p>What bothered me about the first "finished" version were slight glitches in the layout. Some gaps between cards were one pixel wider than the rest and it was just <em>wrong</em>. The wrongness was exacerbated by the fact that the cards were being carefully laid out by a script upon page load (I had to use <a href="http://www.w3.org/TR/CSS2/visuren.html#absolute-positioning">absolute positioning</a> due to the particular transition effect I had come up with).</p>
+<p>I decided to fix both problems by letting CSS do its thing and using an overlaid extra card for the transition (yeah, I called it "joker"). It simplified the code and removed the layout irregularities. It also introduced aliasing artifacts. In other words, edges of cards were getting blurred at certain viewport sizes. The new transition mechanic also didn't work flawlessly - it glitched when you poked the app during the transition. I chalked it up as a failed experiment (the best kind!) and decided to be rigorous.</p>
+<p>In the end, I have a responsive layout script that works with a size unit one might call <em>VRSTAWPP</em> (<a href="http://dev.w3.org/csswg/css-values-3/#viewport-relative-lengths">vmin</a> reduced slightly to align with <a href="http://www.quirksmode.org/blog/archives/2010/04/a_pixel_is_not.html">physical pixels</a>). The entire layout takes up 100 <em>VRSTAWPP</em> on the shorter side of the display and however many are necessary on the longer side. As it's a reduced vmin, there may be extra pixels left. I distribute those as evenly and symmetrically as possible. The result is a joy to look at, provided you have a phone-vs.-eyes setup that lets you discern individual pixels. Otherwise you just won't care.</p>
+<p>So what's next? <em>Planning poker</em> is now in that weird limbo between a project and a product. I'm  happy with how it works but there are still bits that need polishing:</p>
+<ul>
+<li>the cards look like they were designed by a programmer</li>
+<li>there is no proper logo and no proper icon to show in the Firefox Marketplace</li>
+<li>the app has no proper name to distinguish it from other Planning poker efforts</li>
+<li>only one <a href="http://en.wikipedia.org/wiki/Planning_poker#Equipment">deck of cards</a> is supported</li>
+<li>there are other features I'd like to add (OK, those are "nice to haves")</li>
+</ul>
+<p>As for cross-browser support, testing in Chrome has indicated that the web platform is as inconsistent as ever. There's a schism, for instance, when changing the <em>transition</em> CSS property on an element while it is transitioning: Chrome cancels the running transition immediately, Firefox lets it finish. The app is thus pretty much unusable in Chrome. I haven't done any testing in other browsers.</p>
+<p>You can check out the current version of <em>Planning poker</em> at my modest <a href="http://coding.journey.sk/">projects page</a>. The page features an install link as well; if clicked in a recent Firefox, it should store the entire app on your device for easy offline use. On Android and Debian it even gets nicely integrated into the appropriate menu.</p>
+<p>I have yet to seriously try turning <em>Planning poker</em> into a faux-native Android app (for possible inclusion in the <a href="https://f-droid.org/">F-Droid market</a>). I've played with <a href="https://hacks.mozilla.org/2014/06/testing-your-native-android-app/">mozilla-apk-cli</a> but the resulting .apk weighs just 1.4 MB and I don't suppose it'd work on a device without Firefox installed.</p>
+<p>I'm not really sure this is worth pursuing further but at least I could try publishing it into the <a href="https://marketplace.firefox.com/">Firefox Marketplace</a>. As of now it only contains two other Planning poker apps, what a shame :-)</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-child-that-grew-too-fast"></a>
+      <a href="../the-child-that-grew-too-fast.html" rel="bookmark" title="Permalink to The child that grew too fast">The child that grew too fast</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-04-29T05:00:00"> Wed 29 April 2015 </abbr> under
+        <a href="../tag/security.html">security</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The story of IT is rapidly morphing into the story of IT security. One could describe it as a farce made up of many little tragedies. No people have been dying recently due to getting hacked (at least none that we the public know about) but the employees of Sony Entertainment or the many victims of ransomware could attest to the costs of an attack to its victim. The Snowden revelations, as well as several high-profile vulnerabilities and instances of blatant disregard for customer privacy by household names (Samsung? Lenovo?) have highlighted a curious trend: The more we rely on technology, the less trustworthy we find it.</p>
+<p>What might look like a paradox is actually the result of a very simple dynamic. Rising IT usage means higher stakes: more attack opportunities and juicier targets. The software infrastructure is undergoing its first real stress test, yielding lots of interesting (if unsettling) data points. Testing is mostly done by people who have the most to gain from weaknesses: spies, criminals and hacktivists. It is still not clear how much there is to lose for the rest of the ecosystem, which is why its response has been somewhat lethargic so far.</p>
+<p>The problem has complex economic and social facets. In particular, there are many instances of mis-aligned incentives: those with the means to prevent an attack don't bear the brunt of it when it comes. A coder who leaves a buffer overflow somewhere in Web-facing logic is not liable for the damage incurred by users once they get hacked. Or, from a completely different perspective, employees at signals intelligence agencies don't get fired when constitutional freedoms they are ostensibly protecting get eroded by their very actions. For yet another example, a skilled hacker faces a relatively low risk of being caught and punished.</p>
+<p>Optimizing incentives has been the perpetual challenge of every society since the dawn of time, of course. It would be great if the problem could be solved technologically but it's becoming obvious the new tools are no different from those before: empowering attackers and defenders, thieves and detectives, opressors and the oppressed alike.</p>
+<p>Having said that, the attacking side clearly has the upper hand at this point in the game, and not just due to its intrinsic asymmetric advantage. It is simply too easy to build systems without security considerations and too difficult to build with them. That is to say, even the industry's culture and tools work against the defenders.</p>
+<p>It is, fortunately, within the remit of IT to make difficult tasks easier and expensive propositions cheaper. It should be possible to use IT to make robust IT more affordable. There are, in fact, many exciting developments in this area and I hope to write about some of them in more detail in the future. As for making the disregard of security more expensive, that's a completely different can of worms...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="mare-nostrum-at-konzerthaus"></a>
+      <a href="../mare-nostrum-at-konzerthaus.html" rel="bookmark" title="Permalink to Mare Nostrum at Konzerthaus">Mare Nostrum at Konzerthaus</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-04-13T17:30:00"> Mon 13 April 2015 </abbr> under
+        <a href="../tag/music.html">music</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>On February 21, the venerable Konzerthaus in Vienna welcomed a peculiar trio as part of its series "Jazz im Konzerthaus". The musicians call themselves Mare Nostrum, apparently due to the fact they all come from countries with substantial shorelines. The trio featured the God of Jazz Accordion himself, Richard Galliano, along with Sardinian trumpetist Paolo Fresu and Swedish pianist Jan Lundgren.</p>
+<p>The gentlemen filled almost two hours with pleasing romantic tunes which nevertheless packed plenty of substance. The individual musicians' temperaments contrasted each other nicely, with Mr. Lundgren laying heartfelt backgrounds reminiscent of the likes of Debussy, Mr. Galliano embroidering melodic lines in his trademark style and Mr. Fresu contributing a more reserved, conservative jazz phraseology.</p>
+<p>And yet, it was largely Galliano's show all night. He dominated the stage without imposing himself in the least, simply by virtue of his consummate musicianship. He is one of those improvisers who play as if they were talking, so natural and fluent is his melodic concept. Regardless of the tune, he always has interesting things to play and I don't think he's capable of producing a single boring note.</p>
+<p>I wish I could say the same about Paolo Fresu but his playing somehow went right past me. Perhaps I simply wasn't attuned to his mood that night. I can definitely state, however, that at the start of the concert he wasn't attuned to his band-mates. His notes were distinctly sharp, so much so that I can't honestly believe it was intentional. He seemed to adjust his instrument after about four numbers which made him sound much better and rescued my overall impression of the concert.</p>
+<p>In conclusion, I spent a most pleasant evening, as I usually do amid the Art-Deco splendor of the Konzerthaus. I wouldn't mind seeing Mare Nostrum again if they happen to stick together for some time. Come to think of it, I'd probably bet on Richard Galliano in any constellation at all. This one wasn't half bad.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="too-much-fun-with-planning-poker"></a>
+      <a href="../too-much-fun-with-planning-poker.html" rel="bookmark" title="Permalink to Too much fun with Planning poker">Too much fun with Planning poker</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-04-01T19:30:00"> Wed 01 April 2015 </abbr> under
+        <a href="../tag/html5.html">HTML5</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The new team lead on my current project started using Planning poker for estimation. It turned out that all colleagues except me had installed a corresponding smartphone app in order to avoid mucking about with actual paper cards. The apps are exceedingly simple: all the cards are displayed on the screen, you tap one and it fills the entire screen, you tap it again to restore the initial view. Pretty graphics and fancy animated transitions are just about the only embellishments.</p>
+<p>My Fairphone comes without Google Play and I usually fulfill my app needs through F-Droid, the app store dedicated to open source offerings. To my surprise, F-Droid offered no Planning poker app (granted, the store is rather small at about 1000 items). I decided to build my own, of course. Given my current interests, I chose to write it as a HTML5 page instead of a native Android job.</p>
+<p>I was done in about 30 minutes and the result was perfectly adequate for the intended purpose. It was pretty spartan, though, so I spent about an hour tweaking the visuals and two more hours adding an animated transition effect. I did all the work in one file without any version control and by the end I wished I had kept track of the various stages. I hadn't done much work in HTML5 before and there was a lot of trial and error involved, especially concerning CSS (I have to thank the friendly spirits at Stackoverflow, MDN and W3C, of course, for speeding up the journey immensely).</p>
+<p>And then I found out that I had, in fact, kept all the intermediate versions without even knowing about it! You see, I had set up a shortcut to the Poker page on my Android home screen to speed things up a bit. As it happens, each time I tapped the icon, Firefox opened the page in a new tab. By the time I noticed, I had 60 open tabs. It's a pretty annoying behavior, if you ask me, but in this case it provided a welcome benefit: all iterations of my creation were neatly laid out in chronological order. I only had to save them as separate files.</p>
+<p>Yeah, I didn't think it would be simple, either. Firefox for Android offers just one "Save as" option: "Save as PDF" which wasn't much use to me as I was after the source code. The Firefox Add-ons page yielded an interesting extension called "View Source Code". I installed it pronto, only to find out that it displayed the source code of the <em>latest</em> version of the file, regardless of which tab I was looking at (all the tabs had the same URL and the extension obviously reloads the source in order to display it).</p>
+<p>I tried another extension: "Save as TXT". This one saved only the text visible on the rendered page, of course, which wasn't that useful either. The extension looked rather simple, though, so I downloaded it and poked around in <em>its</em> source code to see if I could adapt it for my purposes. I had had some exposure to the XUL universe before so I wasn't completely confused but even so, the task was far from simple.</p>
+<p>My biggest hurdle consisted of the fact that I had to iterate here as well but couldn't restart Firefox in between (lest I lose all my precious tabs!). I found out that uninstalling an extension and installing a newer version of it leaves some hooks registered by the older version in place (something a restart would surely fix) so my changes weren't taking effect. I had to install each new version with a different extension ID, making the whole process pretty cumbersome.</p>
+<p>In the end, I bludgeoned the extension into doing what I needed after 8 or 9 iterations. It took two and a half hours and the result was a primitive hack. Having to activate the extension 60x by hand afterwards wasn't much fun either. I did rescue the history of my Planning poker page, however, and that's all that matters.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="long-time-no-blog"></a>
+      <a href="../long-time-no-blog.html" rel="bookmark" title="Permalink to Long time no blog">Long time no blog</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2015-04-01T19:00:00"> Wed 01 April 2015 </abbr> under
+        <a href="../tag/meta.html">meta</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I would like to welcome myself back to my little corner of the Web. Many reasons kept me away from these pages since October 2013 but a scarcity of topics was never among them. I did, in fact, write several drafts and short snippets I simply never saw as "done". Still, by now they're as finished as they'll ever be and there's no point nursing them further. Besides, new fascinating topics abound. One way or another, I hope to keep things decidedly more lively.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -153,259 +251,8 @@ Now that I look at it, the summer wasn't completely wasted after all! I wish I c
 <p>Do write me a quick note - <em>coding 'at' journey 'dot' sk</em>.</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-levenshtein-rules"></a>
-      <a href="../the-levenshtein-rules.html" rel="bookmark" title="Permalink to The Levenshtein rules">The Levenshtein rules</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-07-28T06:30:00"> Sun 28 July 2013 </abbr> under
-        <a href="../tag/algorithms.html">algorithms</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I continued my exploration of the <a href="../the-levenshtein-puzzle.html">Levenshtein distance</a> by writing an implementation in the <a href="http://docs.jboss.org/drools/release/6.0.0.Beta5/drools-expert-docs/html/ch04.html#d0e4036">Drools Rule Language</a> a.k.a. DRL. It turned out to be very interesting because the properties of DRL forced me to formulate the problem in a completely different way.</p>
-<p>This isn't the right place to delve into rule engines but I'll try to explain the basics. A DRL program is executed in a <em>working memory</em> containing <em>facts</em> and <em>rules</em>. A rule is a simple statement of the form</p>
-<div class="codehilite"><pre><span class="n">when</span>
-    <span class="n">the</span> <span class="n">working</span> <span class="n">memory</span> <span class="n">is</span> <span class="n">in</span> <span class="n">such</span> <span class="n">and</span> <span class="n">such</span> <span class="n">state</span>
-<span class="n">then</span>
-    <span class="n">perform</span> <span class="n">these</span> <span class="n">actions</span>
-    <span class="p">(</span><span class="n">potentially</span> <span class="n">affecting</span> <span class="n">the</span> <span class="n">working</span> <span class="n">memory</span><span class="p">)</span>
-</pre></div>
-
-
-<p>The <em>when</em> part contains a fact pattern. When a fact is inserted into the working memory all rules whose <em>when</em> parts match the new fact get their <em>then</em> parts executed. This may cause other facts to appear in the working memory, triggering a cascade of rule firing. Well-written rules adhere to two important principles:</p>
-<ol>
-<li>The <em>then</em> part should contain no conditional logic (as Drools creator Mark Proctor says, it should be <em>"if this then that"</em>, not <em>"if this then maybe that"</em>). All decision-making should be expressed in the <em>when</em> sections.</li>
-<li>The rules should have the same semantics regardless of their execution order (e.g. when a new fact matches two rules it shouldn't matter which fires first).</li>
-</ol>
-<p>As you can see, a rule author gives up a lot of control over the program flow. The idea is to specify <em>what</em> should happen and let the rule engine figure out <em>how</em> to do it. The way it looks in practice is that you decompose your input into very small parts that are straightforward to reason about. From that you can formulate rules that let the engine construct the desired result.</p>
-<p>My original Levenshtein distance algorithm used the concepts of identical and orthogonal sub-words. Those are not really suitable for a rule engine because their discovery is in itself quite complex. I replaced them with the idea of character locations. A character location is a simple object that says "there is an 'a' at offset 2 in the word 'banana'". Converting a word into character locations is trivial and I can then throw them into the working memory as new facts (the examples use pseudo-code rather than actual DRL syntax):</p>
-<div class="codehilite"><pre><span class="n">when</span>
-    <span class="n">word</span> <span class="o">:</span> <span class="n">String</span>
-<span class="n">then</span>
-    <span class="k">for</span> <span class="n">offset</span> <span class="n">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">word</span><span class="p">.</span><span class="n">length</span>
-    <span class="n">insert</span> <span class="n">CharacterLocation</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
-</pre></div>
-
-
-<p>The rule will be triggered for each of the words as they are inserted into the working memory. Armed with a bunch of CharacterLocations, I can identify character matches:</p>
-<div class="codehilite"><pre><span class="n">when</span>
-    <span class="n">location1</span><span class="p">,</span> <span class="n">location2</span> <span class="o">:</span> <span class="n">CharacterLocation</span>
-    <span class="n">location1</span><span class="p">.</span><span class="n">character</span> <span class="o">==</span> <span class="n">location2</span><span class="p">.</span><span class="n">character</span>
-    <span class="n">location1</span><span class="p">.</span><span class="n">word</span> <span class="o">!=</span> <span class="n">location2</span><span class="p">.</span><span class="n">word</span>
-<span class="n">then</span>
-    <span class="n">insert</span> <span class="n">Match</span><span class="p">(</span><span class="n">location1</span><span class="p">,</span> <span class="n">location2</span><span class="p">)</span>
-</pre></div>
-
-
-<p>This rule, in turn, will be triggered for each suitable pair of CharacterLocations, generating all possible Matches:</p>
-<p><img alt="invalid match set" src="../static/images/levenshtein2_all.svg" /></p>
-<p>For the Levenshtein distance I need a combination of Matches that covers as much of the two words as possible. Not every combination makes sense:</p>
-<p><img alt="invalid match set" src="../static/images/levenshtein2_invalid.svg" /></p>
-<p>so I'm actually looking for <em>sequences</em> of <em>strictly ordered</em> Matches, such as this one:</p>
-<p><img alt="valid match set" src="../static/images/levenshtein2_valid.svg" /></p>
-<p>Generating valid sequences takes a bit of induction. I first create "seeds" - sequences containing just two Matches:</p>
-<div class="codehilite"><pre><span class="n">when</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">:</span> <span class="n">Match</span>
-    <span class="n">x</span> <span class="o">&lt;</span> <span class="n">y</span>
-    <span class="n">not</span> <span class="n">exists</span> <span class="n">Sequence</span> <span class="n">s</span> <span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
-<span class="n">then</span>
-    <span class="n">insert</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-
-
-<p>I proceed to grow each Sequence from the middle, using the <code>visited</code> set to avoid creating the same one twice:</p>
-<div class="codehilite"><pre><span class="n">when</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">candidate</span> <span class="o">:</span> <span class="n">Match</span>
-    <span class="n">s</span> <span class="o">:</span> <span class="n">Sequence</span>
-    <span class="n">x</span> <span class="o">&lt;</span> <span class="n">candidate</span> <span class="o">&lt;</span> <span class="n">y</span>
-    <span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">visited</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
-    <span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
-    <span class="n">s</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">s</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="n">s</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-<span class="n">then</span>
-    <span class="n">insert</span> <span class="n">s</span><span class="p">.</span><span class="n">clone</span><span class="p">(</span><span class="n">visited</span> <span class="o">+=</span> <span class="n">candidate</span><span class="p">)</span>
-    <span class="n">s</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">candidate</span> <span class="n">between</span> <span class="n">x</span> <span class="n">and</span> <span class="n">y</span><span class="p">)</span>
-</pre></div>
-
-
-<p>The distance corresponding to a Sequence is determined by the gaps it leaves open:</p>
-<p><img alt="sequence with gaps" src="../static/images/levenshtein2_gaps.svg" /></p>
-<p>so once all valid Sequences have been generated, I simply pick the best one:</p>
-<div class="codehilite"><pre><span class="n">when</span>
-    <span class="n">there</span> <span class="n">are</span> <span class="n">no</span> <span class="n">more</span> <span class="n">other</span> <span class="n">rules</span> <span class="n">to</span> <span class="n">run</span>
-    <span class="n">s</span> <span class="o">:</span> <span class="n">set</span> <span class="n">of</span> <span class="n">all</span> <span class="n">Sequence</span> <span class="n">instances</span>
-<span class="n">then</span>
-    <span class="n">print</span> <span class="s">&quot;Found distance %s&quot;</span> <span class="o">%</span> <span class="n">min</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">map</span><span class="p">(</span><span class="n">_</span><span class="p">.</span><span class="n">distance</span><span class="p">))</span>
-</pre></div>
-
-
-<p>And that's it. From a complexity point of view, the algorithm is quite a pig. It explores the entire solution space and doesn't even use the best-known result for pruning. It isn't even easily parallelizable, with all the each-on-each semantics going on. It does, however, stick to the rule-based declarative approach so performance is the rule engine's problem ;-)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-levenshtein-puzzle"></a>
-      <a href="../the-levenshtein-puzzle.html" rel="bookmark" title="Permalink to The Levenshtein puzzle">The Levenshtein puzzle</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-06-09T04:30:00"> Sun 09 June 2013 </abbr> under
-        <a href="../tag/algorithms.html">algorithms</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I've read a few blog posts recently that mentioned the concept of Levenshtein distance. It's a measure of the difference between two strings <a href="http://en.wikipedia.org/wiki/Levenshtein_distance">defined as</a> <em>"the minimum number of single-character edits (insertion, deletion, substitution) required to change one word into the other"</em>. The definition is very straightforward but when I thought about calculating it I saw no immediately obvious way. Rather than looking it up, I decided to discover an algorithm on my own, with nothing but the definition to start from.</p>
-<p>After a period of requisite head-scratching and ad-hoc attempts I identified two trivial corner cases: identical words (<em>d=0</em>) and words with no letters in common (<em>d=max(first.length, second.length)</em>, let's call them <em>orthogonal</em>). Then came the crucial realization: any pair of words can be chopped up into a sequence of identical and orthogonal sub-words:</p>
-<p style="font-family: monospace">
-d<span style="color: #e08020">ar</span>t<span style="color: red">e</span>d<br/>
-st<span style="color: #e08020">ar</span><span style="color: red">e</span>
-</p>
-
-<p>The total distance is then the sum of the distances of the orthogonal parts. Note that an orthogonal pair may consist of one empty and one non-empty string as well, such as "t" vs. "" in the example above.</p>
-<p>Trouble is, there may be more than one way to slice the words:</p>
-<p style="font-family: monospace">
-b<span style="color: #e08020">a</span>r<span style="color: red">b</span>a<span style="color: #6060e0">ra</span><br/>
-<span style="color: #e08020">a</span><span style="color: red">b</span><span style="color: #6060e0">ra</span>cadabra
-</p>
-
-<p style="font-family: monospace">
-<span style="color: #e08020">b</span><span style="color: red">a</span><span style="color: #6060e0">r</span>bara<br/>
-a<span style="color: #e08020">b</span>r<span style="color: red">a</span>cadab<span style="color: #6060e0">r</span>a
-</p>
-
-<p style="font-family: monospace">
-b<span style="color: #e08020">a</span><span style="color: red">r</span><span style="color: #6060e0">b</span>a<span style="color: #a06060">ra</span><br/>
-<span style="color: #e08020">a</span>b<span style="color: red">r</span>acada<span style="color: #6060e0">b</span><span style="color: #a06060">ra</span>
-</p>
-
-<p>and so on. The distances corresponding to these splits are 10, 11 and 8, respectively. The actual minimal distance is 6; discovering the correct split (or splits) is left as an exercise for the reader. The way my algorithm goes about it is a straightforward exhaustive trawling of the solution space. In pseudo-Python:</p>
-<div class="codehilite"><pre><span class="n">def</span> <span class="n">distance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span><span class="o">:</span>
-  <span class="n">result</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">left</span><span class="p">.</span><span class="n">length</span><span class="p">,</span> <span class="n">right</span><span class="p">.</span><span class="n">length</span><span class="p">)</span>
-  <span class="k">for</span> <span class="n">each</span> <span class="n">index</span> <span class="n">x</span> <span class="n">in</span> <span class="n">left</span><span class="o">:</span>
-     <span class="n">letter</span> <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
-     <span class="k">for</span> <span class="n">each</span> <span class="n">location</span> <span class="n">y</span> <span class="n">of</span> <span class="n">letter</span> <span class="n">in</span> <span class="n">right</span><span class="o">:</span>
-       <span class="n">subLeft</span>  <span class="o">=</span> <span class="n">left</span><span class="p">[</span><span class="n">x</span><span class="o">:</span><span class="p">]</span>
-       <span class="n">subRight</span> <span class="o">=</span> <span class="n">right</span><span class="p">[</span><span class="n">y</span><span class="o">:</span><span class="p">]</span>
-       <span class="n">beforeMatch</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-       <span class="n">match</span> <span class="o">=</span> <span class="n">length</span> <span class="n">of</span> <span class="n">the</span> <span class="n">identical</span> <span class="n">prefix</span> <span class="n">of</span> <span class="n">subLeft</span> <span class="n">and</span> <span class="n">subRight</span>
-       <span class="n">afterMatch</span> <span class="o">=</span> <span class="n">distance</span><span class="p">(</span><span class="n">subLeft</span><span class="p">[</span><span class="n">match</span><span class="o">:</span><span class="p">],</span> <span class="n">subRight</span><span class="p">[</span><span class="n">match</span><span class="o">:</span><span class="p">])</span>
-       <span class="n">newDistance</span> <span class="o">=</span> <span class="n">beforeMatch</span> <span class="o">+</span> <span class="n">afterMatch</span>
-       <span class="n">result</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">newDistance</span><span class="p">)</span>
-  <span class="k">return</span> <span class="n">result</span>
-</pre></div>
-
-
-<p>As you can see, it's a recursive function not amenable to tail-call optimization so it's prone to overflowing the stack, among other things. There's a ton of potential for performance improvement. One thing I actually have in my implementation is that when beforeMatch &gt;= result I don't go into recursion as it can't possibly produce a lower newDistance. This mini-optimization is omitted from the pseudo-code for clarity.</p>
-<p>Other than that, proper ordering seems to be the key. The algorithm is asymmetric in that it "starts from" the left word and tries to "reach" the right one. Should it always start from the shorter word or from the longer one? Or from the word with fewer unique letters or more unique letters? Should the letters with most locations in the starting word be tried first? Or the ones closest to its beginning?</p>
-<p>A proper complexity analysis (or a robust set of test pairs with known Levenshtein distances) would answer those questions, increasing the likelihood of encountering good matches early, cutting off bigger branches of the search tree. Alas, I have no time for such work, no matter how much fun it would be and how much I'd learn from it. I've solved the puzzle itself and the optimization paths are all well trodden by more capable explorers, I'm sure. Also, given that my solution completely ignores the distribution of letters in the "target" word, there's bound to be a fundamentally better, more symmetric approach. I'm looking forward to reading up on it :-)</p>
-<p>My original implementation is in JavaScript with a <a href="../static/snippets/levenshtein.html">web page</a> for easy testing of correctness. I later re-wrote it as command-line scripts in <a href="../static/snippets/levenshtein.js">node.js</a>, <a href="../static/snippets/levenshtein.py">Python</a> and <a href="../static/snippets/levenshtein.go">Go</a> in order to compare performance. Surprisingly, Go seems to be only about 33 % faster than both node.js and Python. Mind you, I don't know any of those languages intimately enough to be sure I didn't screw something up performance-wise so the comparison is very rough and not serious in any way. Tasting the different langages' flavors was great fun, though, and I'm itching for C and Drools implementations if I find the time. A functional variant in Scala or Clojure would also be nice but swapping between the imperative and functional mind-sets is <em>really</em> time-consuming.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="software-as-knowledge-repository"></a>
-      <a href="../software-as-knowledge-repository.html" rel="bookmark" title="Permalink to Software as knowledge repository">Software as knowledge repository</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-05-27T16:30:00"> Mon 27 May 2013 </abbr> under
-        <a href="../tag/craftsmanship.html">craftsmanship</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p><em><strong>Summary</strong> Software is the most relevant representation of knowledge about a business. It is crucial that this knowledge be accessible to decision-makers. When managers resent refactoring as "not adding business value", they overlook the value of software as a knowledge repository.</em></p>
-<p>Software is the most relevant representation of knowledge about a business. Although it only implements automated workflows, those form an ever-growing part of business activities. Source code is the only 100% accurate and up-to-date documentation of such workflows and often reveals a lot about manual processes as well.</p>
-<p>More importantly, software is <em>executable</em> knowledge. It doesn't simply describe automated processes - software <em>becomes</em> the process once running in a production environment.</p>
-<h4>The problem of access</h4>
-<p>It follows that a decision-maker trying to truly master the processes in a business needs fast, flexible and efficient access to software-bound knowledge. What's more, she needs <em>read-write</em> access in order to augment, extend and deepen the knowledge. It's a non-trivial requirement:</p>
-<ul>
-<li>In software, business-specific knowledge is intertwined with lots of other concerns (infrastructure, ergonomics, security, governance, ...).</li>
-<li>Source code addresses several audiences at once (end user, other programmers, compiler).</li>
-<li>Software tends to be heterogeneous even in modestly-sized businesses (different authors, different programming languages and platforms, ...).</li>
-<li>Software has to be precise enough for a computer to execute (i.e. extremely precise by human measure).</li>
-</ul>
-<p>The way software is usually managed presents additional difficulties. Business knowledge gets "baked in" at various stages of a complicated dance involving decision-makers, analysts, architects, programmers, testers - oh, and hopefully also end users. The transformation progresses via specification documents, UML diagrams, Scrum stories, bug reports or what have you. Given sufficient skill and will on all sides, there is reasonable certainty that the software does what decision-makers intend it to do. The process is neither flexible, fast nor efficient, however. Improving this situation surely means competitive advantage.</p>
-<h4>Distilling knowledge</h4>
-<p>Many approaches have been tried to bring stakeholders closer to software (and many more will be tried as software grows more important). They often start by isolating business-specific parts of a program (a.k.a. "business logic") from the rest. The idea is sensible enough yet fraught with pitfalls:</p>
-<ul>
-<li>The boundary between generic and business-specific code is often blurred.</li>
-<li>Business-specific algorithms can exist at many levels of abstraction.</li>
-<li>Local peculiarities creep into unforeseen places (masked as validation criteria etc.).</li>
-<li>Isolating parameters is much easier than isolating an algorithm.</li>
-</ul>
-<p>The last point is especially relevant. Many businesses end up with an agreed set of easy-to-tweak configuration settings, complemented by a change-request process that supposedly balances flexibility with maintainability. Such a set-up makes it all too easy to make the wrong trade-offs under schedule pressure. Another possible outcome is programming by configuration, i.e. spiking a program with so many parameters as to make both the code and the configuration extremely complex (this is the shadowy domain of SAP consultants).</p>
-<h4>Matters of presentation</h4>
-<p>When it comes to giving decision-makers useful access, extracting algorithms as well as parameters is clearly essential but won't suffice unless the CEO is fluent in the language in which the code is written. Making business logic palatable to non-technical folks is therefore a major area of activity featuring its own array of methods and tools, with <a href="http://en.wikipedia.org/wiki/Business_process_management">Business Process Management</a> (BPM) apparently in vogue these days, complemented by <a href="http://www.brcommunity.com/">Business Rule Mangement</a> (BRM).</p>
-<p>Such tools are definitely useful but they only go part of the way. Even with declarative approaches such as BRM, understanding software requires algorithmic thinking. It's a hurdle no programming language nor diagramming technique will overcome. Algorithmic thinking is a skill and can be learned, however. The recent debate regarding <a href="http://www.digitaltrends.com/computing/why-learning-to-code-is-not-just-a-horrible-trend/">whether everyone should learn to code</a> is, at its core, about letting people comprehend the world around them as software pervades it. The concern is especially relevant for business decision-makers.</p>
-<p>It will take a generation shift (maybe several) for algorithmic thinking to become common among non-programmers. Mediation between decision-makers and software is therefore poised to remain a feature of the business world for the foreseeable future. As mentioned, the process tends to be rather chaotic in practice and varies immensely between businesses. What's universal is the ever-stronger imperative to make it fast, flexible and efficient.</p>
-<h4>Perils of mediation</h4>
-<p>This is where agile methodologies enter the picture. <a href="http://agilemanifesto.org/">The Agile Manifesto</a> reads like a sigh of frustration with the communication barriers between programmers and other stakeholders. Yet it tackles precisely the interface between decision-makers and the software they pay for - which, as is hopefully clear by now, is a really tough nut to crack.</p>
-<p>Agile has endured some <a href="http://www.ambysoft.com/certification/scam.html">backlash</a> over the years but it represents great progress nevertheless. It clarifies that there are aspects to developing software that don't have technical solutions. That's always been obvious to managers but putting it in words programmers can understand was certainly commendable. Overall, agile practices do result in <a href="http://www.ibm.com/developerworks/rational/agile/agile-survey/">improvements</a> when applied properly.</p>
-<p>The most common cause of failure in agile projects seems to be misunderstanding and mistrust of the <a href="http://agilemanifesto.org/principles.html">agile principles</a> on the part of key stakeholders. The principles are thus not applied consistently and the project ends up a half-hearted faux-agile mess.</p>
-<p>Two agile values are particularly difficult yet vital from the perspective of software as knowledge repository:</p>
-<ul>
-<li><strong>Working software</strong> tends to be misunderstood by non-programmers - they don't appreciate how fragile working software is and how easy it is to introduce bugs. Hence the ignorance of test coverage and the general disregard for software quality in the presence of other priorities.</li>
-<li><strong>Responding to change</strong> tends to be misinterpreted by programmers and non-programmers alike as giving in to schedule pressure. Requirement analysis becomes sloppy, necessary maintenance is skipped.</li>
-</ul>
-<p>Both pitfalls lead to low-quality code that makes business-specific knowledge catastrophically opaque. The problem can arise surprisingly quickly and the consequences are serious. Requirements are not met, changes take lots of time and introduce bizarre bugs, developers quitting cause undue disruption - a typical project in disarray.</p>
-<h4>Refactoring to the rescue</h4>
-<p>The agile practice of <a href="http://refactoring.com/">refactoring</a> aims to achieve high software quality without slowing down the pace of development, even increasing it. Briefly, refactoring means changing software in small incremental steps and confirming the changes through automated test runs (the test runs ensure the behavior of the software stays the same as its structure improves).</p>
-<p>Refactoring is intended to be used early and often, preventing the build-up of hard-to-understand code. The proposition is counter-intuitive because it sounds like extra work. As a result, many teams never adopt the practice. It's a shame: refactoring does speed up coding by slashing the cognitive load imposed on the programmer. In other words, there are far fewer things to worry about when modifications are modest and unit tests are robust.</p>
-<h4>Why no-one does it</h4>
-<p>What happens in practice is that software quality is left to atrophy until a developer comes to a decision-maker and says "Hey, we <em>really</em> need to refactor this." Time is alotted but it's not enough so big chunks of the code are cleaned up haphazardly with no test coverage. A flurry of new bugs appears and refactoring gets another blemish on its reputation even though it was never brought to bear. Overcoming this anti-pattern requires adaptation on both sides:</p>
-<ul>
-<li>Software developers must get serious practical exposure to true refactoring as part of their training. The impact has to be experienced to be appreciated.</li>
-<li>Decision-makers must admit to themselves how critical sotware is to their organization and stop treating it as a "cost center" or an obstacle to achieving business objectives.</li>
-</ul>
-<h4>Why you should do it</h4>
-<p>A well-maintained body of code is valuable whether or not it's directly readable by non-technical decision-makers. Knowledge is at hand, answers are quick, changes are smooth. The company becomes nimble in a way it never could without automation. At a software startup, this notion forms the core of its competitive strategy - that's why working at a startup is so alluring to programmers. It also drives startups' disruptive potential. Decision-makers at conventional companies face the tough task of integrating the value of software into their cultures even if they don't compete with startups. <a href="http://www.businessspectator.com.au/article/2012/12/18/technology/app-assault-taxi-monopoly">Once they do</a> it may be too late.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="reputation-as-a-measure-of-success"></a>
-      <a href="../reputation-as-a-measure-of-success.html" rel="bookmark" title="Permalink to Reputation as a measure of success">Reputation as a measure of success</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-05-15T06:31:00"> Wed 15 May 2013 </abbr> under
-        <a href="../tag/craftsmanship.html">craftsmanship</a>,        <a href="../tag/motivation.html">motivation</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I prefer definitions of success that don't involve exclusivity. The problem with exclusivity is that it doesn't scale. When success is defined as being "the best in the world", for example, the number of successful people is limited by the number of categories in which one can be "the best in the world". Many companies thus present themselves as "the global leader" in whatever absurd bombastic-sounding niche they dream up for themselves. In addition, exclusivity is ethically questionable - in the words of <a href="http://www.youtube.com/watch?v=Xt_YhSxjshY">Scatman John</a>, <em>"how can someone win when winning means that someone loses?"</em>.</p>
-<p>I believe everyone deserves the confidence and satisfaction that comes with success. Definitions that don't require excluding anyone are preferable from this point of view. For a business, "being profitable" may be one such definition of success. "Growing consistently" may be another one, although growth does become exclusive once a market matures.</p>
-<p>The other extreme - feel-good notions of "success" that don't require any effort - is even more problematic. Slight positive bias in one's self image is said to help achieve goals but the goals have to be there in the first place. (Interesting aside: does presence of goals indicate absence of success? Is success a state or a process? Why do we want to succeed, anyway?)</p>
-<p>I became aware of these issues quite early in my youth and decided my definition of career success would be <em>"achieving respect in a community of competent professionals"</em>. This was before the Internet. I can now say I've been achieving this success through most of my career if the "community" is defined as one's workplace and its circle of competent professionals.</p>
-<p>That's no longer enough. For years, I have been standing on the sidelines of the great community that is the Internet. I would love to achieve a measure of respect there but it's quite scary. As the Red Woman says, <a href="http://www.youtube.com/watch?v=_YmVI84iYOQ">the Net is vast and full of strangers</a>, many of them jerks or worse. Even the sub-Internet of "competent software development professionals" is vast and full of strangers, many of them jerks or worse.</p>
-<p>This brings up an awkward fact: when a community becomes large enough, respect of peers becomes exclusive. Respecting someone requires being aware of their existence, achievements and other attributes. Awareness is a limited resource. In my team at work there are so few of us we can comfortably judge each other's competence and award respect to everyone who deserves it. On the internet, however, I compete for the respect of my peers just as they compete for mine.</p>
-<p>What to do about this? It's obvious that my youthful definition of success was flawed as it didn't correspond to my own ethics. I need to formulate another definition fully immune from exclusion. Perhaps something like "creating works of high quality useful to customers and delightful to users", as mundane as that sounds. (Of course, the previous definition did mention "works of high quality" between the lines: it spoke of "competent professionals" rather than "gullible fools".)</p>
-<p>Having said that, my craving for "respect" doesn't feel like a symptom of vanity. I'd say it reflects a pretty basic human need for acceptance within the group I identify with. When such acceptance is a scarcity I can either give up on being accepted, pursue the acceptance to the exclusion of others or choose a different, smaller community to participate in. I don't feel like giving up but both of the other options involve, well, talking to strangers. Oh my...</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-psychology-of-casual-street-cleaning"></a>
-      <a href="../the-psychology-of-casual-street-cleaning.html" rel="bookmark" title="Permalink to The psychology of casual street cleaning">The psychology of casual street cleaning</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-05-11T00:21:00"> Sat 11 May 2013 </abbr> under
-        <a href="../tag/motivation.html">motivation</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p><em><strong>Summary</strong> Picking up other people's trash is an empowering gesture that turns you from a whiner into a fixer.</em></p>
-<p>I've developed a peculiar habit. Sometimes when I'm approaching our apartment block I scan the ground for small pieces of trash. If I spot one not too far from my trajectory I pick it up and put it where it belongs - in a nearby dumpster. This behavior is much less common than you might think. It's also surprisingly rewarding.</p>
-<p>Street litter has always been a common problem here in Bratislava and it used to upset me. That's the prevailing attitude in this city. People don't like dirty streets and will tell you so when asked. Few, however, do anything about it. There are several psychological barriers:</p>
-<ul>
-<li>It is widely acknowledged that someone else should do the cleaning. Some - one might call them "conservatives" - would tell you it's up to those who did the littering. Others - "socialists" perhaps - would maintain it's the city administration's responsibility. Both notions are rather naive. The underlying attitude is that it's simply not fair that we, upstanding citizens who never litter the streets, should clean up after those who do.</li>
-<li>When most people think of street cleaning they imagine removing <em>all</em> the litter from a substantial area. That's obviously a lot of work which needs many people if it's to be finished reasonably soon. Coordination is required and before you know it there's a project to manage.</li>
-<li>Another mental block stems from the sheer futility of the effort. When a street does get cleaned up by municipal workers or by "spring cleaning" volunteers it doesn't take long for new litter to bloom. And it doesn't take a lot of litter to make a street look messy.</li>
-<li>There is the simple unpleasantness of trash itself. Picking up someone else's cigarette butt and carrying it to a trash can means overcoming a hint of revulsion. It's ironic: the very feeling that motivates street cleaning also makes it difficult.</li>
-</ul>
-<p>Coping with these inhibitions is all about awareness. Street litter presents no immediate threat nor opportunity so it's blocked out by the subconscious most of the time, along with many other details of the urban exterior. The blocking takes work, however. Garbage is visually loud - it mostly consists of discarded packaging designed to stand out on store shelves. Navigating dirty streets thus incurs a subliminal mental cost we're mostly unaware of. Once we recognize the full magnitude of the cost we become more willing to deal with the problem.</p>
-<p>Another thing to realize is that removing even a single piece of trash reduces the mental cost in a tangible way. The street may be quite as dirty as before but the piece we picked up must have caught our attention which means it was somehow "more important" than the rest of the environment, amplifying the cost reduction. The immediacy of the reduction gives it even more impact (the reptilian brain is a sucker for immediate rewards).</p>
-<p>From a more long-term perspective, the effort to remove one piece of trash is a one-time investment which pays off every time we visit the affected place. This is a delayed reward further compromised by new garbage appearing all the time, so it's not very significant. What's more important is that if we experience the immediate reward often enough a habit starts to form, lowering the mental cost of the act itself and making the reward even more attractive. A virtuous cycle forms.</p>
-<p>All of this speculation may sound rather abstract but the psychological benefit I've experienced is real and substantial. When I notice a piece of litter these days it doesn't bother me anymore. I either pick it up and dispose of it properly or concede to myself that it's too far off my path. There's a sober honesty and clarity about it which does feel liberating. At the same time, I get regular experiences of doing noticeable good with modest effort.</p>
-<p>In conclusion, I can recommend casual street cleaning as a worthwhile activity (given proper sanitary precautions, of course). Next time you find yourself angry at the unknown hooligans, why not try undoing their carelessness? You will help yourself more than anyone else.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
             <a href="#" class="disabled">&laquo;</a>
-        Page 1 / 5
+        Page 1 / 6
             <a href="../category/misc2.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">

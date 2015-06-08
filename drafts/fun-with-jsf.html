@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -52,17 +52,19 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     <aside class="links">
   <h3>Recent articles</h3>
+      <a href="../much-more-fun-with-planning-poker.html">Much more fun with Planning poker</a>
+      <a href="../the-child-that-grew-too-fast.html">The child that grew too fast</a>
+      <a href="../mare-nostrum-at-konzerthaus.html">Mare Nostrum at Konzerthaus</a>
+      <a href="../too-much-fun-with-planning-poker.html">Too much fun with Planning poker</a>
+      <a href="../long-time-no-blog.html">Long time no blog</a>
       <a href="../what-i-did-last-summer.html">What I did last summer</a>
       <a href="../october-2013-is-here.html">October 2013 is here</a>
       <a href="../october-2013.html">October 2013</a>
-      <a href="../the-levenshtein-rules.html">The Levenshtein rules</a>
-      <a href="../the-levenshtein-puzzle.html">The Levenshtein puzzle</a>
-      <a href="../software-as-knowledge-repository.html">Software as knowledge repository</a>
-      <a href="../reputation-as-a-measure-of-success.html">Reputation as a measure of success</a>
-      <a href="../the-psychology-of-casual-street-cleaning.html">The psychology of casual street cleaning</a>
     </aside>
       
   </div><!-- /.extra-info -->
@@ -84,12 +86,18 @@
     <p>I tried answering a <a href="http://stackoverflow.com/questions/18556746/setter-of-hselectonemenu-is-not-invoked/">StackOverflow question</a> marginally related to my current interest (Java EE). It took me 4 hours and here's what I learned:</p>
 <ul>
 <li>Any validation error in the Process Validations phase of the JSF lifecycle prevents the entire Update Model Values phase.</li>
-<li>A <h:selectOneMenu/> may still throw validation errors when the element class has a buggy equals() method. If the method throws false negatives the selected element may not be found in the list.
-** Such an error apparently doesn't show up in the message tag.</li>
-<li>There exists a source jar for the version of jsf-impl contained in JBoss 7.1.1 but it's not available in any Maven repository (neither the central one nor JBoss' own).</li>
+<li>
+<p>Even a &lt;h:selectOneMenu/&gt; may throw validation errors; this happens when the element class has a buggy equals() method. If the method returns false negatives the selected element may not be found in the list.</p>
+<ul>
+<li>Such an error apparently doesn't show up in the message tag.</li>
+</ul>
+</li>
+<li>
+<p>There exists a source jar for the version of jsf-impl contained in JBoss 7.1.1 but it's not available in any Maven repository (neither the central one nor JBoss' own).</p>
+</li>
 <li>When matching Maven artifacts to provided server-side libraries, utmost care must be taken to get the version strings right...</li>
 <li>Eclipse doesn't fetch source files for a Maven-managed JAR immediately, some clicking around in the editor view is required.</li>
-<li>To turn on client-side RichFaces logging into the browser console, insert <script>RichFaces.setLog(console)</script> into a template.</li>
+<li>To turn on client-side RichFaces logging into the browser console, insert &lt;script&gt;RichFaces.setLog(console)&lt;/script&gt; into a template.</li>
 </ul>
   </div><!-- /.entry-content -->
 </section>

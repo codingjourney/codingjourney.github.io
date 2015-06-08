@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>                        <a href="../category/misc2.html">&laquo;</a>
-                Page 3 / 5
+                Page 3 / 6
             <a href="../category/misc4.html">&raquo;</a>
     </h3>
+      <a href="#pimp-my-calendar-part-4">PIMp my calendar, part 4</a>
+      <a href="#pimp-my-calendar-part-3">PIMp my calendar, part 3</a>
+      <a href="#pimp-my-calendar-part-2">PIMp my calendar, part 2</a>
+      <a href="#pimp-my-calendar-part-1">PIMp my calendar, part 1</a>
+      <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
       <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
       <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
       <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
-      <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
-      <a href="#alice-in-printerland">Alice in Printerland</a>
-      <a href="#what-i-learned-about-pelican">What I learned about Pelican</a>
-      <a href="#idiosyncrasies-in-pythons-timezone-handling">Idiosyncrasies in Python's timezone handling</a>
-      <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,190 @@
         <section id="content">
 <h2>Articles in the misc category</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-4"></a>
+      <a href="../pimp-my-calendar-part-4.html" rel="bookmark" title="Permalink to PIMp my calendar, part 4">PIMp my calendar, part 4</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T06:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><a href="../pimp-my-calendar-part-1.html">Previous</a> <a href="../pimp-my-calendar-part-2.html">parts</a> of the <a href="../pimp-my-calendar-part-3.html">saga</a> brought me to a point where I had an upgraded instance of the <a href="http://radicale.org/">Radicale</a> CalDAV server talking to my Android phone's <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> and still getting nowhere. I decided to debug the Android-side code.</p>
+<p>Attaching the debugger was <a href="http://stackoverflow.com/questions/5379129/debugging-not-working-in-a-service-class-what-can-cause-this-issue">a bit of a trick</a> since the adapter has no Activity. Once I got past that, I discovered the response from Radicale was getting parsed just fine but it was only happening in an authentication context (i.e. while adding the new "CalDAV account"). I generally found that the adapter was basically a bunch of callbacks and I seemed unable to properly trigger them.</p>
+<p>I then noticed something funny in the log (i.e. the LogCat view in the DDMS perspective in Eclipse):</p>
+<blockquote>
+<p><em>VFY: unable to resolve static field 27 (CONTENT_URI) in Landroid/provider/CalendarContract$Events;</em></p>
+</blockquote>
+<p>According to the <a href="http://developer.android.com/guide/topics/providers/calendar-provider.html">documentation</a>, <em>Events.CONTENT_URI</em> is one of the basic constants used when working with calendars - how could it be missing? The question led to a quick series of discoveries:</p>
+<ul>
+<li>My phone runs Android 2.3.7 a.k.a. Gingerbread (well, not really a discovery for me but a key piece of the puzzle).</li>
+<li>Proper support for non-Google calendars was only added in version 4.0 a.k.a. Ice Cream Sandwich; what there was before was <a href="http://www.techrepublic.com/blog/app-builder/programming-with-the-android-40-calendar-api-the-good-the-bad-and-the-ugly/825">unofficial and unsupported</a>.</li>
+<li>The CalDAV Adapter project lists API level 14 (Ice Cream Sandwich) as the minimum required API level in its Android manifest.</li>
+<li>Back when I first tried to run the CalDAV adapter, Eclipse ADT had told me I had no compatible device; I tried modifying the manifest, changing the minimum API level to 10 (Gingerbread).</li>
+<li>Changing the minimum API level of an Android project <em>doesn't trigger a re-build in Eclipse ADT</em>; changing the <em>target API level</em> does trigger a re-build.</li>
+<li>Once prompted to re-build the project, ADT flags usage of higher-than-minimum-level APIs as an error, breaking the build.</li>
+<li>When Dalvik encounters unknown API usage while executing the code, it marks the block where the API was used as <em>dead code</em> and moves on.</li>
+</ul>
+<p>So I was trying to use an application that was incompatible with my handset and both the development environment and the runtime responded with silent failures. I think ADT in particular behaved quite impolitely. If using APIs beyond the minimum level is off-limits then changing the minimum level should trigger a re-build, right? As for the Android runtime, the <a href="http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#min">documentation</a> says</p>
+<blockquote>
+<p><em>...the application will crash during runtime when attempting to access the unavailable APIs.</em></p>
+</blockquote>
+<p>which seems to be false (or at least no indication of a crash reaches the user). In any case, the approach I'd been taking turned out to be a dead end. <em>Continued in <a href="../pimp-my-calendar-part-5.html">part 5</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-3"></a>
+      <a href="../pimp-my-calendar-part-3.html" rel="bookmark" title="Permalink to PIMp my calendar, part 3">PIMp my calendar, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-17T05:45:00"> Wed 17 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My <a href="../pimp-my-calendar-part-1.html">efforts</a> to put a <a href="../pimp-my-calendar-part-2.html">server-backed</a> calendar on my Android phone entered a new phase. I had <a href="http://www.radicale.org/">Radicale</a> on the server and the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapater</a> on the phone but they seemed to talk past each other. My phone would set up a CalDAV account successfully but then tell me "You have no calendar" when I tried to create events.</p>
+<p>Radicale documentation says calendars are created automagically based on a URL convention, i.e. simply accessing a non-existent calendar should bring it into existence. I tried it with the Mozilla Lightning client and it worked as advertised. The Android adapter, however, still wouldn't see the new calendar nor its events.</p>
+<p><a href="http://www.wireshark.org">WireShark</a> revealed that a CalDAV client apparently enjoys a lot of freedom when formulating requests. A PROPFIND request from Lightning looked like this:</p>
+<div class="codehilite"><pre><span class="nt">&lt;D:propfind</span> <span class="na">xmlns:D=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;D:prop&gt;</span>
+    <span class="nt">&lt;D:resourcetype/&gt;</span>
+    <span class="nt">&lt;D:owner/&gt;</span>
+    <span class="nt">&lt;D:supported-report-set/&gt;</span>
+    <span class="nt">&lt;C:supported-calendar-component-set/&gt;</span>
+    <span class="nt">&lt;CS:getctag/&gt;</span>
+  <span class="nt">&lt;/D:prop&gt;</span>
+<span class="nt">&lt;/D:propfind&gt;</span>
+</pre></div>
+
+
+<p>whereas the Android adapter was sending</p>
+<div class="codehilite"><pre><span class="nt">&lt;d:propfind</span> <span class="na">xmlns:d=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:c=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:cs=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span>
+    <span class="na">xmlns:ic=</span><span class="s">&quot;http://apple.com/ns/ical/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;d:prop&gt;</span>
+    <span class="nt">&lt;d:displayname</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;d:resourcetype</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;cs:getctag</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/d:prop&gt;</span>
+<span class="nt">&lt;/d:propfind&gt;</span>
+</pre></div>
+
+
+<p>and it seemed Radicale was not happy with the <em>displayname</em> bit:</p>
+<div class="codehilite"><pre><span class="nx">...</span>
+<span class="o">&lt;</span><span class="nx">propstat</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">prop</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">displayname</span> <span class="o">/&gt;</span>
+  <span class="o">&lt;/</span><span class="nx">prop</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nb">status</span><span class="o">&gt;</span><span class="nx">HTTP</span><span class="p">/</span><span class="nx">1.1</span> <span class="mi">404</span> <span class="ow">Not</span> <span class="nx">Found</span><span class="o">&lt;/</span><span class="nb">status</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="nx">propstat</span><span class="o">&gt;</span>
+<span class="nx">...</span>
+</pre></div>
+
+
+<p>Server-side source code revealed that Radicale returns 404 for properties which it does not recognize (see the final <em>else</em> in the long <em>if-elif</em> chain in <em>_propfind_response()</em> in <em>xmlutils.py</em>). My installed version of Radicale was 0.7. I downloaded the most recent stable release (0.7.1) from the project site and tried that instead. Lo and behold, it finally said</p>
+<div class="codehilite"><pre><span class="nt">&lt;multistatus</span> <span class="na">xmlns=</span><span class="s">&quot;DAV:&quot;</span>
+    <span class="na">xmlns:C=</span><span class="s">&quot;urn:ietf:params:xml:ns:caldav&quot;</span>
+    <span class="na">xmlns:CS=</span><span class="s">&quot;http://calendarserver.org/ns/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;response&gt;</span>
+    <span class="nt">&lt;href&gt;</span>/jh/calendar/<span class="nt">&lt;/href&gt;</span>
+    <span class="nt">&lt;propstat&gt;</span>
+      <span class="nt">&lt;prop&gt;</span>
+        <span class="nt">&lt;displayname&gt;</span>calendar<span class="nt">&lt;/displayname&gt;</span>
+        <span class="nt">&lt;resourcetype&gt;</span>
+          <span class="nt">&lt;C:calendar</span> <span class="nt">/&gt;</span>
+          <span class="nt">&lt;collection</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/resourcetype&gt;</span>
+        <span class="nt">&lt;CS:getctag&gt;</span>&quot;0&quot;<span class="nt">&lt;/CS:getctag&gt;</span>
+      <span class="nt">&lt;/prop&gt;</span>
+      <span class="nt">&lt;status&gt;</span>HTTP/1.1 200 OK<span class="nt">&lt;/status&gt;</span>
+    <span class="nt">&lt;/propstat&gt;</span>
+  <span class="nt">&lt;/response&gt;</span>
+<span class="nt">&lt;/multistatus&gt;</span>
+</pre></div>
+
+
+<p>The Calendar app on my phone, however, <em>still</em> insisted I had no calendar. <em>Continued in <a href="../pimp-my-calendar-part-4.html">part 4</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-2"></a>
+      <a href="../pimp-my-calendar-part-2.html" rel="bookmark" title="Permalink to PIMp my calendar, part 2">PIMp my calendar, part 2</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-08T04:00:00"> Mon 08 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>My effort to set up a <a href="../pimp-my-calendar-part-1.html">self-hosted calendaring</a> solution is taking on epic proportions, turning into another <a href="../the-battle-of-the-c5280-aftermath.html">CUPS saga</a>:</p>
+<ul>
+<li>I quickly discarded the <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">local iCal option</a> because I can't trust a piece of closed-source freeware from someone calling themselves "Khaos".</li>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> dropped out of the race because Kolab itself has complex dependencies and no OpenBSD package.</li>
+<li><a href="http://www.zafara.com">Zafara</a> just felt too heavy-weight and, well, corporate for my needs.</li>
+</ul>
+<p>I decided to concentrate on CalDAV servers with existing OpenBSD packages: <a href="http://www.davical.org/">DAVical</a>, <a href="http://owncloud.org/">ownCloud</a>, <a href="http://www.radicale.org/">Radicale</a> and <a href="http://code.google.com/p/sabredav/">SabreDAV</a>. All except Radicale were PHP-based which made my decision easy as I'm <a href="http://me.veekun.com/blog/2012/04/09/php-a-fractal-of-bad-design/">allergic to PHP</a>. I have to admit, though, ownCloud looks mighty fine and seems to have a lot of momentum.</p>
+<p>Radicale has a no-nonsense, focused feel. It is written in Python which is very nice indeed. Installing it was a breeze. I then tried to set up a calendar in Kontact and failed miserably. CalDAV support in Akonadi is apparently confined to a legacy KResource implementation and <em>blah blah blah</em>. I had no stamina to go there. What was important was my phone.</p>
+<p>Installing Gérald Garcia's open-source <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">AndroidCaldavSyncAdapater</a> via Google Play would have been a snap. The thing is, just as I don't want Google knowing about my appointments I don't want it knowing what I run on my phone. Don't get me wrong - I'm quite fond of Google. I'm simply more fond of my privacy.</p>
+<p>Installing the adapter from GitHub turned out to be quite smooth. Once I cloned the repository I found out the project relied on the <a href="http://developer.android.com/tools/sdk/eclipse-adt.html">ADT Eclipse plugin</a> for building and signing the installation package - no trouble there. I had a bit of fun getting ADT to <a href="http://developer.android.com/tools/device.html">see my phone</a> because I made a typo in the <em>udev</em> rule file. I figured it out eventually and got the package onto the phone.</p>
+<p>Adding a Radicale account on Android involved going to <em>Settings &gt; Accounts &amp; sync &gt; Add account &gt; CalDAV Sync Adapter</em> and filling out my user name, password and the URL. Excited, I opened the calendar application. No nagging about MS Exchange - great. Alas, when I tried to create an event I was told "You have no calendars." <em>Continued in <a href="../pimp-my-calendar-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-1"></a>
+      <a href="../pimp-my-calendar-part-1.html" rel="bookmark" title="Permalink to PIMp my calendar, part 1">PIMp my calendar, part 1</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-31T12:45:00"> Sun 31 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I have a confession to make: I'm a PIM dinosaur. My appointment list resides in an ultra-minimalist GTD app I wrote as an exercise in HTML5 local storage. Even though it runs on my Android phone, it has no alarm function (did I say it was HTML5?). It's just a list of appointments I have to actively look into.</p>
+<p>Of course, the phone has a native calendar app. Back when I had stock firmware it demanded my Google account details before it would talk to me. My appointments are none of Google's business (despite what Google may think) so I stayed away from the app. Now that I run CyanogenMod it asks about my MS Exchange account. Let's just say I don't <em>do</em> MS Exchange.</p>
+<p>An alarm would be nice, though. Syncing with Kontact on my notebook wouldn't hurt either. Since I'm in the process of building a new home server, I considered fixing my calendar woes as well.</p>
+<p>My research turned up several interesting facts:</p>
+<ul>
+<li>The Android calendar can be backed by anything which says it's a "calendar service".</li>
+<li>The default calendar service on my phone talks ActiveSync - the MS Exchange calendar synchronization protocol.</li>
+<li>Other groupware tools besides MS Exchange talk ActiveSync.<ul>
+<li>Zafara with its <a href="http://z-push.sourceforge.net/soswp/">Z-Push</a> connector looks the most mature.</li>
+</ul>
+</li>
+<li>Other calendar services for Android exist.<ul>
+<li>The <a href="http://code.google.com/p/kolab-android/">Kolab connector</a> appeals to me since Kolab is friends with Kontact.</li>
+<li>Another interesting choice is a <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV service</a> which should talk to any CalDAV server.<ul>
+<li>There are <a href="http://caldav.calconnect.org/implementations/servers.html">a <em>ton</em> of CalDAV servers</a> including a CalDAV module for Apache.</li>
+</ul>
+</li>
+<li>There's also a calendar service backed by <a href="https://play.google.com/store/apps/details?id=org.kc.and.ical">an iCal file</a> right on the phone.</li>
+</ul>
+</li>
+</ul>
+<p>It seems I first need to decide whether I would actually use the syncing capability of a server or whether it's best to choose the iCal option and forget about a server altogether. <em>Continued in <a href="../pimp-my-calendar-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="the-battle-of-the-c5280-aftermath"></a>
+      <a href="../the-battle-of-the-c5280-aftermath.html" rel="bookmark" title="Permalink to The battle of the C5280: Aftermath">The battle of the C5280: Aftermath</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-03-30T20:00:00"> Sat 30 March 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>After a protracted investigation spanning several days (see <a href="../alice-in-printerland.html">part 1</a>, <a href="../the-battle-of-the-c5280-part-1.html">part 2</a>, <a href="../the-battle-of-the-c5280-part-2.html">part 3</a> and <a href="../the-battle-of-the-c5280-part-3.html">part 4</a>), my new home server is finally providing access to my HP Photosmart C5280 printer-scanner combo. The basic goal has been achieved but I cannot be very happy with the end result. To get the printer to work, I had to disable the <em>ulpt</em> and <em>umass</em> USB drivers in the server's OpenBSD 5.2 kernel - they were both being assigned to the device along with the <em>ugen</em> driver the system actually wanted to talk to.</p>
+<p>Granted, the <em>ulpt</em> driver is largely superfluous when the printer works with <em>ugen</em> (though I can imagine having another USB printer to which I'd want to print through a service other than CUPS that would specifically need <em>ulpt</em>). Disabling <em>umass</em> is more serious. As it happens, my home server needs no USB storage at the moment but that could change in the future, putting me in a difficult spot. I don't think this is an acceptable state of affairs in the long term, especially when the previous home server running OpenBSD 4.8 exhibits no such limitations.</p>
+<p>Regarding the effort it took me to get to this point, it was largely a function of my insistence on figuring things out on my own. I do enjoy this sort of detective work from time to time and I did learn a bunch of new things so it was definitely time well spent. Truly resolving the issue is beyond my capacity, however. It's a task for OpenBSD hackers who know their way around USB plumbing.</p>
+<p><strong>UPDATE</strong> <em>The issue has been <a href="http://www.openbsd.org/cgi-bin/cvsweb/ports/devel/libusb1/patches/patch-libusb_os_openbsd_usb_c?only_with_tag=OPENBSD_5_3">fixed</a> in OpenBSD 5.3 which was released on May 1, 2013.</em></p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -194,140 +380,8 @@
 <p>Armed with new wisdom, I turned on global read-write permissions for <em>/dev/usb*</em>. <strong>Progress! CUPS finally found my printer.</strong> I clicked on "Print test page". As you may have guessed, nothing happened. <em>Continued in <a href="../the-battle-of-the-c5280-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-battle-of-the-c5280-part-1"></a>
-      <a href="../the-battle-of-the-c5280-part-1.html" rel="bookmark" title="Permalink to The battle of the C5280, part 1">The battle of the C5280, part 1</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-28T05:05:00"> Thu 28 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>The other day I posted a <a href="../alice-in-printerland.html">frustrated rant</a> about my troubles getting the printer to work under OpenBSD. This has evolved into a massive struggle which is still ongoing. On the one hand, it's ridiculous how much time I'm devoting to this. On the other, I've dusted off my C chops, built basic proficiency with gdb and discovered a bunch of curious facts about OpenBSD and USB which I'll probably never use again and forget in a matter of weeks. So it's perhaps worth writing some of them down.</p>
-<p>First, a bit of background. My home server runs on OpenBSD. One of its duties is providing access to a HP Photosmart C5280 printer via CUPS and it works like a charm. The version of OpenBSD I'm running is getting old, however, so I've purchased the 5.2 CD set and I'm setting it up on another machine.</p>
-<p>Everything went well until I tried to add the printer via CUPS' web interface. No local connection was detected. I turned on extra logging (by saying <em>LogLevel debug</em> in <em>/etc/cups/cupsd.conf</em>), clicked around in the web UI and found this in <em>/var/log/cups/error_log</em>:</p>
-<div class="codehilite"><pre><span class="n">libusb_get_device_list</span><span class="o">=</span><span class="mi">0</span>
-</pre></div>
-
-
-<p>It looked like libusb was having trouble finding the printer. I looked up libusb <a href="http://www.libusb.org">on the web</a>, looked at the source code and confirmed my suspicion. I also found out there was an OpenBSD-specific file (<a href="http://www.libusb.org/browser/libusb/libusb/os/openbsd_usb.c">openbsd_usb.c</a>) which looked for <em>/dev/ugen*</em> devices. Those were present on my system in abundance, so a missing device wasn't a problem.</p>
-<p>The error log also mentioned <em>/usr/local/libexec/cups/backend/usb</em> and browsing CUPS help gave me a hint of what <a href="http://www.cups.org/documentation.php/man-backend.html">backends</a> were about. So I ran the USB backend directly on the command line. To my surprise, it had no problem finding the device. Something was wrong in the way CUPS was calling the backend.</p>
-<p><a id="test"></a>I decided to <a href="http://www.openbsd.org/faq/faq15.html#Ports">set up OpenBSD ports</a> and compile libusb with some trace statements. I wrote a minimal program to test things:</p>
-<div class="codehilite"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;libusb.h&gt;</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">libusb_device</span> <span class="o">**</span><span class="n">list</span><span class="p">;</span>
-    <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
-
-    <span class="n">libusb_init</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
-    <span class="n">count</span> <span class="o">=</span> <span class="n">libusb_get_device_list</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">list</span><span class="p">);</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&quot;Devices: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
-    <span class="n">libusb_free_device_list</span><span class="p">(</span><span class="n">list</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-    <span class="n">libusb_exit</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</pre></div>
-
-
-<p>I hadn't done C hacking in a while so I spent a fair amount of time just crafting the proper <em>cc</em> command line but eventually I could read a nice "Devices: 7" in the output. I then started sprinkling trace statements over libusb. I naively thought using <em>fprintf(stderr, ...)</em> would be easier than figuring out how to activate the existing logging functions (<em>usbi_warn</em>, <em>usbi_dbg</em> etc.). No matter what I did, the traces wouldn't show up. Eventually I did activate libusb's logging (commenting out <em>.ifdef DEBUG</em> in the port's <em>Makefile</em>). Didn't help.</p>
-<p>After much wailing and gnashing of teeth, it turned out it was a linking problem. I'd trusted <em>cc</em> would link the library statically by default (I have no idea how to override the default anyway). The bastard used dynamic linking instead which meant that upon running the program I was talking to <em>/usr/local/lib/libusb-1.0.so.1.0</em> from the installed libusb package. Running with</p>
-<div class="codehilite"><pre><span class="n">PORT_PATH</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">obj</span><span class="o">/</span><span class="n">ports</span><span class="o">/</span><span class="n">libusb1</span><span class="o">-</span><span class="mf">1.0.9</span><span class="o">/</span><span class="n">libusb</span><span class="o">-</span><span class="mf">1.0.9</span>
-<span class="n">LD_LIBRARY_PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PORT_PATH</span><span class="o">/</span><span class="n">libusb</span><span class="o">/</span><span class="p">.</span><span class="n">libs</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span>
-</pre></div>
-
-
-<p>brought a revelation. <em>Continued in <a href="../the-battle-of-the-c5280-part-2.html">part 2</a>.</em></p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="alice-in-printerland"></a>
-      <a href="../alice-in-printerland.html" rel="bookmark" title="Permalink to Alice in Printerland">Alice in Printerland</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-24T11:55:00"> Sun 24 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I've just spent about 12 hours trying to set up CUPS on my OpenBSD home server, with no success. The USB backend didn't want to recognize the local printer. After setting up OpenBSD ports, inserting trace statements into libusb sources and forcing ld to talk to the newly compiled library instead of the one from the standard package, I found out that the backend stumbled on "Permission denied". I made the /dev entries global-readable and -writable to see if it would help. The printer was recognized and I could install it properly.</p>
-<p>Then I tried printing a test page and LIBUSB_ERROR_ACCESS became LIBUSB_ERROR_OTHER.</p>
-<p>There are 13 places in libusb where the _OTHER could come from and I have lost the will to see where the rabbit hole leads. Time for a fresh start.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="what-i-learned-about-pelican"></a>
-      <a href="../what-i-learned-about-pelican.html" rel="bookmark" title="Permalink to What I learned about Pelican">What I learned about Pelican</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-02-28T22:05:00"> Thu 28 February 2013 </abbr> under
-        <a href="../tag/meta.html">meta</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <ul>
-<li>initialize a site: <strong>pelican-quickstart</strong> (launches an interactive questionnaire)</li>
-<li>write content: just put .md files in content/</li>
-<li>generate site: <strong>make html</strong></li>
-<li>autorefresh mode:  <strong>make devserver</strong> (also hosts the site at <a href="http://localhost:8000/">localhost:8000</a>)</li>
-<li>further information: <a href="http://docs.getpelican.com/">docs.getpelican.com</a></li>
-</ul> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="idiosyncrasies-in-pythons-timezone-handling"></a>
-      <a href="../idiosyncrasies-in-pythons-timezone-handling.html" rel="bookmark" title="Permalink to Idiosyncrasies in Python's timezone handling">Idiosyncrasies in Python's timezone handling</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-02-23T04:13:00"> Sat 23 February 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/python.html">Python</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>As I work to fix timezone logic in <a href="https://github.com/codingjourney/upsheet">upsheet</a>, I've become somewhat frustrated with date and time handling in Python. Coming from a Java background, I know this stuff is awfully difficult to get right. Python has a large community driven by sophisticated users, however, so I expected things to be pretty smooth. I was wrong:</p>
-<ul>
-<li><strong><em>datetime</em> vs. <em>time</em></strong>
-Two modules with overlapping functionality and no clear separation of scope.</li>
-<li><strong><em>datetime.datetime</em></strong>
-A class with the same name as its module. This is probably common in the Python library but it makes for weird expressions such as <em>datetime.datetime.strptime(...)</em>. Kind of nudges you to drop the module prefix with <em>from datetime import *</em>.</li>
-<li><strong>timezone handling in <em>datetime</em> is a red-headed stepchild</strong>
-The <em>datetime</em> module tactfully avoids the gritty details of coming up with the local system's current timezone. You can supply a timezone but you have to provide your own <em>tzinfo</em> subclass to do it.</li>
-<li><strong>timezone handling in <em>time</em> is a red-headed stepchild</strong>
-You get <em>timezone</em> for the non-DST system timezone, <em>altzone</em> for the DST system timezone, <em>daylight</em> to see if <em>altzone</em> is even applicable and <em>localtime().tm_isdst</em> to decide (provided <em>altzone</em> is applicable) whether <em>timezone</em> or <em>altzone</em> is the local system's current timezone. Whew! I mean, it's wonderfully precise and flexible but kind of all over the place.</li>
-<li><strong>timezone offsets are represented inconsistently</strong>
-While <em>datetime.tzinfo.utcoffset()</em> must return its result in minutes, both <em>time.timezone</em> and <em>time.altzone</em> provide the offset in seconds. Trivial yet irritating.</li>
-<li><strong><em>datetime.time</em> vs. <em>time</em></strong>
-A class in one module with the same name as a related module. When you use <em>datetime</em> without the module prefix, this forces you to either also use <em>time</em> without the prefix - further polluting the naming scope - or alias it using <em>import time as sillytime</em>.</li>
-<li><strong>inconsistent timezone offsets</strong>
-While <em>time.timezone</em> and <em>time.altzone</em> specify timezone offsets in seconds west of UTC, <em>tzinfo.utcoffset()</em> must return minutes east of UTC.</li>
-<li><strong>mischievous documentation</strong>
-One example: the description of <em>struct_time.tm_isdst</em> says <em>"0, 1 or -1; see below"</em>. Of course, there's no further mention of <em>tm_isdst</em> anywhere in the document. A sentence buried in the next paragraph does say <em>"A -1 argument as the daylight savings flag, passed to mktime() will usually result in the correct daylight savings state to be filled in."</em>. Which means the -1 is utterly irrelevant except for one specific use-case.</li>
-</ul>
-<p>Having figured all of this out, I can now construct a <em>datetime.datetime</em> instance equipped with the correct <em>tzinfo</em> for the current local timezone. This goes to show how hard it is to design a really good API.</p>
-<p>I do hope it all works the same way under Windows...</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="stuck-in-a-timezone"></a>
-      <a href="../stuck-in-a-timezone.html" rel="bookmark" title="Permalink to Stuck in a timezone">Stuck in a timezone</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-02-22T07:16:00"> Fri 22 February 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/upsheet.html">upsheet</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>My <a href="https://github.com/codingjourney/upsheet">timesheet uploader</a> micro-project started off as a spontaneous scratch-your-own-itch effort with very little polish. No error handling, liberal copy-paste, vague structure - you know the story. The code obviously involved some parsing and formatting of dates and times. It wasn't very complicated so I avoided the <a href="http://docs.python.org/2.7/library/datetime.html">big</a> <a href="http://docs.python.org/2.7/library/time.html">guns</a>, sticking to string manipulation and simple arithmetic (figuring out that <em>0830-1030</em> means 120 minutes etc.).</p>
-<p>Timesheet entries are fed to JIRA as JSON documents via its REST API. JSON doesn't define a standard timestamp format but examples in the <a href="http://docs.atlassian.com/jira/REST/latest/#id225379">documentation</a> use ISO8601 with a timezone suffix - something like <em>2012-08-14T08:30:00.000+0200</em>. I dutifully slapped on the suffix as a constant to all my outgoing timestamp data.</p>
-<p>One of the things I wanted from the script was to detect timesheet entries that were already in JIRA to prevent duplication in the worklogs. This involved downloading the worklog for the relevant issue and comparing it with the entry that was to be uploaded. When parsing timestamps in the worklog I happily ignored the timezone suffix. I figured I would always be in the same timezone as my JIRA server.</p>
-<p>After some time I noticed this collision detection was often failing. I had no time to analyze it so I simply took care to upload my timesheet all at once and re-upload only the failed entries if there were errors. It was a pain but still much better than stuffing JIRA manually.</p>
-<p>When I got more free time in January I discovered the true nature of the bug. Both me and my JIRA server had effectively switched timezones when the Daylight Savings Time ended in October. The script, however, still had <em>+0200</em> in its outgoing timestamps. This meant that I uploaded an entry with <em>08:30:00.000+0200</em> but then it came back as <em>09:30:00.000+0100</em>. Ignoring the timezone, the script detected no overlap (as long as duration was under 61 minutes) and proceeded to re-upload the entry, again with <em>08:30:00.000+0200</em> in the timestamp.</p>
-<p>It turns out that no, I can't ignore timezones in my calculations after all. Besides, the code is already <a href="https://github.com/codingjourney/upsheet">on GitHub</a> and right now collision detection works only for the lucky users who are two hours East from UTC together with their JIRA servers. Good thing I haven't told anyone yet :-)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
                         <a href="../category/misc2.html">&laquo;</a>
-                Page 3 / 5
+                Page 3 / 6
             <a href="../category/misc4.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">

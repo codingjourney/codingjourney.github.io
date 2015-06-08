@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>                        <a href="../category/misc4.html">&laquo;</a>
-                Page 5 / 5
-            <a href="#" class="disabled">&raquo;</a>
+                Page 5 / 6
+            <a href="../category/misc6.html">&raquo;</a>
     </h3>
+      <a href="#look-mom-no-ports">Look mom, no ports!</a>
+      <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+      <a href="#logitech-dinovo-edge-vs-aptosid">Logitech diNovo Edge vs. aptosid</a>
+      <a href="#akai-ewi-usb-and-linux-part-3">Akai EWI USB and Linux, part 3</a>
+      <a href="#disabling-acpi-in-openbsd-48">Disabling ACPI in OpenBSD 4.8</a>
       <a href="#installing-openbsd-48-on-an-hp-mini-5101">Installing OpenBSD 4.8 on an HP Mini 5101</a>
       <a href="#akai-ewi-usb-and-linux-part-2">Akai EWI USB and Linux, part 2</a>
       <a href="#akai-ewi-usb-and-linux-part-1">Akai EWI USB and Linux, part 1</a>
-      <a href="#akai-ewi-usb-and-me">Akai EWI USB and me</a>
-      <a href="#the-pykonsole-distraction">The pyKonsole distraction</a>
-      <a href="#bratislava-jazz-days-2010">Bratislava Jazz Days 2010</a>
-      <a href="#a-short-blojsom-faq">A short Blojsom FAQ</a>
-      <a href="#oh-no-another-blog">Oh no, another blog</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,205 @@
         <section id="content">
 <h2>Articles in the misc category</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="look-mom-no-ports"></a>
+      <a href="../look-mom-no-ports.html" rel="bookmark" title="Permalink to Look mom, no ports!">Look mom, no ports!</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-02-13T17:04:00"> Sun 13 February 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/qt.html">Qt</a>,        <a href="../tag/jetty.html">Jetty</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I'm currently updating a commercial HTML-based desktop application that I wrote a few years ago. Customers keep having permissions trouble on Windows with the back-end opening a TCP port for serving front-end's HTTP requests. I decided to try to refresh both the back-end (to Jetty 7.3.0) and the front-end (to WebKit running in Java via Qt Jambi) and run them in one process with no TCP ports involved. Both components have reputations for being easy to embed, so I thought it shouldn't be too hard. Yeah right...</p>
+<p>Actually, things went very smoothly at first. Here's what I discovered:</p>
+<ul>
+<li>Jetty accepts requests via Connectors; one of them is LocalConnector.</li>
+<li>Obviously, setting up Jetty with LocalConnector is beyond the scope of this post :-)</li>
+<li>LocalConnector.getResponses() accepts a String argument containing an HTTP request just as you would type it into a telnet window (like "GET /whatever HTTP/1.0" followed by two newlines) and returns an HTTP response, also as a String ("HTTP/200 OK blah blah..."). It's a primitive interface but it does work.</li>
+<li>The method mentioned above doesn't work very well if you want to GET binary data such as images (yeah, you could use "Content-Encoding: base64" but come on...). There is, fortunately, a variant of LocalConnector.getResponses() that accepts a ByteArrayBuffer along with a boolean "keepOpen" argument which I simply set to false. The method otherwise works just like the String variant.</li>
+</ul>
+<p>As for a WebKit front-end, once you have Qt Jambi set up properly (with -Djava.library.path etc.) it's really easy to create a QWebView, point it at a URL and splash it all over your display. To prevent HTTP traffic, however, I needed to intercept requests coming from WebKit and route them to my LocalConnector:</p>
+<ul>
+<li>The thing to do is QWebView.page().setNetworkAccessManager(magic), where "magic" is a subclass of QNetworkAccessManager that overrides createRequest() to do the necessary, well, magic.</li>
+<li>Despite superficial appearances, createRequest() actually accepts QNetworkRequest as a parameter and returns a QNetworkReply. Go figure. Additional parameters for createRequest() include an Operation enum to distinguish GETs from POSTs, and a QIODevice (think InputStream) containing the data of a POST request.</li>
+<li>Since QNetworkReply is also a stream-like QIODevice, returning custom content from createRequest() involves writing a QNetworkReply subclass that knows where to look for when clients call its read*() methods. This is not quite easy to do.</li>
+</ul>
+<p>Anyway. After a few hours I had a web application running in a WebKit window with not a TCP packet in sight.The trouble came when I tried to process a POST request (yes, the application does involve filling out forms). What followed was a bout of frustration, head-scratching and just plain unhappiness that I don't wish upon anyone:</p>
+<ul>
+<li>First, you have to realize that Qt Jambi (including its WebKit component) is actually a C++ beast in sheep-like Java clothing. No matter how sweet the API is, the implementation is a bitch to debug even if, technically, you have access to the source code.</li>
+<li>What happened is that my createRequest() was called with a PostOperation as it should be but the accompanying QIODevice was empty. More specifically, calling canReadLine() on it returned false.</li>
+<li>Setting a breakpoint and examining the QIODevice's internals didn't show anything interesting (it was basically a proxy object for a C++ implementation).</li>
+<li>I resorted to the oldest tool in a programmer's toolbox: trace statements. Here's what they gave me:<ul>
+<li>formData.isOpen(): true</li>
+<li>formData.isReadable(): true</li>
+<li>formData.isSequential(): true</li>
+<li>formData.atEnd(): true</li>
+<li>formData.bytesAvailable(): 0</li>
+<li>formData.size(): 0</li>
+<li>formData.pos(): 0</li>
+</ul>
+</li>
+</ul>
+<p>I tried routing regular HTTP post requests through the parent class and it worked even though the request objects looked exactly the same and returned exactly the same trace results! I was getting ready to give my own QNetworkRequest to the parent implementation that would trace all calls made to it but I tried getByte() and... there was data! WTF?! Point: QNetworkRequest was in a weird uninitialized state where it thought it was empty when it really wasn't. It snapped out of it when prodded for data.</p>
+<p>Another problem surfaced when I tried to get a Dojo Tree widget going. During initialization, Dojo loads its modules via AJAX and it was failing with the dreaded "NETWORK_ERR: XmlHttpRequest Exception 101". Cost me a lot of blind paths - I tried setting the .js files in different paths relative to the referring .jsp, reading compressed Dojo sources, diagnosing with window.alert() etc. In the end, I understood that WebKit was having some problem with the QNetworkReply I was producing. I made my Content-Length calculation more robust - no change. Finally, I looked at QNetworkReply objects produced by the regular QNetworkAccessManager and made sure all the attributes it fills out were also filled out in my replies. That helped. I know, I should have done it at the start but why did it matter with AJAX requests and not with regular ones? Oh well...</p>
+<p>The AJAX issue turned out to be the last major obstacle. My application now runs without opening any TCP ports and both WebKit and Jetty proved reasonably embeddable. I might use this set-up in other contexts as well.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="soundgraph-imon-pad-vs-linux-2636"></a>
+      <a href="../soundgraph-imon-pad-vs-linux-2636.html" rel="bookmark" title="Permalink to Soundgraph iMON PAD vs. Linux 2.6.36">Soundgraph iMON PAD vs. Linux 2.6.36</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-09T12:09:00"> Sun 09 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I use a Soundgraph iMON PAD remote control to command my home-theater PC. The remote stopped working when I upgraded my kernel from 2.6.33 to 2.6.36, due to major infrastructure changes that started in 2.6.35. At first I simply reverted to the older kernel but this week I had a few spare hours to figure out what was going on. In short, the iMON driver has been cleaned up by Jarod Wilson and <a href="http://wilsonet.com/?p=85">included in the main kernel code base (finally!)</a>. Its logic was also standardized to route its output to the Linux input layer rather than to the <a href="http://www.lirc.org">LIRC</a> daemon. This obviously requires some re-configuration of the daemon, as <a href="http://old.nabble.com/Re:-Status-of-lirc-imon-usb-remotes-p28684857.html">Jarod explained</a> on the LIRC mailing list.</p>
+<p>On my HTPC I had to put the following settings into <em>/etc/lirc/hardware.conf</em>:</p>
+<div class="codehilite"><pre><span class="n">DRIVER</span><span class="o">=</span><span class="s">&quot;devinput&quot;</span>
+<span class="n">DEVICE</span><span class="o">=</span><span class="s">&quot;/dev/input/by-id/usb-15c2_ffdc-event-mouse&quot;</span>
+</pre></div>
+
+
+<p>I also had to adjust key codes in <em>/etc/lirc/lircd.conf</em> (note that I only need only six keys for my remote-control software, <a href="http://offhand.sourceforge.net/">Offhand</a>; others should simply use <a href="http://wilsonet.com/jarod/imon_stuff/imon-devinput-lirc/lircd.conf">Jarod's file</a>):</p>
+<div class="codehilite"><pre><span class="n">begin</span> <span class="n">codes</span>
+    <span class="n">KEY_BACKSPACE</span>            <span class="mh">0x000E</span>
+    <span class="n">KEY_COMPOSE</span>              <span class="mh">0x007F</span>
+    <span class="n">KEY_CONTEXT_MENU</span>         <span class="mh">0x01B6</span>
+    <span class="n">KEY_ENTER</span>                <span class="mh">0x001C</span>
+    <span class="n">KEY_KEYBOARD</span>             <span class="mh">0x0176</span>
+    <span class="n">KEY_SPACE</span>                <span class="mh">0x0039</span>
+<span class="n">end</span> <span class="n">codes</span>
+</pre></div>
+
+
+<p>Finally, I had to adjust the .lircrc file used by Offhand:</p>
+<div class="codehilite"><pre><span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_CONTEXT_MENU</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">back</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_COMPOSE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">forward</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_KEYBOARD</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">up</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_ENTER</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">down</span>
+      <span class="n">repeat</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_SPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">ok</span>
+    <span class="n">end</span>
+<span class="n">begin</span>
+      <span class="n">prog</span> <span class="o">=</span> <span class="n">offhand</span>
+      <span class="n">button</span> <span class="o">=</span> <span class="n">KEY_BACKSPACE</span>
+      <span class="n">config</span> <span class="o">=</span> <span class="n">cancel</span>
+    <span class="n">end</span>
+</pre></div>
+
+
+<p>Separately, I also had to configure the iMON driver to forget about its mouse emulation mode. I did it by creating the file <em>/etc/modprobe.d/imon.conf</em> containing</p>
+<div class="codehilite"><pre><span class="n">options</span> <span class="n">imon</span> <span class="n">nomouse</span><span class="o">=</span><span class="mi">1</span>
+</pre></div> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="logitech-dinovo-edge-vs-aptosid"></a>
+      <a href="../logitech-dinovo-edge-vs-aptosid.html" rel="bookmark" title="Permalink to Logitech diNovo Edge vs. aptosid">Logitech diNovo Edge vs. aptosid</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2011-01-06T13:09:00"> Thu 06 January 2011 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>If you have no idea what a Logitech diNovo Edge could be, think about it for a while. You should quickly reach the obvious conclusion: it's a <a href="http://www.logitech.com/en-us/keyboards/keyboard/devices/192">super-thin wireless keyboard</a> featuring a built-in mouse pad. I happen to use one with my home-theater PC. It's a classy product, feels solid (even a bit luxurious) and works very well - that is, it used to work until I replaced the HTPC's ancient Kubuntu system with <a href="http://www.aptosid.com">aptosid</a>. Ever since then, I could use the keyboard in the bootloader but not once the system was up.</p>
+<p>aptosid, formerly known as sidux, is a running-release distribution of GNU/Linux descending from Debian Sid, the so-called "unstable" flavor of Debian. Being running-release means that instead of periodic releases of the entire environment, I get a constant trickle of new package versions as they are admitted into repositories. The upside is always being up-to-date. The downside is a not quite thoroughly tested environment where things occasionally stop working.</p>
+<p>The team managing aptosid does a pretty impressive job keeping the system stable. I'd been running it on my main notebook for a while and breakage had been pleasantly rare. I couldn't really fault the system for refusing to handle a relatively obscure piece of hardware. Given that I mostly run the HTPC with a remote and I manage the machine over the network, I had little need for the keyboard. Playing DVDs was the only scenario that was truly annoying. With a bit of time over the holidays, I decided to tackle it.</p>
+<p>I connected the keyboard to my notebook - having another, 100% reliable keyboard on the same computer made the investigation much smoother. I quickly foud out that the keyboard would work the first time its receiver dongle was plugged in, but after dis- and re-connecting it would behave identically as on the HTPC. A telling difference was the presence of an extra USB device: upon first connect, <em>lsusb</em> would list three new devices while after re-connecting it displayed four.</p>
+<p>Googling the incriminated USB IDs produced <a href="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=589388">the answer</a>: udev is configured in Sid to run <em>hid2hci</em> when the Edge is connected, making it a fully capable Bluetooth device rather than just a dumb USB keyboard. Except what I want is just a dumb USB keyboard.</p>
+<p>I tried adjusting udev rules on the HTPC to prevent <em>hid2hci</em> from running but no matter what I tried, it still somehow managed to launch itself during the boot sequence. I ended up replacing <em>/usr/sbin/hid2hci</em> with a shell script looking like this:</p>
+<div class="codehilite"><pre><span class="n">echo</span> <span class="s">&quot;pretending to run hid2hci&quot;</span>
+</pre></div>
+
+
+<p>Ever since then, I've been navigating DVD menus with much more flair. The keyboard suddenly seems brand new now that it works! Dead keyboard wasn't my HTPC's only problem, however. The story is set to continue...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="akai-ewi-usb-and-linux-part-3"></a>
+      <a href="../akai-ewi-usb-and-linux-part-3.html" rel="bookmark" title="Permalink to Akai EWI USB and Linux, part 3">Akai EWI USB and Linux, part 3</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-23T05:26:00"> Tue 23 November 2010 </abbr> under
+        <a href="../tag/music.html">music</a>,        <a href="../tag/it-misadventures.html">IT misadventures</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>In <a href="../akai-ewi-usb-and-linux-part-1.html">part 1</a> and <a href="../akai-ewi-usb-and-linux-part-2.html">part 2</a> of my Akai odyssey, I've described getting the EWI to produce sound and configuring fluidsynth (plus QSynth) for optimum performance without latency. I was happy with my setup but after a while I started craving a little convenience.</p>
+<p>Setting up a playing session is a silly affair involving the instrument itself, my notebook, a pair of headphones, 2 cables and 4 connectors. The same goes for winding things down after playing. It used to be even more obnoxious since I had to manually start and exit the QSynth software. I knew that Linux can react to USB hot-plug events and this reaction can be configured; so I decided to make QSynth start and stop automagically.</p>
+<p>The system-du-jour for reacting to hotplug events in Linux is currently <em>udev</em>. Debian's wiki happens to have a <a href="http://wiki.debian.org/udev">very nice udev page</a> which explains that all one needs to do is to put a line in a file under <em>/etc/udev/rules.d</em>. One can either use one of the existing files under that directory or create a new one, which is what I did just to keep things tidy.</p>
+<p>Entries in udev rule files rely on an IF-THEN syntax where the IF part indicates in what circumstances the rule should trigger and THEN stipulates what should be done. The syntax is quite restrictive in that each rule has to fit on a line - i.e. no fancy procedural tricks. The IF part offers a lot of ways to pick up an event, though. One can specify the BUS on which the event happens, the NAME of the device, the ACTION that the event represents, expected environment variable values etc. I found the options quite extensive, making it easy to specify any event.</p>
+<p>Having to run <em>sudo udevadm control --reload-rules</em> after each rule update was a bit annoying but what really held me up was figuring out which events the rule should react to. I found out that plugging the EWI into and out of the USB port caused entire cascades of events with different characteristics. I eventually settled on the following rules:</p>
+<div class="codehilite"><pre><span class="n">ATTR</span><span class="p">{</span><span class="n">idVendor</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;09e8&quot;</span><span class="p">,</span> <span class="n">ATTR</span><span class="p">{</span><span class="n">idProduct</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;006d&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;add&quot;</span><span class="p">,</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
+<span class="n">ENV</span><span class="p">{</span><span class="n">DEVNAME</span><span class="p">}</span><span class="o">==</span><span class="s">&quot;/dev/snd/midiC1D0&quot;</span><span class="p">,</span> <span class="n">ACTION</span><span class="o">==</span><span class="s">&quot;remove&quot;</span> <span class="n">RUN</span><span class="o">+=</span><span class="s">&quot;/usr/local/bin/ewi&quot;</span>
+</pre></div>
+
+
+<p>The first rule fires when I plug the device in, the second one upon unplugging. Both rules launch the same shell script when invoked. The shell script itself looks like this:</p>
+<div class="codehilite"><pre><span class="k">if</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;add&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
+ <span class="n">set</span> <span class="o">-</span><span class="n">x</span> 
+ <span class="n">xhost</span> <span class="n">local</span><span class="o">:</span><span class="n">username</span>
+ <span class="n">export</span> <span class="n">DISPLAY</span><span class="o">=:</span><span class="mf">0.0</span>
+ <span class="n">su</span> <span class="n">username</span> <span class="o">-</span><span class="n">c</span> <span class="n">qsynth</span> <span class="o">&amp;</span>
+<span class="n">elif</span> <span class="p">[</span> <span class="err">$</span><span class="n">ACTION</span> <span class="o">=</span> <span class="s">&quot;remove&quot;</span> <span class="p">]</span> <span class="p">;</span> <span class="n">then</span>
+ <span class="n">killall</span> <span class="n">qsynth</span>
+<span class="n">fi</span>
+</pre></div>
+
+
+<p>The "add" section contains incantations needed to properly launch a GUI program from a shell script. I picked them up in some forum and have unfortunately lost the link. Kudos to the original poster, anyway.</p>
+<p>With this bit of scripting, my EWI is the very definition of Plug-and-Play, as well as Stop-Playing-and-Unplug ;-) . All is not perfect, though; one problem remains and it's completely unrelated to udev. Since I use legacy OSS emulation <a href="../akai-ewi-usb-and-linux-part-2.html">due to latency issues</a>, I cannot run any other sound-producing application while QSynth is active (OSS doesn't support software mixing). I don't mind that just yet but as I get my fingerings in order and advance my playing I will need to resolve it. The saga continues...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="disabling-acpi-in-openbsd-48"></a>
+      <a href="../disabling-acpi-in-openbsd-48.html" rel="bookmark" title="Permalink to Disabling ACPI in OpenBSD 4.8">Disabling ACPI in OpenBSD 4.8</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2010-11-21T08:56:00"> Sun 21 November 2010 </abbr> under
+        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>As I've <a href="../installing-openbsd-48-on-an-hp-mini-5101.html">mentioned</a>, OpenBSD 4.8 can't boot on a HP Mini 5101 netbook due to an apparent ACPI issue. The way to work around the issue is as follows:</p>
+<ul>
+<li>When booting, enter <strong>boot -c</strong> at the <em>boot&gt;</em> prompt. A <em>UKC&gt;</em> prompt will appear shortly.</li>
+<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; the kernel should proceed to 
+boot successfully to the login prompt.</li>
+<li>After logging in, enter <strong>su</strong> (sudo won't work since you haven't edited <em>/etc/sudoers</em> yet).</li>
+<li>Enter <strong>config -e -o bsd.noacpi /bsd</strong>; you will see the <em>UKC&gt;</em> prompt again.</li>
+<li>Enter <strong>disable acpi</strong>, then <strong>quit</strong>; you should be back in the shell, with a new file called <em>bsd.noacpi</em> in the current directory.</li>
+<li>Enter <strong>mv /bsd /bsd.acpi &amp;&amp; mv bsd.noacpi /bsd</strong> to replace the current kernel with the new one.</li>
+<li>Enter <strong>chmod 0644 /bsd</strong> to set proper permissions for the new kernel.</li>
+<li>Enter <strong>reboot</strong> to test things out; the computer should now boot into the login prompt without any assistance.</li>
+</ul>
+<p>What's going on here? UKC is the <em>User Kernel Config</em>, OpenBSD's tool for tweaking a kernel without re-compiling it. As we've seen, it can be used to great effect even during the boot process. What's perhaps even more impressive, UKC can also tweak the currently running kernel without having to reboot. All relevant info can be found by entering <strong>man UKC</strong> and <strong>man config</strong> in the OpenBSD shell.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -136,115 +337,9 @@
 <p>There were two serious problems with this setup. First, the <em>midiC0D0</em> symlink disappeared at every reboot, forcing me to re-create it over and over. More seriously, the audio lagged some 100 to 300 ms behind MIDI input, making the EWI so sluggish as to be unplayable. What was I to do? I will reveal the dramatic resolution of both issues in another post; stay tuned...</p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="akai-ewi-usb-and-me"></a>
-      <a href="../akai-ewi-usb-and-me.html" rel="bookmark" title="Permalink to Akai EWI USB and me">Akai EWI USB and me</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-12T05:47:00"> Fri 12 November 2010 </abbr> under
-        <a href="../tag/music.html">music</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>At the recent <a href="../bratislava-jazz-days-2010.html">Bratislava Jazz Days</a>, I was intrigued by the sight of Marián Jaslovský of Silvia Fourporation playing the <a href="http://www.akaipro.com/ewi4000s">Akai EWI 4000s</a> electronic wind instrument. I used to play tenor saxophone as a hobby but I put it on hold a few years ago mainly due to the fact I had no way of practicing without disturbing the neighbors (I live in an apartment). The EWI seemed like a great way around that as it can be listened to via earphones. I had considered buying one before but I was put off by the expense. With my interest now re-kindled, I looked into the matter again and found the prices much more likeable. Crucially, I discovered the new <a href="http://www.akaipro.com/ewiusb">USB variant</a>.</p>
-<p>The difference between the older 4000s and the USB model boils down to the latter being strictly a MIDI peripheral for a computer. It has no audio output (i.e. no built-in synthesizer) and it's powered only via its USB connection. Compared to its older sibling, the EWI USB is a no-fuss, light, inexpensive affair. Still, it is by no means a toy. It features a robustly built body with virtually no moving parts (there are touch-sensitive metallic pads instead of keys) and the sound one can produce is only limited by the quality of the synthesizer the instrument is plugged into.</p>
-<p>Having spent some time with the unit since I purchased it, I must say I'm thoroughly satisfied. It feels very natural in my hands. The mouthpiece is completely different from the saxophone but I knew I wasn't going to replicate the experience perfectly anyway. The tactile feedback is different as well since the "keys" don't move but I find the experience very much similar to what I was used to. Touching a pad feels just like finishing a key-press in that there is a definite, solid limit to the motion of the finger. And when I set the software synthesizer to the right sound it really does feel just like an acoustic wind instrument, albeit not a saxophone. The feeling is quite thrilling and has to be experienced to be believed.</p>
-<p>There are quirks as well, of course. The instrument cannot be simply picked up and played - I have to uncoil the cables, plug the USB cable into the EWI, plug the other end into my notebook, plug in the headphones - oh, and boot the notebook and log in, obviously. So there is a "transaction cost" to every session, one cannot just pick the thing up for five relaxing minutes. This would be different if I had a dedicated netbook just for the EWI as many people seem to prefer (especially those who also perform) but I don't really mind. I need hundreds of hours of practice to get back into form, anyway.</p>
-<p>Another difficulty is the mouthpiece which puts up a lot of resistance. I once tried playing an oboe and this feels similar - it takes more energy to push air through the mouthpiece than was the case with my saxophone. I believe this is something I simply need to get used to but right now I often end up out of breath.</p>
-<p>One last quibble I have with the instrument is the feeble neckstrap that simply doesn't do it justice. I already had to mend it with superglue. But that's really a minor point and I'm sure most wind players will have a quality neckstrap lying around.</p>
-<p>One thing I haven't mentioned is the veritable odyssey involved in making the thing work with my computer. I use Linux so I knew it wouldn't be that easy; it wasn't and there are still a few details to work out. That's a topic for another post, however. My main point for now: the EWI wants to be played. When I come home from work and look at it I immediately feel like picking it up and taking a few practice runs. I find that simply priceless.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-pykonsole-distraction"></a>
-      <a href="../the-pykonsole-distraction.html" rel="bookmark" title="Permalink to The pyKonsole distraction">The pyKonsole distraction</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-08T22:24:00"> Mon 08 November 2010 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/kde.html">KDE</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I use KDE 4. One of my workspaces is configured with a "dashboard" activity, displaying all the usual monitoring widgets (CPU, RAM, network, temperatures). When my notebook starts acting slow, I hop over to the dashboard to check out my CPU load. If it's high I whip out Konsole and launch <strong>htop</strong> to find the culprit. It has occurred to me that it would really be nice if I could see the CPU hog right away.</p>
-<p>I realized there must be a process-monitor plasmoid out there but a Konsole widget seemed so much more flexible. Plasmacon seemed to fit the bill and I had it on the desktop in next to no time. It turned out, however, that it has no facility to launch a command at start-up. I figured it should be easy to extend the widget as it's written in Python. Checking the documentation for Konsole's KPart turned up two promising methods: <strong>sendInput()</strong> and <strong>startProgram()</strong>. Neither of them worked.</p>
-<p>I inserted some trace code into Plasmacon's init method and it turned out that the object Plasmacon creates is just a plain <strong>KParts::ReadOnlyPart</strong>. Browsing PyKDE documentation brought the answer: PyKDE doesn't include a binding for kdebase-apps. The upshot is that you can create a <strong>Konsole::Part</strong> instance from Python but you can't access its full API.</p>
-<p>Things didn't look so trivial anymore but I decided to have a go at creating the necessary bindings. PyKDE uses a generator called SIP (<strong>apt-get install python-sip</strong> in Debian) to create Python modules from C++ headers and deceptively simple spec files. I tried to write a SIP spec for Konsole starting from <strong>Konsole::Part</strong>'s header file and various <strong>.sip</strong> files I dug up. I have to say SIP provides rather modest feedback. I ended up stuck with a terse "syntax error" message providing no detail at all.</p>
-<p>I noticed a little comment in one of the <strong>.sip</strong> files, saying "Generated by twine". Googling for twine proved to be quite a challenge; this is really obscure code used primarily by PyKDE creators and few others. There is no website nor documentation. Another comment in a <strong>.sip</strong> file provided the decisive clue: a mention of "twine2". It brought me to <a href="http://gitorious.org/twine2">http://gitorious.org/twine2</a> where the tool currently seems to live. And yes, it's a generator of input for a generator. Go figure...</p>
-<p>Writing a twine2 script seemed quite daunting but I came up with an entirely different approach: what if I could talk to the Konsole via DBus? I quickly discovered <strong>qdbusviewer</strong> and clicked around to see what I could do. Unfortunately, while the <strong>org.kde.plasma-desktop</strong> service does expose a <strong>/Konsole</strong> object, it doesn't provide its Sessions. Some could be found under <strong>org.kde.konsole</strong> but they included strictly sessions in proper Konsole windows; the one in the Plasma widget didn't show up in the list. I had to go back to twine2.</p>
-<p>Except I didn't. The ability to delve into the guts of open source software is one of its most useful aspects but there is a limit to how far down the rabbit hole one can reasonably afford to go. I've reached that limit and had to accept that, for the foreseeable future, I will simply not have a process monitor on my dashboard. Worse things have happened.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="bratislava-jazz-days-2010"></a>
-      <a href="../bratislava-jazz-days-2010.html" rel="bookmark" title="Permalink to Bratislava Jazz Days 2010">Bratislava Jazz Days 2010</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-07T10:52:00"> Sun 07 November 2010 </abbr> under
-        <a href="../tag/music.html">music</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>The pre-Halloween weekend is one of the year's highlights for anyone who lives here in <a href="maps.google.com/maps?q=Bratislava">Bratislava</a> and likes jazz or good music in general. The reason, of course, is the <a href="http://www.bjd.sk/">Bratislava Jazz Days</a>. I've been attending since 1994 and I have yet to be disappointed.</p>
-<p>Bratislava currently markets itself as <a href="http://www.bratislava.sk/en/">The Little Big City</a> and BJD fits nicely into that concept. The format has stabilized in recent years: three nights (Friday to Sunday) on two stages with about four acts per stage per night. The two stages are on the opposite ends of a Communist-era venue called the PKO ("Park of Culture and Relaxation"). To get from one stage to the other, one has to cross a large lobby. That's where the beer is. It's also the place where people catch up with friends they may not have seen since the previous year. Getting together with friends is actually the most important part of the Jazz Days, although some people may not even realize it - after all, most of the time is spent listening to music.</p>
-<p>The festival offers a great opportunity to expand one's musical horizons; that's why I buy tickets for all three nights and never worry too much about who's playing. The big names (Betty Carter, Kurt Elling, Courtney Pine etc.) do provide unforgettable experiences but the ticket really earns its worth when an <a href="http://www.brauer-meiri.com">Elias Meiri</a> or a <a href="http://www.karrin.com">Karrin Allyson</a> comes on stage and thoroughly charms the audience.</p>
-<p>BJD 2010 brought about a slight change in scheduling. In previous years, B-stage acts had been timed to fill in the breaks between concerts on the main stage. This year's B stage got expanded (with longer shows and four acts per night instead of three) so one had to actually choose between them. A-stage line-ups were definitely more intriguing so that's where I ended up spending most of my time.</p>
-<p>The festival's opening act was my good friend <a href="http://www.youtube.com/watch?v=Gf9OpoCPyCM">Sisa Michalidesová</a> performing music she had composed for the movie "Zimní kúzelníci" (Winter Magicians) with an absolutely stellar band featuring some of Slovakia's best musicians (Michal Žáček on soprano saxophone, Peter Preložník on keyboards, Boris Lenko on accordion etc.). The work had been adapted for the band members and also to allow improvized solos but it wasn't quite jazz; as with many true masters, Sisa's music evades precise classification. It was compact yet diverse, evocative, perfectly arranged and beautifully played. The result was much more impressive than on the soundtrack CD and I was quite happy for Sisa.</p>
-<p>Up next was the Polish singer <a href="http://www.zaryan.com/">Aga Zaryan</a> who mesmerized us with her powerful stage presence. She has a beautiful, expressive face and a captivating voice that she commanded with calm confidence as she sang some quite challenging tunes from her repertoire. Her band was certainly up to the task, they blended with the singing to deliver a smooth, seamless experience. Aga Zaryan spends a lot of time in New York so her English was flawless (not necessarily the case with Slavic singers) though she could have performed more songs in Polish which I find very pleasant to listen to.</p>
-<p>Ethereal singing was followed by accordion equilibristics soaked in passion and bittersweet nostalgia. <a href="http://en.wikipedia.org/wiki/Richard_Galliano">Richard Galliano</a> is widely regarded as the world's best accordionist and he provided ample justification for that view. His playing was out of this world, turning the instrument into sonic fireworks, bursting with cascades upon cascades of tones. Yet he proceeded with absolute ease, kind of "by the way", he never struggled with the accordion at all. He was fully focused on the <em>point</em> of the music, putting his soul into every note. Such a combination of virtuosity and sincerity is indeed rare in musicians and I couldn't help but be completely absorbed. Oh, and he had a band with him; they were fully absorbed as well. This was definitely Friday night's highlight, despite the fact that neither Galliano's genre nor accordion music as such count among my favorites.</p>
-<p>Headliners at BJD occasionally fizzle out and so was the case with <a href="http://www.zapmama.be/">Zap Mama</a>, a formation led by the Belgian singer of Congolese origins Marie Daulne. The band had great difficulty getting to the festival after having a flight canceled; they did start on time but with no sound check. It's hard to say if that had any impact or not but the performance was a bland fusion of light jazz with African and new-age elements, with a bit of theatrics thrown in that didn't quite work, especially after Richard Galliano. I left during the third song, happy to get home before 1 AM.</p>
-<p>I couldn't attend on Saturday due to family commitments but they say <a href="http://www.tromboneshorty.com/">Trombone Shorty</a> almost tore down the building with his enormous energy. Oh well, maybe next time.</p>
-<p>Sunday night started off with the <a href="http://www.gustavbrom-bigband.com/">Gustav Brom Big Band</a>. I'm not really into big-band music but I do enjoy the way so many instruments blend into a cohesive sound - provided they actually do, of course. The Gustav Brom Big Band is a Czecho-Slovak affair with some rather excellent musicians (Radovan Tariška and Ondřej Čtveráček on saxophones etc.) constrained by the usual logistical issues of getting so many people together often enough. Still, their performance was quite impressive and a good way to get the evening going.</p>
-<p>The American trumpeter <a href="http://christianscott.tv/">Christian Scott</a> with his Quintet brought out the serious stuff. Young yet very mature musicians produced an hour of intense, uncompromising, no-nonsense jazz at a very high technical level. The leader had a whiff of arrogance about him at times but he was earnest rather than flashy and he could definitely back it up with supreme playing. I must confess this late in the festival my ears were getting saturated and I couldn't perceive the non-trivial performance as well as I would have liked to. I know it was probably Sunday's highlight but it kind of went beyond me at that point.</p>
-<p>Fortunately, Scott's quintet was followed by lighter fare in the form of veteran guitarist <a href="http://www.larrycarlton.com/">Larry Carlton</a>'s trio. Carlton is very obviously a skilled session musician who has no problem playing anything you throw his way, which made watching his own show all the more interesting. The set was colorful, with easy melodic numbers giving way to harder, more bluesy tunes. It was no earth-shattering experience but the musicians visibly enjoyed themselves and the intimate trio setting provided a nice epilogue to this year's festival.</p>
-<p>Well, actually, Carlton was followed by Sunday's "headliners", Shakatak. It is a recent tradition at the Jazz Days to have a more pop-sounding act at the very end. I think it's actually very smart as those facing a busy Monday can leave early without much remorse. The strategy gives many people a sort of anti-climax feel, however, prompting an infamous sarcastic remark by an attendee that "next year they'll bring AC/DC" (the guy was fleeing from Level 42, by the way). Shakatak is a pop-jazz band that had a huge crossover hit in the '80s and they still happily tour the world thanks to that. More power to them, I say, but their show felt a bit worn so I left after about two songs.</p>
-<p>As I'd mentioned before, I spent most of my time at the A stage. Excursions to the B-stage hall served as welcome diversions. The atmosphere there tends to be more muted, intimate, club-like. The bands were interesting especially on Sunday - the local Groove Brothers, a Hungarian world-music ensemble featuring hypnotic percussion duets, as well as Silvia Fourporation with its whimsical lyrics and a laid-back attitude.</p>
-<p>I have to say this year's Jazz Days did a fine job of holding up the usual standards of their venerable franchise. Peter Lipa and other organizers at the Rock &amp; Pop agency deserve much credit for keeping the magic alive; despite permanent worries about the future of the venue, Bratislava Jazz Days is poised to remain one of the top events for jazz fans in this neck of the woods.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="a-short-blojsom-faq"></a>
-      <a href="../a-short-blojsom-faq.html" rel="bookmark" title="Permalink to A short Blojsom FAQ">A short Blojsom FAQ</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-11-06T08:07:00"> Sat 06 November 2010 </abbr> under
-        <a href="../tag/meta.html">meta</a>,        <a href="../tag/howto.html">howto</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p><em>(Please note that in May 2013 the blog ha migrated to Pelican.)</em></p>
-<p>This blog is powered by the <a href="http://www.sourceforge.net/projects/blojsom">Blojsom</a> blog engine, installed and managed by myself on my own server. Blojsom is a nice piece of work but its <a href="http://wiki.blojsom.com/">documentation pages</a> seem to be down at the moment, so I had to poke around a bit while setting it up. I've compiled a quick FAQ based on that experience:</p>
-<ul>
-<li><strong>Is Blojsom suitable for me?</strong>
-If you're familiar with Java-based web technologies and you want to host a blog, Blojsom is probably your best choice. Just drop the .war file into Tomcat's webapps/, deploy, tweak an XML file, restart and you're done. If you have no idea what the previous sentence is about, Blojsom is definitely not suitable for you.</li>
-<li><strong>How do I configure Blojsom?</strong>
-Low-level settings can be set in <em>WEB-INF/web.xml</em> and <em>WEB-INF/classes/*.xml</em>. There are only two things you really need to set, both of them in <em>WEB-INF/classes/blojsom-helper-beans-include.xml</em>. The first is database location. Look for "jdbc:hsqldb:mem" and replace "mem" with the desired path (like "/home/joe/databases/blog" where "/home/joe/databases" is an existing writable directory and "blog" is an arbitrary database name). Blojsom will create database files during the next start-up. By default, Blojsom also destroys its database upon shutdown (the default settings are meant for initial testing). To prevent that from happening, look for "hbm2ddl.auto" and on the same line, change "create-drop" to just "create".</li>
-<li><strong>When I start Blojsom and go to its URL I see no blog, only something about a "meta refresh". What's up with that?</strong>
-A single Blojsom installation can run multiple blogs at once, hence it has no central home page. Instead, each blog gets its own page. The default blog is called "default" and its URL under Blojsom is <em>/blog/default/</em>, i.e. instead of <em>http://server/blojsom/</em> you should go to <em>http://server/blojsom/blog/default/</em>. How to automatically bring visitors from <em>/blojsom</em> to <em>/blojsom/blog/default</em> is a topic beyond the scope of this FAQ.</li>
-<li><strong>How do I log into Blojsom?</strong>
-Blojsom's default theme has no <em>Log in</em> link. To get to a blog's login page, simply append "?flavor=admin" to the blog's URL. The pre-set admin account is "blojsom" (password "blojsom"). Once logged in, you can configure accounts under <em>Weblog Settings &gt; Users</em>.</li>
-<li><strong>How do I change my blog's theme?</strong>
-Themes are simply collections of files in subdirectories under <em>WEB-INF/themes</em>. A few are pre-installed; you can choose among them under <em>Plugins &gt; Configure &gt; Theme Switcher plugin</em>. Keep in mind that while logged in, you see the blog's "admin" flavor but themes are applied to the "html" flavor by default.</li>
-<li><strong>I hate all of the bundled themes, how do I add my own?</strong>
-Oh come on, the "autumn" theme is pretty good ;-) Anyway, your best bet is to copy an existing theme into a new directory and tweak the files until you're satisfied. One caveat: Blojsom doesn't actually use the files under <em>WEB-INF/themes</em> when rendering a blog. Instead, whenever you choose a theme in the admin page, its files are copied into <em>resources/<blogname></em> and that's where Blojsom looks when rendering. So each time you want to see the changes you've made under <em>WEB-INF/themes/myCoolTheme</em> you have to choose "myCoolTheme" in the admin page. You could, of course, edit files under <em>resources/<blogname></em> directly but you would risk losing your changes at the next theme switch.</li>
-</ul> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="oh-no-another-blog"></a>
-      <a href="../oh-no-another-blog.html" rel="bookmark" title="Permalink to Oh no, another blog">Oh no, another blog</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2010-10-19T00:06:00"> Tue 19 October 2010 </abbr> under
-        <a href="../tag/meta.html">meta</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I am a software developer. My work involves a great deal of communication, much of it in writing. Sometimes it takes a lot of time and effort to get the message just right. I started this blog to practice my writing. I hope to evolve a fluid, consistent process for expressing my thoughts. This page has been made public as I hope a genuine audience, however small, may help me achieve that goal. I will do my best to return the favor in the most appropriate currency: interesting and maybe even useful prose.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
                         <a href="../category/misc4.html">&laquo;</a>
-                Page 5 / 5
-            <a href="#" class="disabled">&raquo;</a>
+                Page 5 / 6
+            <a href="../category/misc6.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">
                 <address id="about" class="vcard body">

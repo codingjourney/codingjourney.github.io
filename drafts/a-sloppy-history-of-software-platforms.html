@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+                <title>meandering journey</title>
+        <meta charset="utf-8" />
+        <link href="../theme/css/main.css" type="text/css" rel="stylesheet" />
+                <link href="http://meandering.journey.sk/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Full Atom Feed" />
+                                                <link href="http://meandering.journey.sk/feeds/misc.atom.xml" type="application/atom+xml" rel="alternate" title="meandering journey Categories Atom Feed" />
+                                        </head>
+
+<body id="index" class="home">
+  <div class="all">
+  <div class="extra-info">
+  
+    <aside>
+  <h3>About the blog</h3>
+  A platform to practice my written communication skills.
+  The range of topics tends to surprise even myself.
+</aside>
+<aside>
+  <h3>About the author</h3>
+  My name is Ján Hušták. I live near
+  <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
+  I've been developing software professionally since 1998.
+  The Java platform has served me well but I don't dwell on it.
+</aside>
+<aside>
+  <h3>Links</h3>
+  <a href="http://www.journey.sk">Main site</a>,
+  <a href="http://coding.journey.sk">projects page</a>,
+  <a href="https://github.com/codingjourney">GitHub</a>.
+  Sorry, no social networks. I do read mail sent to
+  coding &#97;&#116; journey.sk.
+</aside>    
+    <aside id="tags">
+  <h3>Tags</h3>
+          <a href="../tag/motivation.html">motivation</a>
+      -     <a href="../tag/htpc.html">HTPC</a>
+      -     <a href="../tag/openbsd.html">OpenBSD</a>
+      -     <a href="../tag/qt.html">Qt</a>
+      -     <a href="../tag/upsheet.html">upsheet</a>
+      -     <a href="../tag/python.html">Python</a>
+      -     <a href="../tag/kde.html">KDE</a>
+      -     <a href="../tag/cloud-computing.html">cloud computing</a>
+      -     <a href="../tag/caldav.html">CalDAV</a>
+      -     <a href="../tag/howto.html">howto</a>
+      -     <a href="../tag/jetty.html">Jetty</a>
+      -     <a href="../tag/craftsmanship.html">craftsmanship</a>
+      -     <a href="../tag/meta.html">meta</a>
+      -     <a href="../tag/music.html">music</a>
+      -     <a href="../tag/it-misadventures.html">IT misadventures</a>
+      -     <a href="../tag/algorithms.html">algorithms</a>
+      -     <a href="../tag/android.html">Android</a>
+      -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
+    </aside>
+    <aside class="links">
+  <h3>Recent articles</h3>
+      <a href="../much-more-fun-with-planning-poker.html">Much more fun with Planning poker</a>
+      <a href="../the-child-that-grew-too-fast.html">The child that grew too fast</a>
+      <a href="../mare-nostrum-at-konzerthaus.html">Mare Nostrum at Konzerthaus</a>
+      <a href="../too-much-fun-with-planning-poker.html">Too much fun with Planning poker</a>
+      <a href="../long-time-no-blog.html">Long time no blog</a>
+      <a href="../what-i-did-last-summer.html">What I did last summer</a>
+      <a href="../october-2013-is-here.html">October 2013 is here</a>
+      <a href="../october-2013.html">October 2013</a>
+    </aside>
+      
+  </div><!-- /.extra-info -->
+  <div class="main-column">
+  <header id="banner" class="body">
+    <h1><a href="..">meandering<img src="../theme/images/logo.png"/>journey</a></h1>
+  </header><!-- /#banner -->
+        <section id="content" class="body">
+  <header>
+    <h3>
+      <a href="a-sloppy-history-of-software-platforms.html" rel="bookmark"
+         title="Permalink to A Sloppy History of Software Platforms">A Sloppy History of Software Platforms</a></h2>
+  
+  </header>
+  <footer class="post-info">
+        Published on <abbr class="published" title="2015-05-15T15:45:00"> Fri 15 May 2015 </abbr> under
+      </footer><!-- /.post-info -->
+  <div class="entry-content">
+    <p>All software needs a platform. A platform is any system that turns code into computation (code is any set of data that specifies a computation in a form the platform can process). The transformation can be as simple as carrying out a calculation in one's head while reading the text of a program. It is well known, after all, that the word "computer" originally meant "someone who computes".</p>
+<p>The problem is, human computational capacity is shockingly low. Even before computing machines arrived, human computers augmented their capabilities with various tools (pencil &amp; paper for extended memory, slide rule for acceleration). It allowed them to tackle more complex problems but they were still slow, inconsistent and error-prone.</p>
+<p>Right after people like Claude Shannon, Alan Turing and John von Neumann??? laid the necessary conceptual foundations, the actual work of computing fell to machines - electro-mechanical at first, then electrical, then electronic (other paradigms are just about approaching). The core principle has remained remarkably consistent: a processor reads an instruction (encoded as one or several binary numbers) from working memory, performs the specified calculation and either stores the output in the same working memory or sends it to other hardware for further processing.</p>
+<p>It follows that any platform involving a modern computer involves loading binary-encoded instructions (a.k.a. machine code) into its working memory. Some early computers had the option of doing this directly by means of special buttons, keys or switches. As the human mind is ill-equipped for working with binary numbers, this way of inputting programs was slow and error-prone. Computers therefore evolved to let programmers formulate instructions in a more human-friendly way - as texts written using programming languages.</p>
+<p>The simplest ones are assembly languages. Such a language is nothing but a more readable version of the binary numbers a computer works with. Once an assembly program has been written, it is transformed into proper machine code by another, already existing program called assembler.</p>
+<p>When writing a program in assembly, the programmer deals directly with the computer's components. That results in some major downsides:</p>
+<ul>
+<li>The actual instructions making up a program bear little apparent relation to the task the program aims to perform.</li>
+<li>The program is only valid for a particular class of computers (those that share the same architecture) and has to be rewritten for others.
+** (let's ignore emulation for a while)</li>
+<li>Tasks relatively simple from a human perspective may take many, many assembly instructions to formulate.</li>
+</ul>
+<p>The upshot is that programming in assembly is still pretty slow and error-prone. These days it's restricted to a few specific situations requiring perfect control over each instruction executed by the machine (for whatever reason). In all other cases, platforms based on higher-level languages are used.</p>
+<p>Even at this primitive level, however, it is possible to structure a program in elaborate ways. All computers have instructions for deciding which instruction gets processed next (control flow instructions). These allow the programmer to say things like "repeat sequence of instructions from A to B as long as condition X is true" or "don't continue here but continue from A until told to return; then continue with further instructions after this one". An assembly program can thus be split into smaller parts (procedures) that are triggered (called) from a central instruction sequence.</p>
+<p>This is where the double-edged sword of abstraction comes into play. When looking at the central instruction sequence, we see which procedure gets called where but what exactly each procedure does remains hidden. On the other hand, examining a particular procedure may bring clarity as to its behavior but we lose the wider context of its execution. We could try to get the best of both approaches by replacing each call to a procedure with its text - but the high-level structure would be lost to the reader anyway due to the perceptive and cognitive limitations inherent to humans.</p>
+<p>The problem is compounded by the fact that procedure calls may be nested - that is, a procedure may call another procedure, continuing with its computation once the other procedure returns, to later return to the central instruction sequence. Such nesting may be many levels deep which also implies many levels of abstraction. For instance, XXX TODO.</p>
+<p>Abstraction is the bread-and-butter of higher-level programming languages. An instruction in a higher-level programming language is no longer bound to the components of a particular computer architecture. It may say that two numbers are to be added but doesn't specify the exact locations in the computer's memory where those numbers are stored or where the result of the addition should be saved. Instruction inputs and outputs are thus de-coupled from their hardware representations. So are instructions themselves - another instruction may order the computer to read a set of data from persistent storage into its working memory. This involves an entire sub-program of actual machine code instructions and it isn't that trivial either - there are a number of things that can go wrong when reading from persistent storage and they all need to be dealt with in some fashion.</p>
+<p>The word "sub-program" in the previous sentence touches on a couple of crucial concepts in computing - modularity and composition. Given that so many programs are repetitive in nature, computers have always been equipped with ways to carry out the same set of instructions multiple times, perhaps with different inputs or under different conditions. This gives the programmer the power to avoid repetition - instead of spelling out </p>
+  </div><!-- /.entry-content -->
+</section>
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+        </footer><!-- /#contentinfo -->
+  </div><!-- /.main-column -->
+  </div><!-- /.all -->
+</body>
+</html>

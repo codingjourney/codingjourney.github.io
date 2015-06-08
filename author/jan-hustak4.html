@@ -19,7 +19,7 @@
 </aside>
 <aside>
   <h3>About the author</h3>
-  My name is Ján Hušták. I live in
+  My name is Ján Hušták. I live near
   <a href="http://maps.google.com/maps?q=bratislava&z=6">Bratislava</a>.
   I've been developing software professionally since 1998.
   The Java platform has served me well but I don't dwell on it.
@@ -34,17 +34,17 @@
 </aside>    
     <aside class="links">
   <h3>                        <a href="../author/jan-hustak3.html">&laquo;</a>
-                Page 4 / 5
+                Page 4 / 6
             <a href="../author/jan-hustak5.html">&raquo;</a>
     </h3>
+      <a href="#pimp-my-calendar-part-5">PIMp my calendar, part 5</a>
+      <a href="#reputation-as-a-measure-of-success">Reputation as a measure of success</a>
+      <a href="#software-as-knowledge-repository">Software as knowledge repository</a>
       <a href="#soundgraph-imon-pad-vs-linux-2636">Soundgraph iMON PAD vs. Linux 2.6.36</a>
       <a href="#stuck-in-a-timezone">Stuck in a timezone</a>
       <a href="#the-battle-of-the-c5280-aftermath">The battle of the C5280: Aftermath</a>
       <a href="#the-battle-of-the-c5280-part-1">The battle of the C5280, part 1</a>
       <a href="#the-battle-of-the-c5280-part-2">The battle of the C5280, part 2</a>
-      <a href="#the-battle-of-the-c5280-part-3">The battle of the C5280, part 3</a>
-      <a href="#the-battle-of-the-c5280-part-4">The battle of the C5280, part 4</a>
-      <a href="#the-heroku-mess">The Heroku mess</a>
     </aside>
   <aside id="tags">
   <h3>Tags</h3>
@@ -66,6 +66,8 @@
       -     <a href="../tag/algorithms.html">algorithms</a>
       -     <a href="../tag/android.html">Android</a>
       -     <a href="../tag/cups.html">CUPS</a>
+      -     <a href="../tag/security.html">security</a>
+      -     <a href="../tag/html5.html">HTML5</a>
     </aside>
     
   
@@ -77,6 +79,106 @@
         <section id="content">
 <h2>Articles by Jan Hustak</h2>
 
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="pimp-my-calendar-part-5"></a>
+      <a href="../pimp-my-calendar-part-5.html" rel="bookmark" title="Permalink to PIMp my calendar, part 5">PIMp my calendar, part 5</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-04-21T18:55:00"> Sun 21 April 2013 </abbr> under
+        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/android.html">Android</a>,        <a href="../tag/caldav.html">CalDAV</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>The self-hosted calendaring solution I had been <a href="../pimp-my-calendar-part-4.html">trying to set up</a> turned out not to work due to an incompatibility between my Android phone and the CalDAV client I tried to run on it. My options at this point consisted of</p>
+<ol>
+<li>upgrading the firmware in my phone to Ice Cream Sandwich or higher</li>
+<li>buying a new phone</li>
+<li>porting the CalDAV Adapter to the unofficial and unsupported APIs</li>
+<li>choosing a different calendaring solution</li>
+</ol>
+<p>My handset is a <a href="http://www.google.com/url?q=http://en.wikipedia.org/wiki/GeeksPhone_One">Geeksphone One</a> - a sturdy little machine well supported by Cyanogen Mod yet simply too weak to handle anything beyond 2.3.x. It's condemned to stay in the <a href="http://en.wikipedia.org/wiki/File:Android-dist-by-dessert.png">Gingerbread zombie army</a> until I retire it. Buying a new phone is plausible in the mid- to long-term but I do want a slide-out QWERTY keyboard. Looks like I'll have to overcome my allergy to <a href="http://www.gsmarena.com/sony_ericsson_xperia_pro-3779.php">Sony</a>.</p>
+<p>I looked into back-porting the <a href="https://github.com/gggard/AndroidCaldavSyncAdapater">CalDAV adapter</a> to the unofficial APIs available in Gingerbread. It seemed like a ton of work with dubious benefits - especially when I found out the work had already been done. You see, the adapter I'd been working with (written by Gérald Garcia) was not the only one I'd found - there is also <a href="http://dmfs.org/caldav/">another adapter</a> written by Marten Gajda which I hadn't considered since it isn't distributed as open-source. It does work under Gingerbread, however, which made a proper impression on me given everything I knew at this stage.</p>
+<p>I ended up doing something I hadn't done in years - I purchased and installed a piece of closed-source software. One thing that convinced me was Marten's website which is simple and sticks to the point; the same can be said of the software. Unfortunately, even with a bona-fide polished product on the Android side it wasn't smooth sailing. I had a Radicale instance installed on my notebook for debugging and it talked to the adapter just fine - unlike the home server. Both were running Radicale 0.7 by this point so I compared their OS-specific patches (using <em>apt-get src</em> on my Debian notebook and the ports tree on the OpenBSD home server). One of the Debian patches added automatic creation of calendars which was lacking in the OpenBSD version (this functionality is mentioned in current Radicale documentation but that supposedly refers to 0.7.1; the experiment with <a href="http://www.mozilla.org/projects/calendar/lightning/">Mozilla Lightning</a> in <a href="../pimp-my-calendar-part-3.html">part 3</a> had worked because the Debian version was involved). Porting the patch and installing from ports was a matter of minutes. After that, <strong>everything worked like a charm</strong>.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="reputation-as-a-measure-of-success"></a>
+      <a href="../reputation-as-a-measure-of-success.html" rel="bookmark" title="Permalink to Reputation as a measure of success">Reputation as a measure of success</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-05-15T06:31:00"> Wed 15 May 2013 </abbr> under
+        <a href="../tag/craftsmanship.html">craftsmanship</a>,        <a href="../tag/motivation.html">motivation</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p>I prefer definitions of success that don't involve exclusivity. The problem with exclusivity is that it doesn't scale. When success is defined as being "the best in the world", for example, the number of successful people is limited by the number of categories in which one can be "the best in the world". Many companies thus present themselves as "the global leader" in whatever absurd bombastic-sounding niche they dream up for themselves. In addition, exclusivity is ethically questionable - in the words of <a href="http://www.youtube.com/watch?v=Xt_YhSxjshY">Scatman John</a>, <em>"how can someone win when winning means that someone loses?"</em>.</p>
+<p>I believe everyone deserves the confidence and satisfaction that comes with success. Definitions that don't require excluding anyone are preferable from this point of view. For a business, "being profitable" may be one such definition of success. "Growing consistently" may be another one, although growth does become exclusive once a market matures.</p>
+<p>The other extreme - feel-good notions of "success" that don't require any effort - is even more problematic. Slight positive bias in one's self image is said to help achieve goals but the goals have to be there in the first place. (Interesting aside: does presence of goals indicate absence of success? Is success a state or a process? Why do we want to succeed, anyway?)</p>
+<p>I became aware of these issues quite early in my youth and decided my definition of career success would be <em>"achieving respect in a community of competent professionals"</em>. This was before the Internet. I can now say I've been achieving this success through most of my career if the "community" is defined as one's workplace and its circle of competent professionals.</p>
+<p>That's no longer enough. For years, I have been standing on the sidelines of the great community that is the Internet. I would love to achieve a measure of respect there but it's quite scary. As the Red Woman says, <a href="http://www.youtube.com/watch?v=_YmVI84iYOQ">the Net is vast and full of strangers</a>, many of them jerks or worse. Even the sub-Internet of "competent software development professionals" is vast and full of strangers, many of them jerks or worse.</p>
+<p>This brings up an awkward fact: when a community becomes large enough, respect of peers becomes exclusive. Respecting someone requires being aware of their existence, achievements and other attributes. Awareness is a limited resource. In my team at work there are so few of us we can comfortably judge each other's competence and award respect to everyone who deserves it. On the internet, however, I compete for the respect of my peers just as they compete for mine.</p>
+<p>What to do about this? It's obvious that my youthful definition of success was flawed as it didn't correspond to my own ethics. I need to formulate another definition fully immune from exclusion. Perhaps something like "creating works of high quality useful to customers and delightful to users", as mundane as that sounds. (Of course, the previous definition did mention "works of high quality" between the lines: it spoke of "competent professionals" rather than "gullible fools".)</p>
+<p>Having said that, my craving for "respect" doesn't feel like a symptom of vanity. I'd say it reflects a pretty basic human need for acceptance within the group I identify with. When such acceptance is a scarcity I can either give up on being accepted, pursue the acceptance to the exclusion of others or choose a different, smaller community to participate in. I don't feel like giving up but both of the other options involve, well, talking to strangers. Oh my...</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
+<article class="hentry">
+  <header>
+    <h3>
+      <a name="software-as-knowledge-repository"></a>
+      <a href="../software-as-knowledge-repository.html" rel="bookmark" title="Permalink to Software as knowledge repository">Software as knowledge repository</a>
+    </h3>
+  </header>
+  <footer class="post-info">
+      Published on <abbr class="published" title="2013-05-27T16:30:00"> Mon 27 May 2013 </abbr> under
+        <a href="../tag/craftsmanship.html">craftsmanship</a>      </footer><!-- /.post-info -->
+  <div class="entry-content"> <p><em><strong>Summary</strong> Software is the most relevant representation of knowledge about a business. It is crucial that this knowledge be accessible to decision-makers. When managers resent refactoring as "not adding business value", they overlook the value of software as a knowledge repository.</em></p>
+<p>Software is the most relevant representation of knowledge about a business. Although it only implements automated workflows, those form an ever-growing part of business activities. Source code is the only 100% accurate and up-to-date documentation of such workflows and often reveals a lot about manual processes as well.</p>
+<p>More importantly, software is <em>executable</em> knowledge. It doesn't simply describe automated processes - software <em>becomes</em> the process once running in a production environment.</p>
+<h4>The problem of access</h4>
+<p>It follows that a decision-maker trying to truly master the processes in a business needs fast, flexible and efficient access to software-bound knowledge. What's more, she needs <em>read-write</em> access in order to augment, extend and deepen the knowledge. It's a non-trivial requirement:</p>
+<ul>
+<li>In software, business-specific knowledge is intertwined with lots of other concerns (infrastructure, ergonomics, security, governance, ...).</li>
+<li>Source code addresses several audiences at once (end user, other programmers, compiler).</li>
+<li>Software tends to be heterogeneous even in modestly-sized businesses (different authors, different programming languages and platforms, ...).</li>
+<li>Software has to be precise enough for a computer to execute (i.e. extremely precise by human measure).</li>
+</ul>
+<p>The way software is usually managed presents additional difficulties. Business knowledge gets "baked in" at various stages of a complicated dance involving decision-makers, analysts, architects, programmers, testers - oh, and hopefully also end users. The transformation progresses via specification documents, UML diagrams, Scrum stories, bug reports or what have you. Given sufficient skill and will on all sides, there is reasonable certainty that the software does what decision-makers intend it to do. The process is neither flexible, fast nor efficient, however. Improving this situation surely means competitive advantage.</p>
+<h4>Distilling knowledge</h4>
+<p>Many approaches have been tried to bring stakeholders closer to software (and many more will be tried as software grows more important). They often start by isolating business-specific parts of a program (a.k.a. "business logic") from the rest. The idea is sensible enough yet fraught with pitfalls:</p>
+<ul>
+<li>The boundary between generic and business-specific code is often blurred.</li>
+<li>Business-specific algorithms can exist at many levels of abstraction.</li>
+<li>Local peculiarities creep into unforeseen places (masked as validation criteria etc.).</li>
+<li>Isolating parameters is much easier than isolating an algorithm.</li>
+</ul>
+<p>The last point is especially relevant. Many businesses end up with an agreed set of easy-to-tweak configuration settings, complemented by a change-request process that supposedly balances flexibility with maintainability. Such a set-up makes it all too easy to make the wrong trade-offs under schedule pressure. Another possible outcome is programming by configuration, i.e. spiking a program with so many parameters as to make both the code and the configuration extremely complex (this is the shadowy domain of SAP consultants).</p>
+<h4>Matters of presentation</h4>
+<p>When it comes to giving decision-makers useful access, extracting algorithms as well as parameters is clearly essential but won't suffice unless the CEO is fluent in the language in which the code is written. Making business logic palatable to non-technical folks is therefore a major area of activity featuring its own array of methods and tools, with <a href="http://en.wikipedia.org/wiki/Business_process_management">Business Process Management</a> (BPM) apparently in vogue these days, complemented by <a href="http://www.brcommunity.com/">Business Rule Mangement</a> (BRM).</p>
+<p>Such tools are definitely useful but they only go part of the way. Even with declarative approaches such as BRM, understanding software requires algorithmic thinking. It's a hurdle no programming language nor diagramming technique will overcome. Algorithmic thinking is a skill and can be learned, however. The recent debate regarding <a href="http://www.digitaltrends.com/computing/why-learning-to-code-is-not-just-a-horrible-trend/">whether everyone should learn to code</a> is, at its core, about letting people comprehend the world around them as software pervades it. The concern is especially relevant for business decision-makers.</p>
+<p>It will take a generation shift (maybe several) for algorithmic thinking to become common among non-programmers. Mediation between decision-makers and software is therefore poised to remain a feature of the business world for the foreseeable future. As mentioned, the process tends to be rather chaotic in practice and varies immensely between businesses. What's universal is the ever-stronger imperative to make it fast, flexible and efficient.</p>
+<h4>Perils of mediation</h4>
+<p>This is where agile methodologies enter the picture. <a href="http://agilemanifesto.org/">The Agile Manifesto</a> reads like a sigh of frustration with the communication barriers between programmers and other stakeholders. Yet it tackles precisely the interface between decision-makers and the software they pay for - which, as is hopefully clear by now, is a really tough nut to crack.</p>
+<p>Agile has endured some <a href="http://www.ambysoft.com/certification/scam.html">backlash</a> over the years but it represents great progress nevertheless. It clarifies that there are aspects to developing software that don't have technical solutions. That's always been obvious to managers but putting it in words programmers can understand was certainly commendable. Overall, agile practices do result in <a href="http://www.ibm.com/developerworks/rational/agile/agile-survey/">improvements</a> when applied properly.</p>
+<p>The most common cause of failure in agile projects seems to be misunderstanding and mistrust of the <a href="http://agilemanifesto.org/principles.html">agile principles</a> on the part of key stakeholders. The principles are thus not applied consistently and the project ends up a half-hearted faux-agile mess.</p>
+<p>Two agile values are particularly difficult yet vital from the perspective of software as knowledge repository:</p>
+<ul>
+<li><strong>Working software</strong> tends to be misunderstood by non-programmers - they don't appreciate how fragile working software is and how easy it is to introduce bugs. Hence the ignorance of test coverage and the general disregard for software quality in the presence of other priorities.</li>
+<li><strong>Responding to change</strong> tends to be misinterpreted by programmers and non-programmers alike as giving in to schedule pressure. Requirement analysis becomes sloppy, necessary maintenance is skipped.</li>
+</ul>
+<p>Both pitfalls lead to low-quality code that makes business-specific knowledge catastrophically opaque. The problem can arise surprisingly quickly and the consequences are serious. Requirements are not met, changes take lots of time and introduce bizarre bugs, developers quitting cause undue disruption - a typical project in disarray.</p>
+<h4>Refactoring to the rescue</h4>
+<p>The agile practice of <a href="http://refactoring.com/">refactoring</a> aims to achieve high software quality without slowing down the pace of development, even increasing it. Briefly, refactoring means changing software in small incremental steps and confirming the changes through automated test runs (the test runs ensure the behavior of the software stays the same as its structure improves).</p>
+<p>Refactoring is intended to be used early and often, preventing the build-up of hard-to-understand code. The proposition is counter-intuitive because it sounds like extra work. As a result, many teams never adopt the practice. It's a shame: refactoring does speed up coding by slashing the cognitive load imposed on the programmer. In other words, there are far fewer things to worry about when modifications are modest and unit tests are robust.</p>
+<h4>Why no-one does it</h4>
+<p>What happens in practice is that software quality is left to atrophy until a developer comes to a decision-maker and says "Hey, we <em>really</em> need to refactor this." Time is alotted but it's not enough so big chunks of the code are cleaned up haphazardly with no test coverage. A flurry of new bugs appears and refactoring gets another blemish on its reputation even though it was never brought to bear. Overcoming this anti-pattern requires adaptation on both sides:</p>
+<ul>
+<li>Software developers must get serious practical exposure to true refactoring as part of their training. The impact has to be experienced to be appreciated.</li>
+<li>Decision-makers must admit to themselves how critical sotware is to their organization and stop treating it as a "cost center" or an obstacle to achieving business objectives.</li>
+</ul>
+<h4>Why you should do it</h4>
+<p>A well-maintained body of code is valuable whether or not it's directly readable by non-technical decision-makers. Knowledge is at hand, answers are quick, changes are smooth. The company becomes nimble in a way it never could without automation. At a software startup, this notion forms the core of its competitive strategy - that's why working at a startup is so alluring to programmers. It also drives startups' disruptive potential. Decision-makers at conventional companies face the tough task of integrating the value of software into their cultures even if they don't compete with startups. <a href="http://www.businessspectator.com.au/article/2012/12/18/technology/app-assault-taxi-monopoly">Once they do</a> it may be too late.</p> </div><!-- /.entry-content -->
+  <hr/>
+</article>
 <article class="hentry">
   <header>
     <h3>
@@ -265,110 +367,8 @@
 <p>Armed with new wisdom, I turned on global read-write permissions for <em>/dev/usb*</em>. <strong>Progress! CUPS finally found my printer.</strong> I clicked on "Print test page". As you may have guessed, nothing happened. <em>Continued in <a href="../the-battle-of-the-c5280-part-3.html">part 3</a>.</em></p> </div><!-- /.entry-content -->
   <hr/>
 </article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-battle-of-the-c5280-part-3"></a>
-      <a href="../the-battle-of-the-c5280-part-3.html" rel="bookmark" title="Permalink to The battle of the C5280, part 3">The battle of the C5280, part 3</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-29T07:30:00"> Fri 29 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>In <a href="../the-battle-of-the-c5280-part-1.html">part 1</a> and <a href="../the-battle-of-the-c5280-part-2.html">part 2</a> I describe how I got CUPS to recognize my printer. Alas, the battle was far from over: it still refused to print. Back in <em>/var/log/cups/error_log</em> I found</p>
-<div class="codehilite"><pre><span class="n">libusb</span> <span class="n">write</span> <span class="n">operation</span> <span class="n">returned</span> <span class="n">fffffff4</span><span class="p">.</span>
-</pre></div>
-
-
-<p>Of course, fffffff4 translates to -12 which translates to <em>LIBUSB_ERROR_NOT_SUPPORTED</em>. More trace statements were in order.</p>
-<p>From the surrounding log messages I figured out that the error was returned from <em>obsd_submit_transfer</em> in <em>openbsd_usb.c</em>. I found all places in that function where the error could have been returned and equipped them with traces. The culprit turned out to be one level deeper, in <em>_sync_gen_transfer</em>:</p>
-<div class="codehilite"><pre><span class="k">if</span> <span class="p">(</span><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">LIBUSB_ERROR_NOT_SUPPORTED</span><span class="p">);</span>
-</pre></div>
-
-
-<p>By now my round-trip was quite masochistic:</p>
-<ol>
-<li>Edit openbsd_usb.c as patched by the port.</li>
-<li>Make a new patch.</li>
-<li>Replace the port's patch with the new one.</li>
-<li>Rebuild port.</li>
-<li>Stop CUPS.</li>
-<li>Uninstall libusb and CUPS (CUPS depends on libusb).</li>
-<li>Install libusb from the port.</li>
-<li>Install CUPS.</li>
-<li>Start CUPS.</li>
-<li>Try something.</li>
-<li>See what turns up in the log.</li>
-</ol>
-<p>I did have a script for steps 2 through 9 but now I needed to find out how <em>NULL</em> got into <em>dpriv-&gt;devname</em>. I realized it was time to learn <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=gdb">gdb</a> - the GNU interactive debugger.</p>
-<p>If you click on that link you will find a typical OpenBSD man page: clear, succint, to the point (I've said this before: documentation is the most impressive thing about OpenBSD, by far). Figuring out how to compile libusb with debugging symbols was another stumbling block, however. The line <em>.ifdef DEBUG</em> in the port's <em>Makefile</em> had given me a mistaken impression that the value of <em>DEBUG</em> didn't matter. I put <em>DEBUG=1</em> into <em>/etc/mk.conf</em> and libusb promptly stopped building, with <em>configure</em> saying something to the effect that CC was unable to generate an executable. Rummaging throug <em>configure.log</em>, the incriminating lines looked approximately like this:</p>
-<div class="codehilite"><pre><span class="n">cc</span> <span class="o">-</span><span class="n">O2</span> <span class="o">-</span><span class="n">pipe</span> <span class="mi">1</span> <span class="n">conftest</span><span class="p">.</span><span class="n">c</span>
-<span class="nl">cc:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
-</pre></div>
-
-
-<p>Silly me thought the first "1" was a parameter for the "-pipe" option while the other "1" was a line number. Once I put one and one together (ahem), <em>man cc</em> told me <em>DEBUG</em> should be <em>-g</em>, obviously, after which <em>make clean build</em> produced a file 100K bigger than before, pregnant with debugging wisdom. I was happy.</p>
-<p>Having conquered the last obstacle, I was stepping through my toy program in no time. I even found the multi-window ncurses-based TUI (text user interface) although that wasn't mentioned in the man page. One irritating thing about TUI was that it didn't have the debbuged program's standard streams under control. Each time a trace statement was printed it blew up the layout. I finally turned it off by running gdb with <em>-tty=/dev/null</em> which wasn't ideal either but it was an improvement. To be frank, I would expect TUI to have a dedicated console window to handle the program's I/O. Alas, that doesn't seem to be the case.</p>
-<p>The source seemed to be somewhat out of sync with the code being executed ("next" kept jumping back and forth, gdb itself would segfault once I launched the program a few times). I ascribed this to optimizations performed by CC so I turned them off by saying <em>CFLAGS=-O0 -g</em> in the port's <em>Makefile</em> and rebuilding (the <em>-g</em> was necessary because apparently <em>CFLAGS</em> in the <em>Makefile</em> overrides <em>CFLAGS</em> assembled by other means). To my surprise, it did help - stepping became perfectly smooth from then on.</p>
-<p>Of course, gdb only took me deeper into the mystery. <em>Continued in <a href="../the-battle-of-the-c5280-part-4.html">part 4</a>.</em></p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-battle-of-the-c5280-part-4"></a>
-      <a href="../the-battle-of-the-c5280-part-4.html" rel="bookmark" title="Permalink to The battle of the C5280, part 4">The battle of the C5280, part 4</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-03-29T19:45:00"> Fri 29 March 2013 </abbr> under
-        <a href="../tag/it-misadventures.html">IT misadventures</a>,        <a href="../tag/openbsd.html">OpenBSD</a>,        <a href="../tag/cups.html">CUPS</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>I have previously recounted how I <a href="../the-battle-of-the-c5280-part-1.html">forced libusb</a> to print trace statements, <a href="../the-battle-of-the-c5280-part-2.html">cajoled CUPS</a> into recognizing my printer and <a href="../the-battle-of-the-c5280-part-3.html">mastered gdb</a> in order to probe in CUPS' bowels.</p>
-<p>Fortunately, no such bowel-probing was needed. As I examined where the <em>NULL</em> in <em>dpriv-&gt;devname</em> may have come from, I found out it was only being set in good old <em>obsd_get_device_list</em>:</p>
-<div class="codehilite"><pre><span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-
-<span class="cm">/*</span>
-<span class="cm"> * If a device is attached to ugen(4) it has</span>
-<span class="cm"> * only one &#39;devname&#39;.</span>
-<span class="cm"> */</span>
-<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="s">&quot;ugen&quot;</span><span class="p">,</span> <span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">))</span>
-    <span class="n">dpriv</span><span class="o">-&gt;</span><span class="n">devname</span> <span class="o">=</span>
-        <span class="n">strdup</span><span class="p">(</span><span class="n">di</span><span class="p">.</span><span class="n">udi_devnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</pre></div>
-
-
-<p>I duly exercised the spot via my <a href="the-battle-of-the-c5280-part-1.html#test">toy program</a> with a breakpoint at the <em>strcmp</em> line. It turned out that the expectation expressed over there in the comment is, in my case, wrong. At busnode <em>/dev/usb0</em>, address 3, the value of <em>di.udi_devnames</em> was ["ulpt0", "umass0", "ugen0"].</p>
-<p>My subsequent search for solutions involved a crash-course in USB driver architecture and lots of source-code browsing. The general aim was to make the resulting <em>libusb_device</em> palatable to CUPS by setting it up correctly. It was a tall order and I didn't really figure out what the <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=usb&amp;sektion=4">usb man page</a> meant when it said</p>
-<p><em>For each USB device there may be additional drivers attached to it.</em></p>
-<p>More specifically, I didn't find out whether it was possible to "activate" a different driver than the default one (perhaps by switching the device to another configuration). I suspect it would have taken serious time to finish that investigation but along the way I discovered CUPS' package readme (first as <em>pkg/README</em> in the port directory, then under <em>/usr/local/share/doc</em> after installing). It advised removing the <em>ulpt</em> driver as colliding with <em>ugen</em>.</p>
-<p>I tried the suggested remedy (using <em>config -e -o</em>) and it didn't work - but it wouldn't, would it? The string in <em>di.udi_devnames[0]</em> still didn't start with "ugen". I obviously had to remove the <em>umass</em> driver as well. One more reboot and... <strong>the test page materialized</strong>.</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
-<article class="hentry">
-  <header>
-    <h3>
-      <a name="the-heroku-mess"></a>
-      <a href="../the-heroku-mess.html" rel="bookmark" title="Permalink to The Heroku mess">The Heroku mess</a>
-    </h3>
-  </header>
-  <footer class="post-info">
-      Published on <abbr class="published" title="2013-02-16T07:35:00"> Sat 16 February 2013 </abbr> under
-        <a href="../tag/cloud-computing.html">cloud computing</a>      </footer><!-- /.post-info -->
-  <div class="entry-content"> <p>On February 12, 2013, a startup called RapGenius accused the <a href="http://www.heroku.com">Heroku cloud host</a> of knowingly stifling the performance of the RapGenius Rails app, causing the need for extra instances and subsequent higher service charges.</p>
-<p>RapGenius' <a href="http://rapgenius.com/James-somers-herokus-ugly-secret-lyrics">blog post</a> is impressive in that it describes the issues clearly yet provides sufficient details. It is really worth a read which is why I'm not going to reproduce nor summarize it here.</p>
-<p>I believe none of the parties involved (Heroku, RapGenius and the monitoring outfit New Relic) come out looking good:</p>
-<ul>
-<li><em><strong>Heroku</strong> failed to announce a substantial platform change to customers.</em> The company provides Platform as a Service (several platforms, actually). A platform is a system of components working together to provide essential services for applications. Heroku switched their Rails platform from an optimal combination of components (single-request dynos, intelligent routing) to a substantially sub-optimal one (single-request dynos, random routing). They failed to notify customers of the switch in advance. They either failed to measure the performance impact of the switch or purposefully withheld knowledge of the impact from their customers. They failed to reflect the switch in their documentation.</li>
-<li><em><strong>New Relic</strong> simply failed to account for all latencies in their monitoring.</em> It appears they measured many internal values within the platform but failed to cross-check them against a black-box view from the outside. It seems quite unprofessional, especially given the pricing of their service.</li>
-<li><em><strong>RapGenius</strong> put too much trust in an external entity.</em> Instead of an independent monitoring service they used one sold as an add-on to their platform by the platform provider. They took more than two years to detect a major performance degradation in their platform (in fairness, the problem only becomes apparent when the number of dynos reaches a certain threshold).</li>
-</ul>
-<p>What's truly puzzling is that none of Heroku's other Rails customers seems to have encountered this issue before RapGenius. One possibility is that RapGenius is the first Heroku Rails app to achieve sufficient scale for the problem to occur. Another is that some customers did indeed catch the problem right at the start, adapted to the new configuration and simply never thought to give a heads-up to the rest of the community.</p>
-<p>The morale of the story for me is that it's foolish to use a monitoring service with business ties to the entity being monitored (or, indeed, to outsource monitoring in the first place - it's a critical QA function, after all). An independent monitoring service must still be given enough access to the monitored system to provide necessary detail. This is not trivial as monitoring can interfere with the monitored system. Some form of meta-monitoring is perhaps needed. Ah, the ever-fascinating world of IT :-)</p> </div><!-- /.entry-content -->
-  <hr/>
-</article>
                         <a href="../author/jan-hustak3.html">&laquo;</a>
-                Page 4 / 5
+                Page 4 / 6
             <a href="../author/jan-hustak5.html">&raquo;</a>
     </section><!-- /#content -->
         <footer id="contentinfo" class="body">
